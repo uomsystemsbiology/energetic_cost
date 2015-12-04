@@ -1,0 +1,50 @@
+head	1.2;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.2
+date	2015.11.09.22.19.22;	author peterg;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2015.11.09.21.37.43;	author peterg;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@*** empty log message ***
+@
+text
+@#!/bin/bash
+
+## Generates octave code from name_struc.txt
+
+name=$1
+which=$2
+
+grep $2 ${name}_struc.txt  |\
+gawk '{print "info.name{" $2 "}=\"" $3 "\"; info.cause{" $2 "}=\""$6"\";"}'
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d3 2
+d6 1
+d8 2
+a9 1
+grep input ${name}_struc.txt  | gawk '{print $6 "_{" $3 "}"}'
+@

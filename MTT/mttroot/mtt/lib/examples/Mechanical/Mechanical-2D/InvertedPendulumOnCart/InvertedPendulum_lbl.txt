@@ -1,0 +1,54 @@
+%% Label file for system InvertedPendulum (InvertedPendulum_lbl.txt)
+%SUMMARY InvertedPendulum
+%DESCRIPTION <Detailed description here>
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %% Version control history
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %% $Id: InvertedPendulum_lbl.txt,v 1.2 2001/04/11 09:44:26 gawthrop Exp $
+% %% $Log: InvertedPendulum_lbl.txt,v $
+% %% Revision 1.2  2001/04/11 09:44:26  gawthrop
+% %% Fixed cc and c problems to do with pow(x,y) and integers
+% %% mtt/lib/reduce/fix_c.r is included in rdae2dae and cse2smx_lang for
+% %% -c, -cc and -oct options
+% %%
+% %% Revision 1.1  2000/12/28 18:00:45  peterg
+% %% To RCS
+% %%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% Port aliases
+%UNITS  x         translational N m/s
+%UNITS  y         translational N m/s
+%UNITS  a         rotational N*m radian/s
+
+
+%ALIAS	in|cart	x,y,a
+
+
+% Argument aliases
+
+%% Each line should be of one of the following forms:
+%	     a comment (ie starting with %)
+%	     component-name	cr_name	arg1,arg2,..argn
+%	     blank
+
+% ---- Component labels ----
+
+% Component type De
+	theta			SS	external
+
+% Component type SS
+	[a]	SS		external,external
+	[x]	SS		external,external
+	[y]	SS		external,external
+
+% Component type Se
+	a_0	 SS	0
+	x_0      SS     0
+	y_0      SS     0
+
+% Component type gRod
+	rod	 none		l;l;j_r;m_r;g
+ 

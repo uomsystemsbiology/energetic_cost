@@ -1,0 +1,70 @@
+head	1.2;
+access;
+symbols;
+locks; strict;
+comment	@// @;
+
+
+1.2
+date	2015.10.21.03.10.13;	author peterg;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2015.10.21.03.06.26;	author peterg;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@Tidy.
+@
+text
+@function tex = cm2latex (G,species)
+	 
+## usage: tex = cm2latex (G,species)
+## 
+## Tex string coresponding to the conserved moieties
+
+  [n,m] = size(G);
+  tex = "";
+  for i = 1:n
+    for j = 1:m
+	if G(i,j)!=0
+	  if G(i,j)==1
+	    sym = "+";
+	  elseif G(i,j)==-1
+	    sym = "-";
+	  elseif G(i,j)<-1
+	    sym = num2str(G(i,j));
+	  else
+	      sym = sprintf("+%i",G(i,j));
+	  endif
+	   tex = sprintf("%s %s x_%s", tex, sym, species{j});
+	endif
+    endfor
+    if i<n
+       tex = sprintf("%s \\\\\n",tex);
+    else
+       tex = sprintf("%s \n",tex);
+    endif
+  endfor
+	 
+endfunction
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d25 1
+a25 1
+       tex = sprintf("%s \\\\\n",tex)
+@

@@ -1,0 +1,24 @@
+# Outline report file for system DCexample (DCexample_rep.txt)
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %% Version control history
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %% $Id: DCexample_rep.txt,v 1.1 2000/12/28 17:36:21 peterg Exp $
+% %% $Log: DCexample_rep.txt,v $
+% %% Revision 1.1  2000/12/28 17:36:21  peterg
+% %% To RCS
+% %%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+mtt DCexample abg tex
+
+mtt -o DCexample sm tex
+mtt -o DCexample tf tex
+
+mtt -o DCexample smc tex
+mtt -o DCexample ssk tex
+
+mtt -o DCexample smo tex
+mtt -o DCexample ssl tex
+
+

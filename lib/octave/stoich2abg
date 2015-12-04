@@ -1,0 +1,6 @@
+#!/bin/bash
+
+octave -q <<EOF
+load N.mat
+stoich2abg(N_f,N_r,"$1")
+EOF

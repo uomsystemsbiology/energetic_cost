@@ -1,0 +1,74 @@
+#!/bin/bash
+
+usage="Usage: Make_stoic system_name"
+blurb="Creating stoichiometric analysis and simulation files for"
+
+if [ -z "$1" ]; then
+    echo $usage
+    exit
+fi
+
+if [ -z "$2" ]; then
+    syss=$1
+    echo "$blurb $syss"
+else
+    syss=$2
+    args=$1
+    echo "$blurb $syss using $args"
+fi
+
+reps="dm numpar sympar struc odeo"
+ireps="dm sympar struc"
+
+function info() {
+    fun=$1_$2_info.m
+    echo Creating $fun
+     mtt -q -nas  $1 struc txt
+     echo "function info = $1_$2_info" > $fun
+     struc_info $1 $2 >> $fun
+     echo "endfunction" >> $fun
+}
+
+function stoich() {
+    sys=$1
+    echo Doing $sys
+    
+    # ## Find the free-energy constants (experimental)
+    # mtt -q -nas  $sys odeo m
+    # if [ "${sys}_odeo.m" -nt "${sys}_K.m" ]; then
+    # 	## Zap crs & recreate odeo.m
+    # 	(cd MTT_work; mv -v ${sys}_cr.r ${sys}_cr_old; sed 's/in /%% in /'<${sys}_cr_old > ${sys}_cr.r)
+    # 	mtt -q -nas $sys odeo m
+    # 	## Generate the _K.m file
+    # 	odeo2kpar $sys
+	
+    # 	## Reinstate crs & recreate odeo.m
+    # 	(cd MTT_work; rm -v ${sys}_cr.r)
+    # fi
+
+    for rep in $reps; do
+    	echo Doing $rep
+    	mtt -q -nas  $sys $rep m
+    done
+   
+    info $sys input
+
+    if [ -e i${sys}_abg.fig ]; then
+	echo Doing i$sys
+	for rep in $ireps; do
+    	    echo Doing $rep
+    	    mtt -q -nas $args i$sys $rep m
+        done
+    fi
+
+}
+for sys in $syss; do
+    abg=${sys}_abg.fig 
+
+    if [ -f "$abg" ]; then
+	stoich $sys
+    else
+	echo $abg does not exist
+    fi
+done
+

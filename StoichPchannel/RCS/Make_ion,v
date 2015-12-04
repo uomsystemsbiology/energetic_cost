@@ -1,0 +1,38 @@
+head	1.1;
+access;
+symbols;
+locks
+	peterg:1.1; strict;
+comment	@# @;
+
+
+1.1
+date	2015.02.08.22.11.59;	author peterg;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@#! /bin/bash
+
+ion=$1
+DR=$2
+name=$ion
+
+echo Doing $name
+reps="ode odeo numpar input sympar dm struc state"
+
+    for rep in $reps; do
+	    mtt -q  -nas -dr $DR $name $rep m 
+    done
+##mtt -q  ChannelK abg eps
+ 
+@

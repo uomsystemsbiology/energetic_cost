@@ -1,0 +1,288 @@
+head	1.9;
+access;
+symbols;
+locks; strict;
+comment	@// @;
+
+
+1.9
+date	2015.04.07.02.15.53;	author peterg;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2014.11.26.03.33.19;	author peterg;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2014.11.24.02.59.26;	author peterg;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2014.10.07.01.50.23;	author peterg;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2014.10.06.01.05.50;	author peterg;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2014.10.06.00.23.59;	author peterg;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2014.10.03.01.53.09;	author peterg;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2014.10.02.04.56.16;	author peterg;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2014.09.30.23.30.15;	author peterg;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.9
+log
+@Deprecated in favour of stoich_lin
+@
+text
+@function [A B C D] = stoich2lin (Nf,Nr,kappa,K,Nef,Ner,Ke,x_ss,x_e)
+	 
+  ## usage: [A B C D] = stoich2lin (Nf,Nr,kappa,K,Nef,Ner,Ke,x_ss,x_e)
+  ## 
+  ## 
+
+  warning("stoich2lin is deprecated - please use stoich_lin instead");
+	 
+  ## Required matrices
+  N = -Nf+Nr;	 
+  Ne = -Nef+Ner;
+  NNf = [Nf;Nef];	 
+  NNr = [Nr;Ner];
+  KK = [K;Ke]	 		# FIXME
+  Kappa = diag(kappa);	 
+  ## kNK = Kappa*N'*diag(K);
+  ## NkNK = N*kNK;
+  ## kNe = Kappa*Ne';
+  ## NkNe = N*kNe;
+
+  [nx,nv] = size(Nf);
+  [nX,nv] = size(NNf);
+
+  if nargin<9
+    x_e = ones(nX-nx,1)
+  endif
+  
+  ## if nargin<8
+  ##   ## Steady state
+  ##   disp("Computing steady-state")
+  ##   [x_ss v_ss] = stoich2ss (Nf,Nr,kappa,K,Nef,Ner,Ke,x_e);
+  ##   ## x_ss = -(NkNK\NkNe*Ke);
+  ##   ## v_ss = -kNK*x_ss - kNe*Ke	 
+  ## endif
+
+  ## Steady-state flows
+  X_ss = [x_ss;x_e];
+  vplus  = Kappa*exp(NNf'*log(KK.*X_ss));
+  vminus = Kappa*exp(NNr'*log(KK.*X_ss));
+  v_ss = vplus - vminus;
+
+  ## Linearise about steady state
+#  C0 = -kNK;
+  C = (diag(vplus)*Nf' - diag(vminus)*Nr')/diag(x_ss);
+ # CHECKC = norm(C-C0)
+  D = (Kappa\diag(v_ss));
+  A = N*C;
+  B = N*D;
+  
+endfunction
+@
+
+
+1.8
+log
+@*** empty log message ***
+@
+text
+@d7 1
+@
+
+
+1.7
+log
+@New version with reduced-order steady-state.
+@
+text
+@d1 1
+a1 1
+function [A B C D x_ss v_ss] = stoich2lin (Nf,Nr,kappa,K,Nef,Ner,Ke,x_ss,x_e)
+d3 1
+a3 1
+  ## usage: [A B C D x_ss v_ss] = stoich2lin (Nf,Nr,kappa,K,Nef,Ner,Ke,x_ss,x_e)
+@
+
+
+1.6
+log
+@Remove old stuff.
+@
+text
+@d27 7
+a33 7
+  if nargin<8
+    ## Steady state
+    disp("Computing steady-state")
+    [x_ss v_ss] = stoich2ss (Nf,Nr,kappa,K,Nef,Ner,Ke,x_e);
+    ## x_ss = -(NkNK\NkNe*Ke);
+    ## v_ss = -kNK*x_ss - kNe*Ke	 
+  endif
+@
+
+
+1.5
+log
+@Rationalise and use stoich2ss
+@
+text
+@a6 2
+nargin
+
+d15 4
+a18 4
+  kNK = Kappa*N'*diag(K);
+  NkNK = N*kNK;
+  kNe = Kappa*Ne';
+  NkNe = N*kNe;
+d42 1
+a42 1
+  C0 = -kNK;
+d44 1
+a44 1
+  CHECKC = norm(C-C0)
+@
+
+
+1.4
+log
+@Tidy
+@
+text
+@d32 3
+a34 2
+    x_ss = -(NkNK\NkNe*Ke);
+    v_ss = -kNK*x_ss - kNe*Ke	 
+@
+
+
+1.3
+log
+@Fix error in computing flows.
+@
+text
+@d1 1
+a1 1
+function [A B C D x_ss v_ss] = stoich2lin (Nf,Nr,kappa,K,N_ef,N_er,Kx_e,v_ss,x_ss)
+d3 1
+a3 1
+  ## usage: [A B C D x_ss v_ss] = stoich2lin (Nf,Nr,kappa,K,N_ef,N_er,Kx_e,v_ss,x_ss)
+d6 3
+d12 4
+a15 4
+  N_e = -N_ef+N_er;
+  NNf = [Nf;N_ef];	 
+  NNr = [Nr;N_er];
+  KK = [K;Kx_e]	 		# FIXME
+d19 2
+a20 2
+  kN_e = Kappa*N_e';
+  NkN_e = N*kN_e;
+d22 6
+a27 3
+  [n_x,n_v] = size(Nf);
+  [n_X,n_v] = size(NNf);
+  x_e = ones(n_X-n_x,1)
+d32 2
+a33 2
+    x_ss = -(NkNK\NkN_e*Kx_e);
+    v_ss = -kNK*x_ss - kN_e*Kx_e	 
+d37 4
+a40 5
+  X_ss = [x_ss;x_e]
+  v_plus  = Kappa*exp(NNf'*log(KK.*X_ss));
+  v_minus = Kappa*exp(NNr'*log(KK.*X_ss));
+ 
+  CHECK_v = norm( (v_plus-v_minus) - v_ss)
+d43 3
+a45 3
+  C_0 = -kNK;
+  C = (diag(v_plus)*Nf' - diag(v_minus)*Nr')/diag(x_ss);
+  CHECK_C = norm(C-C_0)
+@
+
+
+1.2
+log
+@*** empty log message ***
+@
+text
+@d9 4
+a12 1
+  N_e = -N_ef+N_er;	 
+d18 4
+d31 5
+a35 8
+  
+  v_plus_ss  = Kappa*exp(Nf'*log(K.*x_ss));
+  v_minus_ss = Kappa*exp(Nr'*log(K.*x_ss));
+  
+  v_plus_e  = Kappa*exp(N_ef'*log(Kx_e));
+  v_minus_e = Kappa*exp(N_er'*log(Kx_e));
+
+  CHECK_v = norm( (v_plus_ss-v_minus_ss) + (v_plus_e-v_minus_e) -v_ss)
+d39 1
+a39 1
+  C = (diag(v_plus_ss)*Nf' - diag(v_minus_ss)*Nr')/diag(x_ss);
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d1 1
+a1 1
+function [A B C D x_ss v_ss] = stoich2lin (N,kappa,K,N_e,Kx_e,v_ss,x_ss)
+d3 1
+a3 1
+  ## usage: [A B C D x_ss v_ss] = stoich2lin (N,kappa,K,N_e,Kx_e)
+d8 4
+a11 2
+	 
+  kNK = diag(kappa)*N'*diag(K);
+d13 1
+a13 1
+  kN_e = diag(kappa)*N_e';
+d16 1
+a16 1
+  if nargin<6
+d23 10
+d34 4
+a37 2
+  C = -kNK;
+  D = (diag(kappa)\diag(v_ss));
+@

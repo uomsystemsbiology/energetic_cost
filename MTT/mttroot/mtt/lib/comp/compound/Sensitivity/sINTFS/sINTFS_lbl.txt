@@ -1,0 +1,42 @@
+%% Label file for system sINTFS (sINTFS_lbl.txt)
+%SUMMARY sINTFS Sensitivity version of INTF with initial state
+%DESCRIPTION <Detailed description here>
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %% Version control history
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %% $Id: sINTFS_lbl.txt,v 1.1 2001/05/30 19:57:08 gawthrop Exp $
+% %% $Log: sINTFS_lbl.txt,v $
+% %% Revision 1.1  2001/05/30 19:57:08  gawthrop
+% %% Fixes to sensitivity components for non-linear PPP
+% %%
+% %% Revision 1.1  2000/12/28 10:32:30  peterg
+% %% Put under RCS
+% %%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% Port aliases
+%ALIAS	in	in_1,in_2
+%ALIAS	out	out_1,out_2
+
+% Argument aliases
+%ALIAS	$1      e_0
+%ALIAS	$2      k_s
+
+%% Each line should be of one of the following forms:
+%	     a comment (ie starting with %)
+%	     component-name	cr_name	arg1,arg2,..argn
+%	     blank
+
+% ---- Component labels ----
+
+% Component type INTFS
+	intf_1    none	e_0
+	intf_2    none  k_s
+
+% Component type SS
+	[in_1]	SS		external,external
+	[in_2]	SS		external,external
+	[out_1]	SS		external,external
+	[out_2]	SS		external,external

@@ -1,0 +1,58 @@
+#! /bin/bash
+
+     ###################################### 
+     ##### Model Transformation Tools #####
+     ######################################
+
+# Bash script: dae2S_r
+# DAE to stoichiometric matrix
+# P.J.Gawthrop  28th March 2014
+# Copyright (c) P.J.Gawthrop, 2014
+
+# Inform user
+echo Creating $1_$2.r
+
+# Remove the old log file
+log=dae2S_r.log
+rm -f $log
+
+# Use reduce to accomplish the transformation
+$SYMBOLIC > $log << EOF
+
+in "$1_def.r";
+in "$1_dae.r";
+
+IF (MTTNx>0) THEN
+BEGIN
+% Find MTTS : the S matrix
+matrix MTTS(MTTNx,MTTNx);
+
+  FOR j := 1:MTTNx DO
+    BEGIN
+    uj := MTTu(j,1);
+    FOR i := 1:MTTNx DO
+      MTTS(i,j) := df(MTTdx(i,1), uj, 1);
+    END;
+END;
+
+%Create the output file
+OUT "$1_$2.r";
+
+%Write out S
+IF MTTNx>0 THEN
+BEGIN
+  write "matrix MTTS(", MTTNx, ",", MTTNx, "); ";
+  FOR i := 1:MTTNx DO
+   FOR j := 1:MTTNx DO IF MTTS(i,j) NEQ 0 THEN
+      write "MTTS(", i, ",", j, ") := ", MTTS(i,j), "; ";
+END;
+
+
+write "END;";
+
+SHUT "$1_$2.r";
+
+EOF
+
+# Now invoke the standard error handling.
+mtt_error_r $log

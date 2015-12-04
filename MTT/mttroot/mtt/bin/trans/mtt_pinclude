@@ -1,0 +1,31 @@
+#!/bin/sh
+# pinclude - explicitly includes Pascal files - p2c has probs. doing this
+
+###############################################################
+## Version control history
+###############################################################
+## $Id: mtt_pinclude,v 1.2 2002/04/28 18:41:27 geraint Exp $
+## $Log: mtt_pinclude,v $
+## Revision 1.2  2002/04/28 18:41:27  geraint
+## Fixed [ 549658 ] awk should be gawk.
+## Replaced calls to awk with call to gawk.
+##
+## Revision 1.1  2000/12/28 11:56:46  peterg
+## Put under RCS
+##
+###############################################################
+
+
+
+gawk ' {
+  if ( (match($1,"{\\$I")>0) || (match($1,"\\*\\$I")>0) ) {
+    sub(/}/,"",$2); 
+    command=sprintf("mtt_pinclude %s",$2); 
+    system(command)
+  }
+  else{
+  print $0
+  }
+  
+
+}' <$1

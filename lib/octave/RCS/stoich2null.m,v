@@ -1,0 +1,82 @@
+head	1.3;
+access;
+symbols;
+locks; strict;
+comment	@// @;
+
+
+1.3
+date	2014.12.10.03.36.41;	author peterg;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2014.12.10.03.30.11;	author peterg;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2014.12.09.22.32.40;	author peterg;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.3
+log
+@Use tol, not zero.
+@
+text
+@function [G,K] = stoich2null (N)
+
+  ## usage: [G,K] = stoich2null (N)
+  ## Compute G: left null matrix (conserved moieties)
+  ## Compute K: right null matrix (pathways)
+
+  tol = 100*eps;
+
+  G = inull(N')';
+  K = inull(N);
+
+  if norm(N*K)>tol
+     warning("stoich2null: NK not zero")
+  endif
+
+  if norm(G*N)>tol
+     warning("stoich2null: GN not zero")
+  endif
+
+endfunction
+@
+
+
+1.2
+log
+@Sanity checks.
+@
+text
+@d2 1
+a2 1
+	 
+d6 3
+a8 1
+	 
+d12 1
+a12 1
+  if norm(N*K)!=0
+d16 1
+a16 1
+  if norm(G*N)!=0
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d10 8
+@

@@ -1,0 +1,56 @@
+head	1.2;
+access;
+symbols;
+locks; strict;
+comment	@// @;
+
+
+1.2
+date	2015.12.01.23.09.09;	author peterg;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2015.12.01.23.05.34;	author peterg;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@Summary: Amaller text.
+@
+text
+@## Set up plot defaults
+Fsize = 15;			# Font size
+Lwidth = 10;			# Line width
+FontName = "ArialBold";
+set(0,"defaultlinelinewidth",Lwidth);
+
+
+set (0, "defaultaxesfontsize", Fsize)
+set (0, "defaulttextfontsize", Fsize) 
+
+set (0, "defaulttextfontname", FontName)
+set (0, "defaultaxesfontname", FontName)
+
+white = [1 1 1];
+grey = 0.5*white;
+black = 0*white;
+
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d2 1
+a2 1
+Fsize = 20;			# Font size
+@

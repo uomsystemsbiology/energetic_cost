@@ -1,0 +1,21 @@
+# Outline report file for system NMP (NMP_rep.txt)
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %% Version control history
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %% $Id: NMP_rep.txt,v 1.1 2000/12/28 17:50:18 peterg Exp $
+% %% $Log: NMP_rep.txt,v $
+% %% Revision 1.1  2000/12/28 17:50:18  peterg
+% %% To RCS
+% %%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+mtt NMP abg tex
+mtt NMP struc tex
+mtt NMP ode tex
+mtt NMP sm tex
+mtt NMP tf tex
+
+mtt NMP sro ps
+mtt NMP lmfr ps
+mtt NMP lpfr ps

@@ -1,0 +1,352 @@
+head	1.15;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.15
+date	2015.12.02.04.00.19;	author peterg;	state Exp;
+branches;
+next	1.14;
+
+1.14
+date	2015.03.30.21.55.43;	author peterg;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	2015.03.28.21.33.29;	author peterg;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	2015.03.20.00.47.17;	author peterg;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2015.03.18.05.09.19;	author peterg;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2015.03.17.04.06.06;	author peterg;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2015.03.12.02.36.41;	author peterg;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2015.03.11.01.19.14;	author peterg;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2015.03.10.02.50.48;	author peterg;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2015.02.27.00.49.01;	author peterg;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2015.02.11.04.42.01;	author peterg;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2015.02.10.01.44.25;	author peterg;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2015.02.08.22.12.15;	author peterg;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2015.02.05.23.00.35;	author peterg;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2015.02.02.22.29.43;	author peterg;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.15
+log
+@Summary: Don't make Axon code
+@
+text
+@#! /bin/bash
+
+## abg eps files
+syss="Channel Gate gate GateK GateNa ChannelK ChannelNa ChannelL Membrane ChannelR Axon"
+for sys in $syss; do
+    echo Creating ${sys}_abg.eps
+    fig2eps --nogv ${sys}_abg.fig &> /dev/null
+    mv -v ${sys}_abg.eps Figs
+done
+
+## Stoichiometric stuff.
+Make_stoich "ChannelKC ChannelNaC Membrane"
+
+## Figures
+octave -q Figures.m
+
+
+@
+
+
+1.14
+log
+@Put back axon stuff.
+@
+text
+@d12 1
+a12 1
+Make_stoich "ChannelKC ChannelNaC Membrane Axon"
+@
+
+
+1.13
+log
+@Zap Axon
+@
+text
+@d4 1
+a4 1
+syss="Channel Gate gate GateK GateNa ChannelK ChannelNa ChannelL Membrane ChannelR"
+d12 1
+a12 1
+Make_stoich "ChannelKC ChannelNaC Membrane"
+@
+
+
+1.12
+log
+@WORKING VERSION with new gate and x_g.
+@
+text
+@d4 1
+a4 1
+syss="Channel Gate gate GateK GateNa ChannelK ChannelNa ChannelL Membrane ChannelR Segment Axon"
+d12 1
+a12 1
+Make_stoich "ChannelKC ChannelNaC Membrane Axon"
+@
+
+
+1.11
+log
+@WORKING VERSION
+@
+text
+@d4 1
+a4 1
+syss="Channel Pgate GateK GateNa ChannelK ChannelNa ChannelL Membrane ChannelR Segment Axon"
+@
+
+
+1.10
+log
+@WORKING VERSION
+@
+text
+@d4 1
+a4 1
+syss="Channel Pgate GateK GateNa ChannelK ChannelNa ChannelL Membrane ChannelR"
+d12 1
+a12 1
+Make_stoich "ChannelKC ChannelNaC Membrane"
+@
+
+
+1.9
+log
+@WORKING VERSION
+@
+text
+@d4 1
+a4 1
+syss="Channel Pgate GateK GateNa"
+d12 1
+a12 2
+Make_stoich "ChannelKC ChannelNaC HH"
+Make_stoich "ChannelKC ChannelNaC HH"
+d14 1
+a14 5
+
+## Gate curves
+(cd Pgate; ./Make)
+
+## Other figs.
+@
+
+
+1.8
+log
+@WORKING VERSIONS.
+@
+text
+@d13 1
+@
+
+
+1.7
+log
+@Memristor k now works.
+@
+text
+@d4 1
+a4 1
+syss="Channel"
+d12 2
+a13 6
+##syss="ChannelC ChannelCequiv HH"
+syss="ChannelC ChannelKC"
+for sys in $syss; do
+    echo Doing $sys
+    Make_stoich $sys
+done
+d17 3
+@
+
+
+1.6
+log
+@WORKING VERSION with chemo-electric flows.
+@
+text
+@d4 1
+a4 1
+syss="ChannelC Cequiv ChannelCequiv"
+d12 2
+a13 1
+syss="ChannelC ChannelCequiv HH"
+d16 1
+a16 1
+    ./Make_stoich $sys
+d18 3
+@
+
+
+1.5
+log
+@GHK only - Physical gates.
+@
+text
+@d3 7
+a9 3
+Ions="ChannelK ChannelNa HH"
+##Ions="ChannelNa"
+##DR="Pgate"
+d11 5
+a15 3
+for Ion in $Ions; do
+    echo "Doing $Ion"
+    ./Make_ion $Ion
+d18 1
+a18 9
+## Do the BGs
+BGs="Channel Pgate  GateK GateNa ChannelK ChannelNa"
+for BG in $BGs; do
+    mtt -q  -nas $BG abg eps
+done
+mv -v *eps Figs
+# 
+## Simulations
+octave -q Figures.m 
+@
+
+
+1.4
+log
+@WORKING VERSION.
+@
+text
+@d4 2
+a5 1
+DR="Egate"
+d8 2
+a9 2
+    echo "Doing $Ion in $DR"
+    ./Make_ion $Ion $DR
+d13 1
+a13 2
+##BGs="Channel ChannelR GateK GateNa ChannelK ChannelNa"
+BGs="Channel ChannelR ChannelK ChannelNa HH"
+d15 1
+a15 1
+    mtt -q  -nas -dr $DR $BG abg eps
+d18 1
+a18 1
+
+@
+
+
+1.3
+log
+@Use subdir Egate
+@
+text
+@d13 1
+a13 1
+BGs="Channel ChannelR ChannelK ChannelNa GateK GateNa HH"
+d20 1
+a20 1
+octave -q Figures_GHK_sim.m 
+@
+
+
+1.2
+log
+@Simulation.
+@
+text
+@d4 1
+d7 2
+a8 2
+    echo Doing $Ion
+    ./Make_ion $Ion
+d13 1
+a13 1
+BGs="Channel ChannelR ChannelK ChannelNa GateK GateNa"
+d15 1
+a15 1
+    mtt -q  -nas $BG abg eps
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@a9 9
+## Do GHK and HH versions
+sed 's/HH = [01]/HH = 1/' <HH0_numpar.txt >HH_numpar.txt
+mtt -nas HH numpar m
+mv -v HH_numpar.m HH_HH_numpar.m
+
+sed 's/HH = [01]/HH = 0/' <HH0_numpar.txt >HH_numpar.txt
+mtt -nas HH numpar m
+mv -v HH_numpar.m HH_GHK_numpar.m
+
+d11 2
+a12 1
+BGs="Channel ChannelR GateK GateNa ChannelK ChannelNa"
+d17 3
+@

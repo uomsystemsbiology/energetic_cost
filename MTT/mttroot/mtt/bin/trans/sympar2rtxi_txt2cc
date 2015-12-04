@@ -1,0 +1,125 @@
+#! /bin/sh
+
+sys=$1
+struc=${sys}_struc.txt
+sympar=${sys}_sympar.txt
+RTXI_H="${sys}_rtxi.h"
+RTXI_CC="${sys}_rtxi.cc"
+program=$(basename $0)
+date=$(date)
+
+cat <<EOF > ${RTXI_CC}
+// -*-c++-*- Put Emacs into c++-mode
+
+// Generated from $sympar and $struc by MTT
+// using $program
+// at $date
+
+#include <${RTXI_H}>
+
+extern "C" Plugin::Object *createRTXIPlugin(void) {
+  return new ${sys}();
+}
+
+static DefaultGUIModel::variable_t vars[] = {
+EOF
+
+gawk '
+  ($1=="input") {
+    printf("  {\n");
+    printf("    \"%s\",\n", $3);
+    printf("    \"%s\",\n", $6);
+    printf("    DefaultGUIModel::INPUT,\n");
+    printf("  },\n");
+  }
+  ($1=="output") {
+    printf("  {\n");
+    printf("    \"%s\",\n", $3);
+    printf("    \"%s\",\n", $6);
+    printf("    DefaultGUIModel::OUTPUT,\n");
+    printf("  },\n");
+  }
+' ${struc} >> ${RTXI_CC}
+
+gawk '
+  {
+    printf("  {\n");
+    printf("    \"%s\",\n", $1);
+    printf("    \"\",\n");
+    printf("    DefaultGUIModel::PARAMETER |");
+    printf(" DefaultGUIModel::DOUBLE,\n");
+    printf("  },\n");
+  }
+' $sympar >> ${RTXI_CC}
+
+cat <<EOF >> ${RTXI_CC}
+};
+
+static size_t num_vars = sizeof(vars)/sizeof(DefaultGUIModel::variable_t);
+// TODO: initialise from numpar
+static double
+EOF
+
+gawk '
+  { printf("  %s=0.0,", $1); }
+  END { printf ";" }
+' $sympar |\
+    sed -e 's/,;/;\n/' |\
+    sed -e 's/,/,\n/' >> ${RTXI_CC}
+
+cat <<EOF >> ${RTXI_CC}
+static long i_count = 0;
+
+${sys}::${sys}(void)
+  : DefaultGUIModel("${sys}",::vars,::num_vars),
+EOF
+
+gawk '
+  { printf("  %s(0.0),", $1); }
+  END { printf ";" }
+' $sympar |\
+    sed -e 's/,;/\n/' |\
+    sed -e 's/,/,\n/' >> ${RTXI_CC}
+
+
+cat <<EOF >> ${RTXI_CC}
+{
+  doUpdate(INIT);
+  refresh();
+}
+
+${sys}::~${sys}(void) {}
+
+// ${sys}::execute(void) is defined in ${sys}_ode2odes.cc
+
+void ${sys}::update(DefaultGUIModel::update_flags_t flag) {
+  setCaption("${sys}");
+  switch(flag) {
+    case INIT:
+EOF
+
+gawk '
+  {
+    printf("      setParameter(\"%s\",QString::number(%s));\n",
+	 $1, $1);
+  }
+' $sympar >> ${RTXI_CC}
+
+cat <<EOF >> ${RTXI_CC}
+      break;
+    case MODIFY:
+EOF
+
+gawk '
+  {
+    printf("      getParameter(\"%s\").toDouble();\n", $1);
+  }
+' $sympar >> ${RTXI_CC}
+
+cat <<EOF >> ${RTXI_CC}
+      break;
+    default:
+      break;
+  }
+}
+EOF

@@ -1,0 +1,18 @@
+%% Simulation parameters for system ImplicitRC (ImplicitRC_simpar.txt)
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %% Version control history
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %% $Id: ImplicitRC_simpar.txt,v 1.1 2000/12/28 18:06:50 peterg Exp $
+% %% $Log: ImplicitRC_simpar.txt,v $
+% %% Revision 1.1  2000/12/28 18:06:50  peterg
+% %% To RCS
+% %%
+% %% Revision 1.1  1998/08/12 13:29:02  peterg
+% %% Initial revision
+% %%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+LAST=10.0
+DT=0.1
+STEPFACTOR=1

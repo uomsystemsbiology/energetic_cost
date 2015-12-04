@@ -1,0 +1,42 @@
+#!/bin/bash
+## Main shell script for generating paper figures from scratch
+
+## Setup path
+export PATH=$PATH:$PWD/lib/bash
+
+## Setup MTT
+source MTT/mttroot/mtt/bin/mttrc $PWD/MTT/mttroot/mtt
+mtt --versions
+
+## Create the figures for the paper.
+cd StoichPchannel
+ mtt Clean
+./Make
+cd ..
+
+## Copy and convert figures
+cp -v StoichPchannel/Figs/K_i.eps Figs
+cp -v StoichPchannel/Figs/Na_i.eps Figs
+cp -v StoichPchannel/Figs/Pgate_n_g.eps Figs
+cp -v StoichPchannel/Figs/Pgate_n_tau.eps Figs
+cp -v StoichPchannel/Figs/Pgate_m_g.eps Figs
+cp -v StoichPchannel/Figs/Pgate_m_tau.eps Figs
+cp -v StoichPchannel/Figs/Pgate_h_g.eps Figs
+cp -v StoichPchannel/Figs/Pgate_h_tau.eps Figs
+cp -v StoichPchannel/Figs/Memb_V.eps Figs
+cp -v StoichPchannel/Figs/Memb_I.eps Figs
+cp -v StoichPchannel/Figs/Memb_nmh.eps Figs
+cp -v StoichPchannel/Figs/Memb_I_g.eps Figs
+cp -v StoichPchannel/Figs/Memb_P_er.eps Figs
+cp -v StoichPchannel/Figs/Memb_ATP.eps Figs
+
+cp Epspdf Figs
+(cd Figs; ./Epspdf)
+
+## Create document
+pdflatex Figures
+pdflatex Figures
+
+## Display
+evince Figures.pdf&
+

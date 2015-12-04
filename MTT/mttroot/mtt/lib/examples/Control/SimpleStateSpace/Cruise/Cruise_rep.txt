@@ -1,0 +1,27 @@
+# Outline report file for system Cruise (Cruise_rep.txt)
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %% Version control history
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %% $Id: Cruise_rep.txt,v 1.1 2000/12/28 17:33:21 peterg Exp $
+% %% $Log: Cruise_rep.txt,v $
+% %% Revision 1.1  2000/12/28 17:33:21  peterg
+% %% To RCS
+% %%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+mtt Cruise abg tex
+
+mtt -o Cruise sm tex
+mtt -o Cruise tf tex
+
+mtt -o Cruise smc tex
+mtt -o Cruise ssk tex
+
+mtt -o Cruise smo tex
+mtt -o Cruise ssl tex
+
+mtt -o Cruise ctf tex
+
+
+

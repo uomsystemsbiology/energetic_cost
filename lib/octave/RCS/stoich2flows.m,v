@@ -1,0 +1,160 @@
+head	1.3;
+access;
+symbols;
+locks; strict;
+comment	@// @;
+
+
+1.3
+date	2014.11.20.23.40.13;	author peterg;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2014.04.16.22.50.33;	author peterg;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2014.04.16.06.41.20;	author peterg;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.3
+log
+@*** empty log message ***
+@
+text
+@function eqns = stoich2flows (N,i_i)
+
+  ## usage:  eqns = stoich2flows (N,i_i)
+  ## N: stoichiometric matrix
+  ## i_i: indices of independent flows.
+  ## Generates Mass-action equations from stoichiometric matrix.
+
+  if nargin<2
+    i_i = [];
+  end
+  
+  [n_x,n_v] = size(N);
+
+  eqns = "";
+  for i_v = 1:n_v
+
+    for fr = [-1 1];		# -1 forward, 1 reverse
+      eq = "";
+      N_fr = abs(N).*(fr*N<0);	# N_f (fr==-1) or N_r (fr==1)
+
+      for i_x = 1:n_x
+
+	## Element of N_f or N_r
+	## Non-zero element implies factor
+	k = N_fr(i_x,i_v);	
+
+	## Another factor
+	if (k>0)&&(length(eq)>0)	
+	  eq = sprintf("%s.*",eq);
+	endif
+	
+	## Create factor raised to power k
+	if k==1
+	  eq = sprintf("%s(K(%i)*X(%i,:))",eq,i_x,i_x);
+	elseif k>1
+	  eq = sprintf("%s(K(%i)*X(%i,:))^%i",eq,i_x,i_x,k);
+	endif
+
+      endfor
+
+      ## Append backward flow to forward flow. 
+      if fr==-1
+	eqn = eq;
+      else
+	eqn = sprintf("%s - %s",eq,eqn);
+    endif
+    endfor
+
+    if ismember(i_v,i_i);
+      ## Create expression for v if external flow
+      eqn = sprintf("V(%i,:) = u(%i,:);\n",i_v,find(i_v==i_i));
+    else
+      ## Create expression for v
+      eqn = sprintf("V(%i,:) = kappa(%i)*(%s);\n", i_v,i_v,eqn);
+    endif
+	
+    eqns = [eqns eqn];
+  endfor
+endfunction@
+
+
+1.2
+log
+@document.
+@
+text
+@d34 1
+a34 1
+	  eq = sprintf("%s(K(%i)*X(:,%i))",eq,i_x,i_x);
+d36 1
+a36 1
+	  eq = sprintf("%s(K(%i)*X(:,%i))^%i",eq,i_x,i_x,k);
+d51 1
+a51 1
+      eqn = sprintf("v(:,%i) = u(:,%i);\n",i_v,find(i_v==i_i));
+d54 1
+a54 1
+      eqn = sprintf("v(:,%i) = kappa(%i)*(%s);\n", i_v,i_v,eqn);
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d1 1
+a1 1
+function eqn = stoich2flows (N,i_i)
+d3 1
+a3 1
+  ## usage:  eqn = stoich2flows (N,i_i)
+d6 1
+d14 1
+d16 5
+a20 7
+    eq = "";
+    for fr = [-1 1];
+      if fr==1
+	eq = sprintf("%s - ",eq);
+      endif
+      
+      N_fr = abs(N).*(fr*N>0);
+d22 6
+a27 1
+	k = N_fr(i_x,i_v);
+d29 1
+a29 1
+	  eq = sprintf("%s*",eq);
+d32 1
+d34 1
+a34 1
+	  eq = sprintf("%skx(%i)",eq,i_x);
+d36 1
+a36 1
+	  eq = sprintf("%skx(%i)^%i",eq,i_x,k);
+d38 1
+d40 7
+d48 1
+d50 2
+a51 1
+      eq = sprintf("v(%i) = u(%i);",i_v,find(i_v==i_i));
+d53 5
+a57 3
+      eq = sprintf("v(%i) = kappa_%i*(%s);", i_v,i_v,eq);
+    endif	
+    eqn{i_v} = eq;
+@

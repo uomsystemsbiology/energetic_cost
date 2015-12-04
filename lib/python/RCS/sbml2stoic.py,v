@@ -1,0 +1,517 @@
+head	1.17;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.17
+date	2015.02.01.22.38.56;	author peterg;	state Exp;
+branches;
+next	1.16;
+
+1.16
+date	2015.02.01.22.23.58;	author peterg;	state Exp;
+branches;
+next	1.15;
+
+1.15
+date	2015.01.07.22.22.30;	author peterg;	state Exp;
+branches;
+next	1.14;
+
+1.14
+date	2015.01.07.22.20.10;	author peterg;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	2015.01.06.23.25.57;	author peterg;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	2014.12.23.23.12.33;	author peterg;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2014.12.04.04.09.20;	author peterg;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2014.09.11.06.09.37;	author peterg;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2014.09.07.23.11.14;	author peterg;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2014.09.07.23.09.25;	author peterg;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2014.09.07.22.56.28;	author peterg;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2014.09.07.09.52.07;	author peterg;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2014.09.05.04.23.11;	author peterg;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2014.09.04.06.13.47;	author peterg;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2014.09.04.05.53.43;	author peterg;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2014.09.04.05.44.35;	author peterg;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2014.09.04.05.38.31;	author peterg;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.17
+log
+@Revert speciesId to Id
+@
+text
+@#! /usr/bin/python
+
+## This converts an sbml model to the stoichiometric matrix N and writes to standard output.
+## And some other useful info as well.
+## Output in Octave format.
+## Code hacked from http://www.snip2code.com/Snippet/114023/Parse-SBML-stoichiometry-matrix
+
+import libsbml
+from libsbml import *
+import argparse
+     
+def _parser():
+    
+    parser = argparse.ArgumentParser(description="Parse stoichiometry matrix of SBML file")
+    parser.add_argument('file', metavar="filename", type=argparse.FileType('r'),
+                        help="Filename of SBML file to parse")
+    
+    return parser
+
+def _main():
+    parser = _parser()
+    args = parser.parse_args()
+    
+    file_ = args.file
+    species, reactions, stoichiometry_matrix = parse_file(file_)
+    
+def parse_file(open_file_):
+    reader = libsbml.SBMLReader()
+    document = reader.readSBML(open_file_.name)
+        
+    sbml_model = document.getModel()
+
+    n_species = sbml_model.getNumSpecies()
+    n_reactions = sbml_model.getNumReactions()
+    print "sbml.N = zeros(", n_species, ",", n_reactions, ");"
+    print "sbml.Nf = zeros(", n_species, ",", n_reactions, ");"
+    print "sbml.Nr = zeros(", n_species, ",", n_reactions, ");"
+
+    print "sbml.N_float = zeros(", n_species, ",", n_reactions, ");"
+    print "sbml.Nf_float = zeros(", n_species, ",", n_reactions, ");"
+    print "sbml.Nr_float = zeros(", n_species, ",", n_reactions, ");"
+
+    ## Stoichiometric matrix
+    species = [s.getName() for s in sbml_model.getListOfSpecies()]
+    reactions = [r.getName() for r in sbml_model.getListOfReactions()]
+    stoichiometry_matrix = {}
+        
+    for reaction_index, reaction in enumerate(sbml_model.getListOfReactions()):
+        reactants = {r.getSpecies(): r.getStoichiometry() for r in reaction.getListOfReactants()}
+        products = {p.getSpecies(): p.getStoichiometry() for p in reaction.getListOfProducts()}
+ 
+        for species_index, species_node in enumerate(sbml_model.getListOfSpecies()):
+            species_id = species_node.getId()
+            stoic_f_float = reactants.get(species_id, 0);
+            stoic_r_float = products.get(species_id, 0);
+            stoic_f = int(reactants.get(species_id, 0));
+            stoic_r = int(products.get(species_id, 0));
+            ##net_stoichiometry = -int(reactants.get(species_id, 0)) + int(products.get(species_id, 0))
+            net_stoichiometry = stoic_r - stoic_f;
+            net_stoichiometry_float = stoic_r_float - stoic_f_float;
+            stoichiometry_matrix[species_index, reaction_index] = net_stoichiometry
+
+            ## Print N, Nf and Nr
+            if net_stoichiometry!=0: 
+                print "sbml.N(",species_index+1,",",reaction_index+1,") = ", net_stoichiometry, ";"
+            if stoic_f!=0: 
+                print "sbml.Nf(",species_index+1,",",reaction_index+1,") = ", stoic_f, ";"
+            if stoic_r!=0: 
+                print "sbml.Nr(",species_index+1,",",reaction_index+1,") = ", stoic_r, ";"
+
+            if net_stoichiometry_float!=0: 
+                print "sbml.N_float(",species_index+1,",",reaction_index+1,") = ", net_stoichiometry_float, ";"
+            if stoic_f_float!=0: 
+                print "sbml.Nf_float(",species_index+1,",",reaction_index+1,") = ", stoic_f_float, ";"
+            if stoic_r_float!=0: 
+                print "sbml.Nr_float(",species_index+1,",",reaction_index+1,") = ", stoic_r_float, ";"
+
+    ## Species
+    for species_ix, species_node in enumerate(sbml_model.getListOfSpecies()):
+        #Name
+        name = species_node.getName()
+        print("sbml.species{{{0}}} = \"{1}\";".format(species_ix+1,name));
+        
+        # Units
+        name = species_node.getSubstanceUnits()
+        print("sbml.units{{{0}}} = \"{1}\";".format(species_ix+1,name));
+
+        ## Initial conc
+        name = species_node.getInitialConcentration()
+        print("sbml.x_0{{{0}}} = \"{1}\";".format(species_ix+1,name));
+
+    for reaction_ix, reaction_node in enumerate(sbml_model.getListOfReactions()):
+        ## Name
+        name = reaction_node.getName()
+        print("sbml.reaction{{{0}}} = \"{1}\";".format(reaction_ix+1,name));
+
+        ## KineticLaw
+        law = reaction_node.getKineticLaw()
+        formula = law.getFormula()
+        print("sbml.kineticlaw{{{0}}} = \"{1}\";".format(reaction_ix+1,formula));
+        # math = law.getMath()
+        # print("sbml.kineticlaw{{{0}}} = \"{1}\";".format(reaction_ix+1,math));
+        ##parameters = law.getListOfParameters()
+        ##print("sbml.parameters{{{0}}} = \"{1}\";".format(reaction_ix+1,parameters));
+
+
+    ## Indices of constant species
+    print "sbml.I_const = ["
+    for species_ix, species_node in enumerate(sbml_model.getListOfSpecies()):
+        species_const = species_node.getConstant()
+        if species_const==True:
+            print("{0}".format(species_ix+1))
+    print "];"
+
+    return species, reactions, stoichiometry_matrix
+                
+if __name__ == '__main__':
+    _main()
+                                
+                                
+@
+
+
+1.16
+log
+@Id -> Name
+@
+text
+@d53 1
+a53 1
+            species_id = species_node.getName()
+@
+
+
+1.15
+log
+@getName -> getId
+@
+text
+@d44 2
+a45 2
+    species = [s.getId() for s in sbml_model.getListOfSpecies()]
+    reactions = [r.getId() for r in sbml_model.getListOfReactions()]
+d53 1
+a53 1
+            species_id = species_node.getId()
+d81 1
+a81 1
+        name = species_node.getId()
+d94 1
+a94 1
+        name = reaction_node.getId()
+d108 1
+a108 1
+    print "I_const = ["
+d112 1
+a112 1
+            print("sbml.{0}".format(species_ix+1))
+@
+
+
+1.14
+log
+@Prepend sbml.
+@
+text
+@d44 1
+a44 1
+    species = [s.getName() for s in sbml_model.getListOfSpecies()]
+d81 1
+a81 1
+        name = species_node.getName()
+d94 1
+a94 1
+        name = reaction_node.getName()
+@
+
+
+1.13
+log
+@Initialise floats as well.
+@
+text
+@d35 7
+a41 7
+    print "N = zeros(", n_species, ",", n_reactions, ");"
+    print "Nf = zeros(", n_species, ",", n_reactions, ");"
+    print "Nr = zeros(", n_species, ",", n_reactions, ");"
+
+    print "N_float = zeros(", n_species, ",", n_reactions, ");"
+    print "Nf_float = zeros(", n_species, ",", n_reactions, ");"
+    print "Nr_float = zeros(", n_species, ",", n_reactions, ");"
+d65 1
+a65 1
+                print "N(",species_index+1,",",reaction_index+1,") = ", net_stoichiometry, ";"
+d67 1
+a67 1
+                print "Nf(",species_index+1,",",reaction_index+1,") = ", stoic_f, ";"
+d69 1
+a69 1
+                print "Nr(",species_index+1,",",reaction_index+1,") = ", stoic_r, ";"
+d72 1
+a72 1
+                print "N_float(",species_index+1,",",reaction_index+1,") = ", net_stoichiometry_float, ";"
+d74 1
+a74 1
+                print "Nf_float(",species_index+1,",",reaction_index+1,") = ", stoic_f_float, ";"
+d76 1
+a76 1
+                print "Nr_float(",species_index+1,",",reaction_index+1,") = ", stoic_r_float, ";"
+d82 1
+a82 1
+        print("species{{{0}}} = \"{1}\";".format(species_ix+1,name));
+d86 1
+a86 1
+        print("units{{{0}}} = \"{1}\";".format(species_ix+1,name));
+d90 1
+a90 1
+        print("x_0{{{0}}} = \"{1}\";".format(species_ix+1,name));
+d95 1
+a95 1
+        print("reaction{{{0}}} = \"{1}\";".format(reaction_ix+1,name));
+d100 1
+a100 1
+        print("kineticlaw{{{0}}} = \"{1}\";".format(reaction_ix+1,formula));
+d102 1
+a102 1
+        # print("kineticlaw{{{0}}} = \"{1}\";".format(reaction_ix+1,math));
+d104 1
+a104 1
+        ##print("parameters{{{0}}} = \"{1}\";".format(reaction_ix+1,parameters));
+d112 1
+a112 1
+            print("{0}".format(species_ix+1))
+@
+
+
+1.12
+log
+@*** empty log message ***
+@
+text
+@d39 4
+@
+
+
+1.11
+log
+@Can't print mathml
+@
+text
+@d50 2
+d56 1
+d59 1
+a59 1
+            ## Print N, Nf anf Nr
+d66 7
+@
+
+
+1.10
+log
+@Lots more stuff.
+@
+text
+@d87 2
+@
+
+
+1.9
+log
+@Put species in one loop.
+@
+text
+@d4 1
+d36 2
+d50 4
+a53 1
+            net_stoichiometry = -int(reactants.get(species_id, 0)) + int(products.get(species_id, 0))
+d55 2
+d59 4
+a77 1
+    ## Names of reactions
+d79 1
+d82 8
+@
+
+
+1.8
+log
+@More extractions.
+@
+text
+@d52 1
+a52 1
+    ## Names of species
+d54 1
+d57 2
+a58 3
+
+    ## Units of species
+    for species_ix, species_node in enumerate(sbml_model.getListOfSpecies()):
+d62 1
+a62 2
+    ## Initial conc. of species
+    for species_ix, species_node in enumerate(sbml_model.getListOfSpecies()):
+@
+
+
+1.7
+log
+@I_const
+@
+text
+@d36 1
+d53 13
+a65 2
+    for species_ix, species_label in enumerate(species):
+        print("species{{{0}}} = \"{1}\";".format(species_ix+1,species_label));
+d68 3
+a70 2
+    for reaction_ix, reaction_label in enumerate(reactions):
+        print("reaction{{{0}}} = \"{1}\";".format(reaction_ix+1,reaction_label));
+@
+
+
+1.6
+log
+@No spaces in output - use format.
+@
+text
+@d7 1
+a8 1
+import libsbml
+d46 1
+a46 1
+            net_stoichiometry = int(-reactants.get(species_id, 0)) + int(products.get(species_id, 0))
+d51 1
+d54 2
+d58 8
+@
+
+
+1.5
+log
+@Reaction and species names.
+@
+text
+@d46 1
+a46 1
+            net_stoichiometry = int(reactants.get(species_id, 0)) - int(products.get(species_id, 0))
+d52 1
+a52 2
+        print "species{", species_ix+1, "} = \"",species_label,"\";"
+
+d54 1
+a54 1
+        print "reaction{", reaction_ix+1, "} = \"",reaction_label,"\";"
+@
+
+
+1.4
+log
+@Species form rows, reactions form columns.
+@
+text
+@d51 6
+@
+
+
+1.3
+log
+@*** empty log message ***
+@
+text
+@d34 1
+a34 1
+    print "N = zeros(", n_reactions, ",", n_species, ");"
+d49 1
+a49 1
+                print "N(",reaction_index+1,",",species_index+1,") = ", net_stoichiometry, ";"
+@
+
+
+1.2
+log
+@Tidy up.
+@
+text
+@d3 1
+a3 1
+## This converts an sbml to the stoichiometric matrix N and writes to standard output.
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d5 1
+a24 2
+    ##_print_stoichiometry_matrix(species, reactions, stoichiometry_matrix)
+    
+a52 9
+def _print_stoichiometry_matrix(species, reactions, stoichiometry_matrix):
+    print '\t'.join(['---'] + reactions)
+    for species_ix, species_label in enumerate(species):
+        to_print = [species_label]
+        for reaction_ix in range(len(reactions)):
+            s = stoichiometry_matrix[species_ix, reaction_ix]
+            to_print.append(s)
+            print '\t'.join(map(str, to_print))
+            
+@

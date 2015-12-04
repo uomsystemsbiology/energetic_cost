@@ -1,0 +1,19 @@
+#!/bin/sh
+# Does a backup with date of all mtt components
+# $Log: mtt_backups,v $
+# Revision 1.3  2000/12/27 13:10:00  peterg
+# *** empty log message ***
+#
+# Revision 1.2  2000/10/03 12:17:58  peterg
+# Prints usage line
+#
+
+if [ -z "$1" ]; then
+   echo "Usage: mtt_backups [-v|-d]"
+   exit    
+fi
+mtt_backup $1
+mtt_backup $1 cc
+mtt_backup $1 lib
+mtt_backup $1 doc
+

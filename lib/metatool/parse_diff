@@ -1,0 +1,26 @@
+*** parse.m	2013/06/27 23:48:15	1.1
+--- parse.m	2013/06/28 01:01:18
+***************
+*** 119,125 ****
+  math_prog_type= exist('octave_config_info', 'builtin'); %A# > 0 for octave, 0 otherwise (Matlab)
+  reac_tok= [reac_tok{:}]; %A# turn into cell array of strings
+  if math_prog_type
+!   reac_tok= [reac_tok{:}]; %A# octave uses one more layer of nested cells
+  end
+  tok_end= [tok_end{:}]; %A# turn into numeric vector
+  %A# make sure to capture separators correctly when right hand side is completely empty
+--- 119,132 ----
+  math_prog_type= exist('octave_config_info', 'builtin'); %A# > 0 for octave, 0 otherwise (Matlab)
+  reac_tok= [reac_tok{:}]; %A# turn into cell array of strings
+  if math_prog_type
+!   ## Get octave version
+!     ver = str2num( strrep(version,".",","));
+!     major = ver(1);
+!     minor = ver(2);
+!     if !((major>=3)&&(minor>=6))		    
+!       reac_tok= [reac_tok{:}]; %A# octave uses one more layer of nested
+! 			       %cells
+!     end
+  end
+  tok_end= [tok_end{:}]; %A# turn into numeric vector
+  %A# make sure to capture separators correctly when right hand side is completely empty

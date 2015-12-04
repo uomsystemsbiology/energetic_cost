@@ -1,0 +1,144 @@
+head	1.6;
+access;
+symbols;
+locks; strict;
+comment	@// @;
+
+
+1.6
+date	2015.12.01.02.56.20;	author peterg;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2015.01.09.01.21.05;	author peterg;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2014.11.12.22.05.38;	author peterg;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2014.04.28.23.16.44;	author peterg;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2014.04.28.23.16.27;	author peterg;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2014.04.28.23.01.26;	author peterg;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.6
+log
+@Summary: Start as string
+@
+text
+@function short = long2short (long)
+
+  ## usage:  short = long2short (long)
+  ##
+  ## 
+
+  short = "";
+  for i = 1:rows(long)
+    l = long(i,:);
+    aa = strsplit(strrep(l,"__","%"), "%");
+    n_aa = length(aa);
+    last = deblank(aa{n_aa});
+    if strcmp(last,"u_u")	# Re component
+      i_name = n_aa-2;
+    else
+      i_name = n_aa;
+    endif
+    if strcmp(aa{i_name},"Re")	# Rea component
+       i_name = i_name-1;
+    endif
+    s = aa{i_name};
+
+    ## Allow for hierarchical names (prefixed by mtt)
+    while (length(strfind(s,"mtt")>0)) 
+      i_name++;
+      s = aa{i_name};
+    endwhile
+
+    ## Split at _ to avoid repeated state name
+    aa = strsplit(s,"_");
+    s = aa{1};
+
+    short = [short;s];
+  endfor
+  
+endfunction
+@
+
+
+1.5
+log
+@More horible fixes.
+@
+text
+@d7 1
+a7 1
+  short = [];
+@
+
+
+1.4
+log
+@Fix state name bug
+@
+text
+@d11 10
+a20 1
+    i_name = 2;
+@
+
+
+1.3
+log
+@remove debug
+@
+text
+@d19 5
+a23 1
+	   
+d27 1
+a27 1
+endfunction@
+
+
+1.2
+log
+@Allow for hierarchical names (prefixed by mtt)
+@
+text
+@d12 1
+a12 1
+    s = aa{i_name}
+d17 1
+a17 1
+      s = aa{i_name}
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d11 9
+a19 1
+    s = aa{2};
+@

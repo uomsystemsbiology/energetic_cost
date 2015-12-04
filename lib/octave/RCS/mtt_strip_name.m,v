@@ -1,0 +1,97 @@
+head	1.3;
+access;
+symbols;
+locks; strict;
+comment	@// @;
+
+
+1.3
+date	2014.12.09.00.45.38;	author peterg;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2014.11.24.02.59.58;	author peterg;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2014.05.09.02.05.05;	author peterg;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.3
+log
+@Fudge imtt and mtt
+@
+text
+@function name = mtt_strip_name (fullname,sysname)
+
+  ## usage:  name = strip_name (fullname,sysname)
+  ##
+  ## Strips the system name from the full name
+  
+  ## name format is sysname__name
+  
+  [N,M] = size(fullname);
+  
+  name = "";
+  for i = 1:N
+    
+    fn = fullname(i,:);
+
+    ## Sanity check
+    if !(length(strmatch (sysname,fn))==1)
+      error(sprintf("%s does not begin with %s", fn, sysname));
+    endif
+    
+    ## Nasty fudge to fix unnamed systems
+    fn = strrep(fn, "mtti", "mtt");
+    n_fn = length(fn);
+     ## Save up array
+    name = [name; fn(length(sysname)+3:n_fn)];
+    
+  endfor
+  
+endfunction
+@
+
+
+1.2
+log
+@*** empty log message ***
+@
+text
+@d15 1
+d21 5
+a25 1
+    name = [name; fn(length(sysname)+3:M)];
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d6 1
+a6 1
+
+a7 7
+
+  ## Sanity check
+  if !(length(strmatch (sysname,fullname))==1)
+    error(sprintf("%s does not begin with %s", fullname, sysname));
+  endif
+
+  name = fullname(length(sysname)+3:length(fullname));
+d9 14
+d24 1
+a24 2
+
+endfunction@

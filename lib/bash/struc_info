@@ -1,0 +1,9 @@
+#!/bin/bash
+
+## Generates octave code from name_struc.txt
+
+name=$1
+which=$2
+
+grep $2 ${name}_struc.txt  |\
+gawk '{print "info.name{" $2 "}=\"" $3 "\"; info.cause{" $2 "}=\""$6"\";"}'

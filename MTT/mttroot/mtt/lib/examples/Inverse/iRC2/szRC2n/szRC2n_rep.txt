@@ -1,0 +1,25 @@
+# Outline report file for system szRC2n (szRC2n_rep.txt)
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %% Version control history
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %% $Id: szRC2n_rep.txt,v 1.2 2003/08/19 12:54:39 gawthrop Exp $
+% %% $Log: szRC2n_rep.txt,v $
+% %% Revision 1.2  2003/08/19 12:54:39  gawthrop
+% %% Zap -c option from _rep.txt
+% %%
+% %% Revision 1.1  2000/12/28 17:54:46  peterg
+% %% To RCS
+% %%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+mtt szRC2n abg tex
+mtt szRC2n struc tex
+mtt szRC2n dae tex
+mtt szRC2n dm tex
+mtt szRC2n tf tex
+
+mtt szRC2n odeso ps
+mtt szRC2n lmfr ps
+
+

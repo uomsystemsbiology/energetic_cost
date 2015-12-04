@@ -1,0 +1,15 @@
+%% Simulation parameters for system TwoLinkGMV (TwoLinkGMV_simpar.txt)
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %% Version control history
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %% $Id: TwoLinkGMV_simpar.txt_old,v 1.1 2000/12/28 17:23:53 peterg Exp $
+% %% $Log: TwoLinkGMV_simpar.txt_old,v $
+% %% Revision 1.1  2000/12/28 17:23:53  peterg
+% %% To RCS
+% %%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+LAST=30.0
+DT=0.2
+STEPFACTOR=1

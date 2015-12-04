@@ -1,0 +1,438 @@
+head	1.11;
+access;
+symbols;
+locks; strict;
+comment	@// @;
+
+
+1.11
+date	2015.03.31.04.28.42;	author peterg;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2015.03.31.00.50.35;	author peterg;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2015.03.31.00.37.39;	author peterg;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2015.03.30.02.38.00;	author peterg;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2015.03.30.01.08.22;	author peterg;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2015.03.20.01.57.20;	author peterg;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2015.03.11.01.05.41;	author peterg;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2015.02.11.03.55.41;	author peterg;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2015.02.11.03.43.21;	author peterg;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2015.02.10.01.07.36;	author peterg;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2015.02.10.00.23.03;	author peterg;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.11
+log
+@WORKING VERSION
+@
+text
+@const = ThermoConstants;
+F = const.F;
+
+## Parameters etc.
+par = ChannelNaC_numpar;
+sym = ChannelNaC_sympar;
+K_n = par(sym.K_n)
+x_g = par(sym.x_g)			# Total gate state
+
+## Initial states
+x_i_n = 50/K_n;			# mM
+x_e_n = 437/K_n;
+
+X_0 = [F*0
+       x_g
+       0
+       x_g
+       0
+       x_i_n
+       x_e_n];	
+ 
+i_fix = [1;6;7];
+
+## Simulate
+t = [0:0.1:50]*1e-3;
+[x X v] = stoich_sim ("ChannelNaC","",t,X_0,i_fix,[],"","ChannelKC_Xfix");
+
+m = X(3,:)/x_g;
+h = X(4,:)/x_g;
+i_n = F*v(3,:);
+V = 0.1*sin(2*pi*1e3*t/10);		# V
+
+## Plot
+R = find(t>max(t)/2);
+
+## v_n = 115;
+## i_n = Y(1,:);
+## V = U;
+mV = 1000*V;			# mV
+mi_n = 1000*i_n;		# mA
+
+mu = F*V;
+v_n  = i_n/F;
+kmu = mu*1e-3;			# kJ/mol
+nv_n = v_n*1e9;			# nmol/sec
+
+figure(10);
+plot(kmu(R),nv_n(R));
+grid;
+xlabel("\\mu (kJ/mol)");
+ylabel("v_n (nmol/sec)");
+fig("Mn","vi_sin",2)
+
+figure(11);
+plot(kmu(R),m(R),";m;", kmu(R),h(R),"--;h;");
+grid;
+xlabel("\\mu (kJ/mol)");
+ylabel("m,h");
+fig("Mn","vx_sin",2)
+
+@
+
+
+1.10
+log
+@*** empty log message ***
+@
+text
+@d43 1
+a43 1
+v_n  = i_k/F;
+d45 1
+a45 1
+nv_n = v_k*1e9;			# nmol/sec
+@
+
+
+1.9
+log
+@new units
+@
+text
+@d58 1
+a58 1
+ylabel("x_o/x_g");
+@
+
+
+1.8
+log
+@Sort units.
+@
+text
+@d42 5
+d48 1
+a48 1
+plot(mV(R),mi_n(R));
+d50 2
+a51 2
+xlabel("V (mV)");
+ylabel("i_n (mA)");
+d55 1
+a55 1
+plot(mV(R),m(R),";m;", mV(R),h(R),"--;h;");
+d57 2
+a58 2
+xlabel("V (mV)");
+ylabel("x");
+@
+
+
+1.7
+log
+@Sclaes.
+@
+text
+@a32 26
+## par = ChannelNa_numpar;
+## sym = ChannelNa_sympar;
+## K_n = par(sym.K_n)
+
+## ## Constant states
+## x_i_n = 50/K_n;			# mM
+## x_e_n = 437/K_n;
+
+## ## Full state
+## x_m = x(1,:);
+## x_h = x(2,:);
+
+## X = [(1-x_m); x_m; x_h; (1-x_h); x_i_n*one; x_e_n*one];
+
+
+## ## Get input & output
+## Y = [];
+## for i = 1:length(t)
+##   xx = [0;0;0;0;0;0];			# Not needed
+##   yy = 0;			# Not needed
+##   U(i) = ChannelNa_input(xx,yy,t(i),par);
+##   y = ChannelNa_odeo(X(:,i),U(i),0,par);
+##   Y = [Y y];
+## end
+
+
+d40 1
+d43 1
+a43 1
+plot(mV(R),i_n(R));
+d46 1
+a46 1
+ylabel("i_n");
+a54 14
+
+## figure(12);
+## plot(t,i_n);
+## grid;
+## xlabel("t");
+## ylabel("i_n");
+## fig("Mn","i_sin",2)
+
+## figure(12);
+## plot(U(R),X(:,R).^4);
+## grid;
+## xlabel("v_n");
+## ylabel("x^4");
+
+@
+
+
+1.6
+log
+@Fixed x_g not equal 1 issues.
+@
+text
+@d1 2
+a2 1
+F = 96.4853399;			# Faraday constant m C mol^-1
+d25 1
+a25 1
+t = [0:0.1:50];
+d31 1
+a31 1
+V = 100*sin(2*pi*t/10);
+d65 1
+d68 1
+a68 1
+plot(V(R),i_n(R));
+d70 1
+a70 1
+xlabel("V");
+d75 1
+a75 1
+plot(V(R),m(R),";m;", V(R),h(R),"--;h;");
+d77 1
+a77 1
+xlabel("V");
+@
+
+
+1.5
+log
+@WORKING VERSION
+@
+text
+@d7 1
+d14 1
+a14 1
+       1
+d16 1
+a16 1
+       1
+d27 2
+a28 2
+m = X(3,:);
+h = X(4,:);
+@
+
+
+1.4
+log
+@Note h is reversed!
+@
+text
+@d1 7
+d9 2
+a10 3
+[dx x1_0] = mn_cr1 (0,0);
+[dx x2_0] = mn_cr2 (0,0);
+x_0 = [x1_0  x2_0]';
+d12 11
+a22 1
+## simulate states
+d24 14
+a37 2
+x = lsode("ChannelNa_fun",x_0,t)';
+one = ones(size(t));
+d39 16
+a54 3
+par = ChannelNa_numpar;
+sym = ChannelNa_sympar;
+K_n = par(sym.K_n)
+a55 3
+## Constant states
+x_i_n = 50/K_n;			# mM
+x_e_n = 437/K_n;
+d57 1
+a57 16
+## Full state
+x_m = x(1,:);
+x_h = x(2,:);
+
+X = [(1-x_m); x_m; x_h; (1-x_h); x_i_n*one; x_e_n*one];
+
+
+## Get input & output
+Y = [];
+for i = 1:length(t)
+  xx = [0;0;0;0;0;0];			# Not needed
+  yy = 0;			# Not needed
+  U(i) = ChannelNa_input(xx,yy,t(i),par);
+  y = ChannelNa_odeo(X(:,i),U(i),0,par);
+  Y = [Y y];
+end
+d60 3
+a62 3
+v_n = 115;
+i_n = Y(1,:);
+V = U;
+d72 1
+a72 1
+plot(V(R),x(:,R));
+d78 6
+a83 6
+figure(12);
+plot(t,i_n);
+grid;
+xlabel("t");
+ylabel("i_n");
+fig("Mn","i_sin",2)
+@
+
+
+1.3
+log
+@WORKS for Physical gate.
+@
+text
+@d23 1
+a23 1
+X = [(1-x_m); x_m; (1-x_h); x_h; x_i_n*one; x_e_n*one];
+@
+
+
+1.2
+log
+@WORKING VERSION
+@
+text
+@d4 1
+a4 1
+x_0 = [x1_0;x2_0]
+d7 1
+a7 1
+t = [0:0.1:100];
+d20 5
+a24 1
+X = [x; x_i_n*one; x_e_n*one];
+d29 1
+a29 1
+  xx = [0;0;0;0];			# Not needed
+d35 1
+a35 1
+R = find(t>50);
+d39 1
+d42 1
+a42 1
+plot(U(R)-v_n,i_n(R));
+d44 1
+a44 1
+xlabel("v_n");
+d49 1
+a49 1
+plot(U(R)-v_n,x(:,R));
+d51 1
+a51 1
+xlabel("v_n");
+d54 7
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@a5 1
+
+d7 11
+d19 2
+a20 2
+t = [0:0.1:100]';
+X = lsode("Mn_fun",x_0,t)';
+a22 1
+par = test_Mn_numpar;
+d25 1
+a25 1
+  xx = [0;0];			# Not needed
+d27 3
+a29 3
+  U(i) = test_Mn_input(xx,yy,t(i),par);
+  y = test_Mn_odeo(X(:,i),U(i),t(i),par);
+  Y = [Y;y(2)];
+d33 3
+d37 1
+a37 1
+plot(U(R),Y(R));
+d44 1
+a44 1
+plot(U(R),X(:,R));
+d50 5
+a54 5
+figure(12);
+plot(U(R),X(:,R).^4);
+grid;
+xlabel("v_n");
+ylabel("x^4");
+@

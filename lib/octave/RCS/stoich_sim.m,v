@@ -1,0 +1,942 @@
+head	1.34;
+access;
+symbols;
+locks; strict;
+comment	@// @;
+
+
+1.34
+date	2015.11.16.04.06.11;	author peterg;	state Exp;
+branches;
+next	1.33;
+
+1.33
+date	2015.10.21.22.48.43;	author peterg;	state Exp;
+branches;
+next	1.32;
+
+1.32
+date	2015.10.21.05.05.05;	author peterg;	state Exp;
+branches;
+next	1.31;
+
+1.31
+date	2015.10.05.03.35.02;	author peterg;	state Exp;
+branches;
+next	1.30;
+
+1.30
+date	2015.10.05.03.17.17;	author peterg;	state Exp;
+branches;
+next	1.29;
+
+1.29
+date	2015.10.05.01.24.02;	author peterg;	state Exp;
+branches;
+next	1.28;
+
+1.28
+date	2015.10.05.00.57.01;	author peterg;	state Exp;
+branches;
+next	1.27;
+
+1.27
+date	2015.10.01.01.05.40;	author peterg;	state Exp;
+branches;
+next	1.26;
+
+1.26
+date	2015.09.30.23.27.45;	author peterg;	state Exp;
+branches;
+next	1.25;
+
+1.25
+date	2015.09.14.04.20.06;	author peterg;	state Exp;
+branches;
+next	1.24;
+
+1.24
+date	2015.09.14.03.52.39;	author peterg;	state Exp;
+branches;
+next	1.23;
+
+1.23
+date	2015.04.08.04.47.27;	author peterg;	state Exp;
+branches;
+next	1.22;
+
+1.22
+date	2015.03.26.04.07.10;	author peterg;	state Exp;
+branches;
+next	1.21;
+
+1.21
+date	2015.03.26.03.33.09;	author peterg;	state Exp;
+branches;
+next	1.20;
+
+1.20
+date	2015.03.10.04.53.36;	author peterg;	state Exp;
+branches;
+next	1.19;
+
+1.19
+date	2015.03.09.05.01.36;	author peterg;	state Exp;
+branches;
+next	1.18;
+
+1.18
+date	2015.03.05.03.49.27;	author peterg;	state Exp;
+branches;
+next	1.17;
+
+1.17
+date	2015.03.02.22.46.23;	author peterg;	state Exp;
+branches;
+next	1.16;
+
+1.16
+date	2015.03.02.22.23.12;	author peterg;	state Exp;
+branches;
+next	1.15;
+
+1.15
+date	2015.03.02.03.06.27;	author peterg;	state Exp;
+branches;
+next	1.14;
+
+1.14
+date	2015.03.02.02.57.01;	author peterg;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	2015.03.01.22.27.42;	author peterg;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	2015.02.26.02.39.37;	author peterg;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2015.01.15.04.53.27;	author peterg;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2015.01.13.05.15.42;	author peterg;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2015.01.12.03.09.36;	author peterg;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2014.12.27.22.31.10;	author peterg;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2014.11.24.03.01.02;	author peterg;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2014.06.10.01.44.46;	author peterg;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2014.05.13.03.44.06;	author peterg;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2014.05.13.03.43.53;	author peterg;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2014.04.17.03.57.19;	author peterg;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2014.04.08.00.00.50;	author peterg;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2014.04.06.23.18.14;	author peterg;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.34
+log
+@Put back linear CR for computing mu
+@
+text
+@function [x X V V_fix P] = stoich_sim (name,iname,t,X_0,i_fix,J_fix,enzyme_fun,X0_fun,V0_fun);
+  
+  ## usage:  [x X V] = stoich_sim (name,iname,t,X_0,i_fix,j_fix,enzyme_fun)
+  ## Simulation via stoichiometric bond graph formulation
+  ## Uses reduced order system.
+  ## x reduced-order state
+  ## X full-state
+  ## name, iname name of system and inverse system
+  ## t time vector
+  ## X_0 initial state.
+  ## i_fix, j_fix, index vectors of fixed species and reaction
+  ## OR j_fix can be a structure with fields j_fix and j_zero.
+  ## enzyme_fun : name of enzyme-modulation function of form fun(X,t)
+
+  # Copyright (C) 2014 by Peter J. Gawthrop
+  
+  global STOICH
+
+  ## Default to no fixed states.
+  if nargin<5
+     i_fix = [];
+  endif
+
+  if nargin<6
+     J_fix.j_fix = [];
+     J_fix.j_zero = [];
+  endif
+
+  if nargin<7
+    enzyme_fun = "";
+  endif
+
+ if nargin<8
+    X0_fun = "";
+  endif
+
+if nargin<9
+    V0_fun = "";
+  endif
+
+ ## Extract the J_fix parameters
+ if isstruct(J_fix)
+   j_fix = J_fix.j_fix;
+   j_zero = J_fix.j_zero;
+ else
+   j_fix = J_fix; 
+   j_zero = [];
+ endif
+
+ ## Preset parameters
+  if !isfield (STOICH, "par")
+    par = eval(sprintf("%s_numpar;",name));
+  else
+    par = STOICH.par;
+    ## warning("using preset parameters");
+  endif
+
+  ## Preset thermodynamic parameters
+  presetK_c = isfield (STOICH, "K_c");
+  if presetK_c
+    K_c = STOICH.K_c;
+  endif
+
+  ## Set up stoichimetric matrices
+  STOICH = dm2stoich (name,iname);
+  N = STOICH.N;
+  [n_X,n_V] = size(N);
+  STOICH.name = name;
+  
+  STOICH.enzyme_fun = enzyme_fun;
+  STOICH.X0_fun = X0_fun;
+  STOICH.V0_fun = V0_fun;
+  STOICH.par = par;
+
+  ## Put in the fixed states (indexed by i_fix)
+  ##STOICH = stoich2stoich(STOICH,i_fix,j_fix,j_zero);
+  if (length(j_zero)==0)
+    # Use N^cd -- assume that flowstats non-zero
+    STOICH = stoich2stoich(STOICH,i_fix); 
+  else
+    # Use N^d 
+    STOICH = stoich2stoich(STOICH,i_fix,j_zero);
+  endif
+
+  ## n_fix = length(i_fix);
+  ## if n_fix>0
+  ##   Z = zeros(n_fix,n_V);
+  ##   N_fix = STOICH.N;
+  ##   N_fix(i_fix,:) = Z;
+  ##   STOICH.N = N_fix;
+  ##   STOICH = stoich2stoich(STOICH);
+  ## endif
+
+  ## Sanity check
+  if (length(X_0)!=n_X)
+    error(sprintf("X_0 should have %i elements, not %i", n_X, length(X_0)));
+  endif
+  
+  STOICH.X_0 = X_0;		# State
+
+  n_x = STOICH.n_x;
+  i_free = setdiff(1:n_X,i_fix);
+  j_free = setdiff(1:n_V,j_fix);
+
+  ##Set up I_fix - diagonal with zeros for fixed elements.
+  STOICH.i_fix = i_fix;
+  I_fix = zeros(n_X,n_X);
+  for i=1:n_X
+    if ismember(i,i_fix);
+       I_fix(i,i) = 1;
+    endif
+  endfor
+  ##STOICH.I_free = eye(n_X)-I_fix;
+  STOICH.i_fix = i_fix;
+ 
+  ## Set up J_fix - diagonal with zeros for fixed elements.
+  STOICH.j_fix = j_fix;
+  J_fix = zeros(n_V,n_V);
+  for j=1:n_V
+    if ismember(j,j_fix);
+       J_fix(j,j) = 1;
+    endif
+  endfor
+  STOICH.J_free = eye(n_V)-J_fix;
+
+  ## Reduced-order initial state
+  x_0 = STOICH.L_xX*X_0;
+
+  if (length(t)>1)
+    ## Reduced-order sim
+    x = lsode("stoich_sim_fun",x_0,t)';
+  elseif (length(t)==1)
+   ##disp(sprintf("Find steady-state evaluated with time = %g",t));
+   STOICH.t = t;
+   OPT.AutoScaling = "off";
+   OPT.TolX = 1e-14;
+   [x fvec info] = fsolve("stoich_sim_fun",x_0,OPT);
+   if (info!=1)
+     warning(sprintf("fsolve has terminated with info=%i",info));
+   endif
+  else
+    error("t must not be empty");
+  endif
+
+  ## x_i = x_0;
+  ## x = [];
+  ## dt = mean(diff(t))
+  ## nt = length(t)
+  ## for i = 1:nt
+  ##     x = [x x_i];
+  ##     x_i = x_i + dt*stoich_sim_fun (x_i,t(i));
+  ##     ## Avoid numerical issues !!??
+  ##     small = 1e-8;
+  ##     i_neg = find(x_i<small);
+  ##     x_i(i_neg) = small;
+  ## endfor
+
+  if nargout>1
+    ## Recreate full state vector and flows
+    X = []; V = []; V_fix = [];
+    for i=1:length(t);
+	
+      ## State vector
+      x_i = x(:,i);
+      X_i =  STOICH.L*x_i + STOICH.G_X*X_0;
+      X = [X X_i];
+      if nargin>2
+	## Flows
+	t_i = t(i);
+	[dx_i,V_i] = stoich_sim_fun(x_i,t_i);
+	V = [V V_i];
+      endif
+    endfor
+  endif
+
+  if nargout>3
+    ## Flows needed to fix the state
+    dX = N*V;
+    V_fix = -dX(i_fix,:);
+  endif
+
+  if nargout>4			# Do energy stuff
+
+ ## Preset thermodynamic parameters
+    if !presetK_c
+      ## Old method
+      ## Evaluate free-energy constants.
+      par = STOICH.par;
+      eval(sprintf("[K_c i_lin] = %s_K(par);",name));
+    endif
+
+    P.K_c = K_c;
+    
+    ## Get RT value
+    ## sym = eval(sprintf("%s_sympar;",name));
+    ## RT = par(sym.RT);
+    RT = 1;			# Put this in later
+    
+    ## Chemical potentials
+    mu = RT*log(diag(K_c)*X);
+    
+    ## ## Correct for the linear versions
+    if exist("i_lin")
+      mu(i_lin,:) = RT*diag(K_c(i_lin))*X(i_lin,:);
+    endif
+    P.mu = mu;
+       
+    ## Affinity
+    A = -N'*mu;
+    P.A = A;
+
+    ## Dissipated power (in Re)
+    P_r = A.*V;
+    P.P_r = P_r;
+
+    ## Dissipated power (in Re): internal
+    P_ri = P_r(j_free,:);
+    P.P_ri = P_ri;
+
+    ## Dissipated power (in Re): external
+    P_re = P_r(j_fix,:);
+    P.P_re = P_re;
+
+
+    ## Capacitive power
+    P_c = mu.*dX;
+    P.P_c = P_c;
+
+    ## Capacitive power - internal
+    P_ci = P_c(i_free,:);	
+    P.P_ci = P_ci;
+
+    ## Capacitive power - external
+    P_ce = P_c(i_fix,:); 	# External flows are -dX
+    P.P_ce = P_ce;
+
+  endif
+  
+endfunction
+@
+
+
+1.33
+log
+@Use j_zero when required.
+@
+text
+@d203 3
+a205 1
+    ## mu(i_lin,:) = RT*diag(K_c(i_lin))*X(i_lin,:);
+@
+
+
+1.32
+log
+@Use N^cd NOT N^d
+@
+text
+@d77 8
+a84 2
+  STOICH = stoich2stoich(STOICH,i_fix); # Use N^cd -- assume that
+				# flowstats non-zero
+@
+
+
+1.31
+log
+@REvert sign  (??)
+@
+text
+@d76 3
+a78 1
+  STOICH = stoich2stoich(STOICH,i_fix,j_fix,j_zero);
+@
+
+
+1.30
+log
+@Fix the sign.
+@
+text
+@d224 1
+a224 1
+    P_ce = -P_c(i_fix,:); 	# External flows are -dX
+@
+
+
+1.29
+log
+@Use preset K_c
+@
+text
+@d224 1
+a224 1
+    P_ce = P_c(i_fix,:); 	# External flows are -dX
+@
+
+
+1.28
+log
+@Horrible use of STOICH to insert K_c
+@
+text
+@d61 1
+a61 1
+    K_c = STOICH.K_c
+d224 1
+a224 1
+    P_ce = -P_c(i_fix,:); 	# External flows are -dX
+@
+
+
+1.27
+log
+@Flowstat/j_fix/j_zero stuff.
+@
+text
+@d1 1
+a1 1
+function [x X V V_fix E] = stoich_sim (name,iname,t,X_0,i_fix,J_fix,enzyme_fun,X0_fun,V0_fun);
+d58 6
+d175 10
+a184 5
+     
+    ## Evaluate free-energy constants.
+    par = STOICH.par;
+    eval(sprintf("[K i_lin] = %s_K(par);",name));
+    E.K = K;
+d187 3
+a189 3
+    sym = eval(sprintf("%s_sympar;",name));
+    RT = par(sym.RT);
+    E.RT = RT;
+d192 1
+a192 1
+    mu = RT*log(diag(K)*X);
+d194 3
+a196 3
+    ## Correct for the linear versions
+    mu(i_lin,:) = RT*diag(K(i_lin))*X(i_lin,:);
+    E.mu = mu;
+d200 1
+a200 1
+    E.A = A;
+d204 10
+a213 1
+    E.P_r = P_r;
+d217 1
+a217 1
+    E.P_c = P_c;
+d221 1
+a221 1
+    E.P_ci = P_ci;
+d225 1
+a225 1
+    E.P_ce = P_ce;
+@
+
+
+1.26
+log
+@new j_zero parameter for setting flows to zero.
+@
+text
+@d1 1
+a1 1
+function [x X V V_fix E] = stoich_sim (name,iname,t,X_0,i_fix,J_fix,enzyme_fun,X0_fun);
+d37 4
+d66 1
+d103 1
+@
+
+
+1.25
+log
+@Zap preset warning.
+@
+text
+@d1 1
+a1 1
+function [x X V V_fix E] = stoich_sim (name,iname,t,X_0,i_fix,j_fix,enzyme_fun,X0_fun);
+d12 1
+d25 2
+a26 1
+     j_fix = [];
+d37 9
+d65 9
+a73 8
+  n_fix = length(i_fix);
+  if n_fix>0
+    Z = zeros(n_fix,n_V);
+    N_fix = STOICH.N;
+    N_fix(i_fix,:) = Z;
+    STOICH.N = N_fix;
+    STOICH = stoich2stoich(STOICH);
+  endif
+@
+
+
+1.24
+log
+@External setting of par via global
+@
+text
+@d40 1
+a40 1
+    warning("using preset parameters");
+@
+
+
+1.23
+log
+@Power.
+@
+text
+@d35 8
+d48 1
+a48 1
+  STOICH.par = eval(sprintf("%s_numpar;",name));
+d51 1
+@
+
+
+1.22
+log
+@Started energy stuff.
+@
+text
+@d163 17
+a179 1
+    
+@
+
+
+1.21
+log
+@Output V_fix.
+@
+text
+@d1 1
+a1 1
+function [x X V V_fix] = stoich_sim (name,iname,t,X_0,i_fix,j_fix,enzyme_fun,X0_fun);
+d141 25
+@
+
+
+1.20
+log
+@Extra X0_fun argument.
+@
+text
+@d1 1
+a1 1
+function [x X V] = stoich_sim (name,iname,t,X_0,i_fix,j_fix,enzyme_fun,X0_fun);
+d37 2
+a38 1
+  [n_X,n_V] = size(STOICH.N);
+d119 1
+a119 1
+    X = []; V = [];
+a125 1
+      
+d133 6
+@
+
+
+1.19
+log
+@Zap I_free stuff.
+@
+text
+@d44 1
+a44 1
+  n_fix = length(i_fix)
+d60 1
+a60 1
+  n_x = STOICH.n_x
+d91 1
+a91 1
+   disp(sprintf("Find steady-state evaluated with time = %g",t));
+@
+
+
+1.18
+log
+@Zap lin. stuff (TBD)
+@
+text
+@d1 1
+a1 1
+function [x X V] = stoich_sim (name,iname,t,X_0,i_fix,j_fix,enzyme_fun);
+d31 4
+d41 1
+d72 3
+a74 2
+  STOICH.I_free = eye(n_X)-I_fix;
+
+@
+
+
+1.17
+log
+@Changed tol
+@
+text
+@d89 4
+a92 1
+   [x fvec info] = fsolve("stoich_sim_fun",x_0,OPT)
+d94 1
+a94 1
+      error("t must not be empty");
+@
+
+
+1.16
+log
+@New method of fixing states via stoichiometry.
+@
+text
+@d87 2
+a88 2
+   OPT.AutoScaling = "off"
+   OPT.TolX = 1e-12
+@
+
+
+1.15
+log
+@*** empty log message ***
+@
+text
+@d38 10
+d59 1
+a60 1
+  ##Set up I_fix - diagonal with zeros for fixed elements.
+@
+
+
+1.14
+log
+@Use fsolve if only one time point.
+@
+text
+@d20 1
+a20 1
+     i_fix = 0;
+d24 1
+a24 1
+     j_fix = 0;
+d45 4
+d50 1
+a50 1
+  ## Set up I_fix - diagonal with zeros for fixed elements.
+@
+
+
+1.13
+log
+@If t had only one element t=t_0, use fsolve to give the steady state
+with time-dependent functions evaluated at t_0.
+@
+text
+@d45 1
+d73 3
+a75 1
+   x = fsolve("stoich_sim_fun",x_0);	 
+@
+
+
+1.12
+log
+@enzyme function added.
+@
+text
+@d63 1
+a63 1
+  ## Reduced-order sim
+d65 11
+a75 1
+  x = lsode("stoich_sim_fun",x_0,t)';
+@
+
+
+1.11
+log
+@WORKING VERSION
+@
+text
+@d1 1
+a1 1
+function [x X V] = stoich_sim (name,iname,t,X_0,i_fix,j_fix);
+d3 1
+a3 1
+  ## usage:  [x X V] = stoich_sim (name,iname,t,X_0,i_fix)
+d11 2
+d22 1
+d27 4
+d36 1
+@
+
+
+1.10
+log
+@Make sure X is positive - FIXME
+@
+text
+@d58 14
+a71 1
+  
+@
+
+
+1.9
+log
+@doc
+@
+text
+@d1 1
+a1 1
+function [x X V] = stoich_sim (name,iname,t,X_0,i_fix);
+d20 3
+d26 1
+a26 1
+  [n_X,n_v] = size(STOICH.N);
+d45 10
+a54 1
+  
+@
+
+
+1.8
+log
+@Use i_fix parameter to fix some states.
+@
+text
+@d3 1
+a3 1
+  ## usage:  [x X V] = stoich_sim (name,iname,t,X_0)
+@
+
+
+1.7
+log
+@Recrwate full vectors
+@
+text
+@d1 1
+a1 1
+function [x X V] = stoich_sim (name,iname,t,X_0);
+d16 5
+d23 1
+a23 1
+  [n_x,n_v] = size(STOICH.N);
+d28 2
+a29 2
+  if (length(X_0)!=n_x)
+    error(sprintf("X_0 should have %i elements, not %i", n_x, length(X_0)));
+d34 9
+@
+
+
+1.6
+log
+@doc.
+@
+text
+@d32 19
+a50 15
+
+  ## Recreate full state vector and flows
+  X = []; V = [];
+  for i=1:length(t);
+
+    ## State vector
+    x_i = x(:,i);
+    X_i =  STOICH.L*x_i + STOICH.G_X*X_0;
+    X = [X X_i];
+
+    ## Flows
+    t_i = t(i);
+    [dx_i,V_i] = stoich_sim_fun(x_i,t_i);
+    V = [V V_i];
+  endfor
+@
+
+
+1.5
+log
+@New line at end.
+@
+text
+@d3 1
+a3 1
+  ## usage:  [x X] = stoich_sim (name,iname,t,X_0)
+@
+
+
+1.4
+log
+@*** empty log message ***
+@
+text
+@d48 1
+a48 1
+endfunction@
+
+
+1.3
+log
+@Sanity check.
+@
+text
+@d31 1
+a31 1
+  x = lsode("stoich_sim_fun",x_0,t);
+d38 1
+a38 1
+    x_i = x(i,:)';
+d40 1
+a40 1
+    X = [X;X_i'];
+d45 1
+a45 1
+    V = [V;V_i'];
+@
+
+
+1.2
+log
+@Generate flows as well
+@
+text
+@d21 6
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d1 1
+a1 1
+function [x X] = stoich_sim (name,iname,t,X_0);
+d27 2
+a28 1
+  X = [];
+d30 4
+a33 1
+    X_i =  STOICH.L*x(i,:)' + STOICH.G_X*X_0;
+d35 5
+d41 1
+a41 1
+  
+@

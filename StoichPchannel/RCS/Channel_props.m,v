@@ -1,0 +1,170 @@
+head	1.2;
+access;
+symbols;
+locks; strict;
+comment	@// @;
+
+
+1.2
+date	2015.03.15.23.52.14;	author peterg;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2015.03.15.23.46.54;	author peterg;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@V -> F*V
+@
+text
+@# Properties of the channel model.
+if !exist("Ion")
+  Ion = "K"
+endif
+Ion
+
+[V_N R F] = RTF(300,1000);
+## V_N = RTF*1000;		# Nernst voltage in mv
+## F = F_0/1000;		# Faraday constant in m units
+V_eq = -65;		# mV Resting potential
+
+if strcmp(Ion,"Na")
+  ## Values from KeeSne09 Table 2.1
+  x_i = 50;			# mM
+  x_e = 437;			# mM
+  ## Value from KeeSne09 (5.30)
+  g = 120;			# mA/cm^2/mV
+elseif strcmp(Ion,"K")
+  ## Values from KeeSne09 Table 2.1
+  x_i = 397;
+  x_e = 20;
+  ## Value from KeeSne09 (5.30)
+  g = 36;			# muA/cm^2/mV
+end
+
+Vb_0 = -log(x_i/x_e)		# Equilibrium Vbar
+
+V_0 = Vb_0*V_N		# Equilibrium V
+
+
+## Compute rate constant to approximate HH.
+# K = 1;			
+# GHK_fac_0 = (V_0/V_N)./(exp(V_0/V_N)-1)
+# kK = g/(F*x_e*GHK_fac_0)
+
+V_match = 100+V_eq;			# Voltage at which HH matches GHK
+Match_fac = ghk_fun(F*V_match,V_0)/ghk_fun(F*V_match,0)
+kK = Match_fac*g*V_N/(F*x_e)
+
+## Voltage ranges
+V = [-100:1:100]; # mV
+V = V+0.001;	  # Avoid 0/0
+V_i = V;
+V_e = V_i-V;
+
+
+## Basic BG model
+##v = kK*(exp(V/V_N)*x_i  - x_e);
+v = kK*(exp(V/V_N)*x_i  - x_e);
+i_BG = v*F;
+
+## GHK Model
+GHK_fac_0 = (V/V_N)./(exp(V/V_N)-1);
+GHK_fac = ghk_fun (F*V);
+TEST_fac = norm(GHK_fac - GHK_fac_0)
+
+v_GHK = v.*GHK_fac;
+i_GHK = F*v_GHK;
+
+## HH Model
+# k_fac = -(x_i-x_e)/V_0
+
+# HH_fac = k_fac*((V-V_0))./(exp(V/V_N)*x_i  - x_e);
+
+HH_fac = ghk_fun (F*V,V_0)/Match_fac;
+v_HH = HH_fac.*v;
+i_HH = F*v_HH;
+i_HH_0 = g*(V-V_0);
+##g_HH = kK*F*k_fac
+##CHECK_i = norm(g_HH*(V-V_0) - i_HH)/length(V)
+CHECK_i = norm(i_HH - i_HH_0)/length(V)
+
+# ## Gate properties
+if strcmp(Ion,"Na")
+  [dx,x1_ss] = mn_cr1 (V,V);
+  [dx,x2_ss] = mn_cr2 (V,V);
+  gate1 = (x1_ss.^3);
+  gate2 = x2_ss;
+  gate = gate1.*gate2;
+elseif strcmp(Ion,"K")
+  [dx,x_ss] = mk_cr (V,V);
+  gate = x_ss.^4;
+endif
+
+gi_BG = i_BG.*gate;
+gi_GHK = i_GHK.*gate;
+gi_HH = i_HH.*gate;
+
+VV = V-V_eq;
+
+figure(1);
+plot(VV,i_GHK, ";GHK;",
+     VV,i_HH, ";HH;"
+     );
+grid;
+ylabel("I_0 (\\mu A)");
+xlabel("V-V_{eq}")
+
+figure(2);
+plot(VV,GHK_fac,";GHK;", VV,HH_fac,";HH;");grid
+ylabel("\\kappa(V)");
+xlabel("V-V_{eq}")
+
+figure(3);
+if strcmp(Ion,"Na")
+  plot(VV,gate,VV,gate1,VV,gate2);grid
+elseif strcmp(Ion,"K")
+  plot(VV,gate);grid
+endif;
+##axis([-10 90 0 1]);
+ylabel("g");
+xlabel("V-V_{eq}")
+
+figure(4);
+plot(VV,gi_GHK, ";GHK;",
+     VV,gi_HH, ";HH;"
+     );
+grid;
+ylabel("I (\\mu A)");
+xlabel("V - V_{eq}")
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d7 3
+a9 3
+[rtf R F_0] = RTF;
+V_N = RTF*1000;		# Nernst voltage in mv
+F = F_0/1000;		# Faraday constant in m units
+d37 1
+a37 1
+Match_fac = ghk_fun(V_match,V_0)/ghk_fun(V_match,0)
+d54 1
+a54 1
+GHK_fac = ghk_fun (V);
+d65 1
+a65 1
+HH_fac = ghk_fun (V,V_0)/Match_fac;
+@

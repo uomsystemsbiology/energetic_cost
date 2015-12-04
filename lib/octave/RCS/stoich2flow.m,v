@@ -1,0 +1,36 @@
+head	1.1;
+access;
+symbols;
+locks; strict;
+comment	@// @;
+
+
+1.1
+date	2015.10.20.23.48.32;	author peterg;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@function V = stoich2flow (X,stoich)
+	 
+  ## usage: V = stoich2flow (X,stoich)
+  ## 
+  ## Computes flow V from state X using stoichimetry
+
+  ## Nonlinear version
+  kappa = [diag(stoich.kappa) -diag(stoich.kappa)];
+  K = diag(stoich.K_c);
+  N_fr = stoich.N_fr;
+  V = kappa*exp(N_fr'*log(K*X));
+	 
+endfunction
+@

@@ -1,0 +1,319 @@
+head	1.7;
+access;
+symbols;
+locks; strict;
+comment	@// @;
+
+
+1.7
+date	2015.03.31.00.49.27;	author peterg;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2015.03.30.02.43.55;	author peterg;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2015.03.20.01.57.20;	author peterg;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2015.03.10.04.21.54;	author peterg;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2015.02.11.03.55.51;	author peterg;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2015.02.10.00.20.11;	author peterg;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2015.02.09.23.01.07;	author peterg;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.7
+log
+@new units
+@
+text
+@Setpath; Setplot
+
+
+const = ThermoConstants;
+F = const.F;
+
+## Parameters etc.
+par = ChannelNaC_numpar;
+sym = ChannelNaC_sympar;
+K_n = par(sym.K_n);
+v_n = 115e-3;
+x_g = par(sym.x_g)			# Total gate state
+
+V = [-100:-41 -39:100]*1e-3;	# Actual voltage
+V_n = V-v_n;			# Relative voltage
+
+## Constant states
+x_i_n = 50/K_n;			# mM
+x_e_n = 437/K_n;
+
+X_0 = [F*V(1)
+       x_g
+       0
+       x_g
+       0
+       x_i_n
+       x_e_n];	
+ 
+i_fix = [1;6;7];
+
+m = [];
+h = [];
+i_n = [];
+for i = 1:length(V)
+  X_0(1) = F*V(i);
+  [x X v] = stoich_sim ("ChannelNaC","",0,X_0,i_fix);
+  x_m = X(3);
+  x_h = X(4);
+  m = [m x_m/x_g];
+  h = [h x_h/x_g];
+  i_n = [i_n F*v(3)];
+end
+
+
+## HH equivalent
+g_hh = 36e-3;
+i_hh = g_hh * V_n;
+i_hh_gated = (m.^3).*h.*i_hh;
+
+## Scale
+mV = 1000*V;			# mV
+mi_n = 1000*i_n;		# mA
+mi_hh_gated = 1000*i_hh_gated;	# mA
+
+mu = F*V;
+v_n  = i_n/F;
+v_hh  = i_hh_gated/F;
+
+kmu = mu*1e-3;			# kJ/mol
+nv_n = v_n*1e9;			# nmol/sec
+nv_hh = v_hh*1e9;		# nmol/sec
+
+figure(20);
+plot(kmu,m, ";m;", kmu,h, "--;h;" );
+xlabel("\\mu (kJ/mol)");
+ylabel("m,h");
+grid
+fig("Mn","vx_ss",2)
+
+figure(21);
+plot(kmu,nv_n,";GHK;", kmu,nv_hh,"--;HH;")
+xlabel("\\mu (kJ/mol)");
+ylabel("v_n, v_{hh} (nmol/sec)");
+grid
+fig("Mn","vi_ss",2)
+@
+
+
+1.6
+log
+@Units.
+@
+text
+@d55 8
+d64 2
+a65 2
+plot(mV,m, ";m;", mV,h, "--;h;" );
+xlabel("V (mV)")
+d71 3
+a73 3
+plot(mV,mi_n,";GHK;", mV,mi_hh_gated,"--;HH;")
+xlabel("V (mV)")
+ylabel("i_n (mA)");
+@
+
+
+1.5
+log
+@Fixed x_g not equal 1 issues.
+@
+text
+@d3 3
+a5 1
+F = 96.4853399;			# Faraday constant m C mol^-1
+d11 1
+a11 1
+v_n = 115;
+d14 2
+a15 3
+#V_n = [-200:-1 1:50];		# Relative voltage
+V = [-100:-41 -39:100];		# Actual voltage
+V_n = V-v_n;
+a44 3
+##m = X_ss(1,:);
+##h = X_ss(2,:);
+
+d46 1
+a46 1
+g_hh = 36;
+d50 5
+d56 3
+a58 3
+plot(V,m, ";m;", V,h, "--;h;" );
+xlabel("V")
+ylabel("");
+d63 3
+a65 3
+plot(V,i_n,";GHK;", V,i_hh_gated,"--;HH;")
+xlabel("V")
+ylabel("i_n");
+@
+
+
+1.4
+log
+@Working version - using stoich_sim.
+@
+text
+@d10 1
+d21 1
+a21 1
+       1
+d23 1
+a23 1
+       1
+d38 2
+a39 2
+  m = [m x_m];
+  h = [h x_h];
+@
+
+
+1.3
+log
+@Note h is reversed!
+@
+text
+@d1 1
+a1 1
+global U
+d3 1
+d6 2
+a7 2
+par = ChannelNa_numpar;
+sym = ChannelNa_sympar;
+d17 9
+a25 1
+x_e_n = 437/K_n;	
+d27 5
+a31 2
+X_ss = [];
+Y_ss = [];
+d33 7
+a39 9
+  U = V(i);
+  x_ss = fsolve("ChannelNa_fun",[1;1]);
+  x_m = x_ss(1);
+  x_h = x_ss(2);
+  xx_ss = [(1-x_m); x_m; x_h; (1-x_h); x_i_n; x_e_n];
+
+  y_ss = ChannelNa_odeo(xx_ss,U,0,par);
+  X_ss = [X_ss, x_ss];
+  Y_ss = [Y_ss, y_ss(1)];
+a40 1
+i_n = Y_ss(1,:);
+d42 3
+a44 2
+m = X_ss(1,:);
+h = X_ss(2,:);
+d52 1
+a52 1
+plot(V,X_ss);
+d54 1
+a54 1
+ylabel("x");
+d59 1
+a59 1
+plot(V,i_n,";GHK;", V,i_hh_gated,";HH;")
+a63 7
+
+## figure(22);
+## plot(V_n,i_n./V_n)
+## xlabel("v_n")
+## ylabel("g");
+## grid
+## fig("Mn","g",2)
+@
+
+
+1.2
+log
+@WORKING VERSION.
+@
+text
+@d11 1
+a11 1
+V = [-100:100];			# Actual voltage
+d23 4
+a26 1
+  xx_ss = [x_ss; x_i_n; x_e_n];
+d40 1
+d42 2
+a43 2
+plot(V_n,X_ss);
+xlabel("v_n")
+d49 2
+a50 2
+plot(V_n,i_n,";GHK;", V_n,i_hh_gated,";HH;")
+xlabel("v_n")
+d55 6
+a60 6
+figure(22);
+plot(V_n,i_n./V_n)
+xlabel("v_n")
+ylabel("g");
+grid
+fig("Mn","g",2)
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d10 3
+a12 2
+V_n = [-50:-1  1:150];		# Relative voltage
+V = V_n + v_n;			# Actual voltage
+d22 2
+a23 2
+  x_ss = fsolve("ChannelNa_fun",1);
+  xx_ss = [x_ss x_i_n x_e_n]';
+d30 3
+d36 1
+a36 1
+i_hh_gated = (X_ss.^4).*i_hh;
+d42 1
+a42 1
+fig("Mk","vx_ss",2)
+d49 1
+a49 1
+fig("Mk","vi_ss",2)
+d56 1
+a56 1
+fig("Mk","g",2)
+@

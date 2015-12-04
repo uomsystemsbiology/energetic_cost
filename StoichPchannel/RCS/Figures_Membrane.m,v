@@ -1,0 +1,1740 @@
+head	1.33;
+access;
+symbols;
+locks; strict;
+comment	@// @;
+
+
+1.33
+date	2015.12.03.21.47.20;	author peterg;	state Exp;
+branches;
+next	1.32;
+
+1.32
+date	2015.12.02.04.05.11;	author peterg;	state Exp;
+branches;
+next	1.31;
+
+1.31
+date	2015.12.01.23.31.36;	author peterg;	state Exp;
+branches;
+next	1.30;
+
+1.30
+date	2015.12.01.23.22.52;	author peterg;	state Exp;
+branches;
+next	1.29;
+
+1.29
+date	2015.11.20.00.00.59;	author peterg;	state Exp;
+branches;
+next	1.28;
+
+1.28
+date	2015.11.18.23.49.05;	author peterg;	state Exp;
+branches;
+next	1.27;
+
+1.27
+date	2015.11.17.04.07.02;	author peterg;	state Exp;
+branches;
+next	1.26;
+
+1.26
+date	2015.11.17.01.57.56;	author peterg;	state Exp;
+branches;
+next	1.25;
+
+1.25
+date	2015.11.16.22.50.59;	author peterg;	state Exp;
+branches;
+next	1.24;
+
+1.24
+date	2015.11.16.22.18.37;	author peterg;	state Exp;
+branches;
+next	1.23;
+
+1.23
+date	2015.11.16.21.39.42;	author peterg;	state Exp;
+branches;
+next	1.22;
+
+1.22
+date	2015.11.16.04.47.37;	author peterg;	state Exp;
+branches;
+next	1.21;
+
+1.21
+date	2015.11.16.04.38.04;	author peterg;	state Exp;
+branches;
+next	1.20;
+
+1.20
+date	2015.11.16.04.37.22;	author peterg;	state Exp;
+branches;
+next	1.19;
+
+1.19
+date	2015.11.16.01.45.35;	author peterg;	state Exp;
+branches;
+next	1.18;
+
+1.18
+date	2015.03.31.23.25.56;	author peterg;	state Exp;
+branches;
+next	1.17;
+
+1.17
+date	2015.03.31.22.28.17;	author peterg;	state Exp;
+branches;
+next	1.16;
+
+1.16
+date	2015.03.31.02.39.07;	author peterg;	state Exp;
+branches;
+next	1.15;
+
+1.15
+date	2015.03.31.02.32.55;	author peterg;	state Exp;
+branches;
+next	1.14;
+
+1.14
+date	2015.03.30.00.49.47;	author peterg;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	2015.03.30.00.40.19;	author peterg;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	2015.03.30.00.12.25;	author peterg;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2015.03.29.22.21.09;	author peterg;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2015.03.28.21.15.16;	author peterg;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2015.03.27.04.23.36;	author peterg;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2015.03.26.04.07.59;	author peterg;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2015.03.20.00.47.17;	author peterg;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2015.03.17.04.06.06;	author peterg;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2015.03.17.00.56.22;	author peterg;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2015.03.16.23.10.18;	author peterg;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2015.03.16.22.57.50;	author peterg;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2015.03.16.03.58.47;	author peterg;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2015.03.16.03.36.24;	author peterg;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.33
+log
+@Summary: Reinstate xSetplot
+@
+text
+@Setpath;
+Setplot;
+graphics_toolkit("gnuplot");
+
+## Set up state etc.
+last = 20e-3;
+
+par = Membrane_numpar;		# Parameters
+sympar = Membrane_sympar;	# Symbolic parameters
+
+Set_Membrane;
+
+
+## Simulation - scaled units
+[x X v v_fix Energy_var] = stoich_sim ("Membrane","",t,X_0_d, i_fix);
+
+FV = X(1,:)./(par(sympar.C_m)/F^2); # State of electrogenic cap.
+V = FV/F;			    # Voltage
+
+## Put back actual unscaled flows
+v = v_unit*v;			# mol/sec
+v_fix = v_unit*v_fix;		# mol/sec
+C_m = v_unit*par(sympar.C_m);
+
+## Put back actual unscaled energy flow.
+P_r = RT*v_unit*Energy_var.P_r;	# Dissipated power. W
+P_e = -RT*v_unit*Energy_var.P_ce;	# External power required W
+P_c = RT*v_unit*Energy_var.P_c;	# Capacitive power. W
+
+## External power
+i_ext = [1 3 5];		# Indices of external flows
+P_e_k = sum(P_e(1:2,:));	# Power- k channel
+P_e_n = sum(P_e(3:4,:));	# Power- Na channel
+P_e_l = sum(P_e(5:6,:));	# Power- NL channel
+P_e_all = sum(P_e(1:6,:));
+
+## Internal power
+i_ch = [2 5 6];
+P_r_k = P_r(2,:);
+P_r_n = P_r(5,:);
+P_r_l = P_r(6,:);
+
+## Chemical potentials
+mu = RT*Energy_var.mu;
+mu_fix = mu(i_fix,:);
+
+## Equiv free energies (constant as concs are fixed)
+G_k = mu_fix(2,1)-mu_fix(1,1);
+G_n = mu_fix(4,1)-mu_fix(3,1);
+G_l = mu_fix(6,1)-mu_fix(5,1);
+
+## Affinities
+A = RT*Energy_var.A;
+A_k = A(2,:);
+A_n = A(5,:);
+A_l = A(6,:);
+
+## Channel fluxes
+v_k = v(2,:);			# mol/sec
+v_n = v(5,:);
+v_l = v(6,:);
+
+## External fluxes
+v_e_k = v_fix(1,:);
+v_e_n = v_fix(3,:);
+v_e_l = v_fix(5,:);
+
+## Check dissipated power
+check_norm(A_n.*v_n-P_r_n,"P_r_n")
+
+## Check external power
+check_norm(-v_e_n*G_n-P_e_n,"P_e_n")
+
+## HasOttCal10 formula
+v_atp = -v_n/3;			# ATP equivalent (mol)
+
+## Cumulative fluxes
+x_k = cumsum(v_k)*dt;
+x_n = cumsum(v_n)*dt;
+x_l = cumsum(v_l)*dt;
+
+## HasOttCal10 formula
+x_atp = -x_n/3;			# ATP equivalent (mol)
+px_atp = x_atp*1e12;		# ATP equivalent (pmol)
+
+## Channel currents 
+i_k = F*v_k;			# A
+i_n = F*v_n;			# A
+i_l = F*v_l;			# A
+i_net = i_k+i_n+i_l;
+
+## Cumulative currents
+q_k = cumsum(i_k)*dt;		# C
+q_n = cumsum(i_n)*dt;
+q_l = cumsum(i_l)*dt;
+
+## CHECK
+disp(sprintf("Na charge flow: %g nC/cm^2 (SenSte14 Fig 9: %i)",...
+			         max(-q_n)*1e9, 1020))
+
+## Gate currents
+i_gate = [1 3 4];
+I_g = F*v(i_gate,:);		# A
+
+## Dissipated energy
+E_r = cumsum(P_r,2)*dt;
+E_e = cumsum(P_e,2)*dt;
+
+## Per channel
+E_e_k = cumsum(P_e_k)*dt;
+E_e_n = cumsum(P_e_n)*dt;
+E_e_l = cumsum(P_e_l)*dt;
+E_e_all = cumsum(P_e_all)*dt;
+
+## ATP-equivalent stuff
+G_ATP = 31000;			# J/mol
+P_atp = G_ATP*v_atp;		
+E_atp = cumsum(P_atp)*dt;
+
+## Check
+check_norm(E_atp-x_atp*G_ATP,"E_atp")
+
+## Reexpress for plotting
+mV = V*1000;			# V in mV
+mV_eq = V_eq*1000;		# V_eq in mV
+mt = t*1000;			# t in msec
+muv = v*1e6;			# mu mol/sec
+nv = v*1e9;			# nmol/sec
+muv_fix = v_fix*1e6;		# mumol/sec
+nv_fix = v_fix*1e9;		# nmol/sec
+muP_r = P_r*1e6;		# micro W
+muP_e = P_e*1e6;		# micro W
+nP_r = P_r*1e9;			# nano W
+nP_e = P_e*1e9;			# nano W
+nE_r = E_r*1e9;			# nJ
+nE_e = E_e*1e9;			# nJ
+
+nE_k = E_e_k*1e9;		# nJ
+nE_n = E_e_n*1e9;		# nJ
+nE_l = E_e_l*1e9;		# nJ
+nE_all = E_e_all*1e9;		# nJ
+nE_atp = E_atp*1e9;		# nJ
+
+kmu = mu*1e-3;			# kJ/mol
+kA  = A*1e-3;			# kJ/mol
+nI_g = I_g*1e9;			# nA
+
+aE_all = E_e_all/G_ATP;		# Mol of ATP
+paE_all = aE_all*1e12;		# pMol of ATP
+
+if (VaryNa==0)			# Supress in Figures_vary
+  ## Plotting
+  colour = 1;
+  ## Action potential
+  figure(10);
+  one = ones(size(t));
+  plot(mt,mV)
+  grid;
+  xlabel("t (msec)");
+  ylabel("V(mV)");
+  fig(Name,"V",colour);
+  
+  ## Channel flows
+  figure(12);
+  plot(mt,i_k*1e3,"-;K;",
+       mt,i_n*1e3,"--;Na;");
+       ##       mt,i_l*1e3,"..k;L;",
+       ## mt,i_net*1e3,":;Net;");
+  grid;                                 %
+  xlabel("t (msec)");
+  ylabel("I (mA)");
+  fig(Name,"I",colour);
+  
+  ## Gate flows
+  figure(13);
+  plot(mt,nI_g(1,:),"-;n;",\
+       mt,nI_g(2,:),"--;m;",
+       mt,nI_g(3,:),":;h;");
+  grid;
+  xlabel("t (msec)");
+  ylabel("I_g (nA)");
+  fig(Name,"I_g",colour);
+  
+  I_k_0 = F*muv(2,1);
+  I_n_0 = F*muv(5,1);
+  I_l_0 = muv(6,1);
+  
+  ## Gating functions
+  figure(15)
+  plot(mt,X(3,:)/x_g,"-;n(t);",...
+       mt,X(7,:)/x_g,"--;m(t);",...
+       mt,X(8,:)/x_g,":;h(t);");
+  grid;
+  legend("location", "north");
+  xlabel("t (msec)");
+  ylabel("n(t),m(t),h(t)");
+  fig(Name,"nmh",colour);
+  
+  
+  ## External flows
+  figure(20)
+  plot(mt,nv_fix)
+  grid;
+  xlabel("t (msec)");
+  ylabel("v_{fix} (nM/sec)");
+  fig(Name,"v_fix",colour);
+  
+  ## Internal flows
+  figure(21)
+  plot(mt,nv(i_ch,:),mt,sum(nv(i_ch,:)))
+  grid;
+  xlabel("t (msec)");
+  ylabel("v (nM/sec)");
+  Legend = {"K" "N" "L" "Net"};
+  legend(Legend);
+  fig(Name,"v",colour);
+
+
+## figure(22)
+## plot(mt,kmu(1,:))
+## grid;
+## xlabel("t (msec)");
+## ylabel("mu (kJ/mol)");
+## fig(Name,"mu_m",colour);
+
+  ## Affinities
+  figure(23)
+  plot(mt,kA(i_ch,:))
+  grid;
+  Legend = {"K" "N" "L" "Net"};
+  legend(Legend);
+  xlabel("t (msec)");
+  ylabel("A (kJ/mol)");
+  fig(Name,"A",colour);
+  
+  ## Ext and int power (total)
+  figure(30)
+  plot(mt,sum(muP_e),"-", mt,sum(muP_r),"--");
+  grid;
+  Legend = {"Ext.","Int."};
+  legend(Legend);
+  xlabel("t (msec)");
+  ylabel("P_e,P_r (\\mu W)");
+  fig(Name,"P_er",colour);
+  
+  ## Ext and int power (per channel)
+  figure(31)
+  plot(mt,P_r_n*1e6,";Na (int);",\
+       mt,P_e_n*1e6,";Na (ext);",\
+       mt,P_r_k*1e6,";K (int);",\
+       mt,P_e_k*1e6,";K (ext);")
+  grid;
+  xlabel("t (msec)");
+  ylabel("P_r (\\mu W)");
+  fig(Name,"P_er_ch",colour);
+  
+  
+## figure(32)
+## plot(mt,sum(nE_e), mt,sum(nE_r))
+## grid;
+## xlabel("t (msec)");
+## ylabel("E_e, E_r (nJ)");
+## fig(Name,"E_er",colour);
+
+## figure(33)
+## plot(mt,nE_r(i_ch,:), mt,sum(nE_r(i_ch,:)))
+## grid;
+## xlabel("t (msec)");
+## ylabel("E_r (nJ)");
+## Legend = {"K" "N" "L" "Net"};
+## legend(Legend);
+## fig(Name,"E_r",colour);
+
+  ## Total energy and proxy (nJ)
+  figure(34)
+  plot(mt,nE_all,"-;Actual;",  mt, nE_atp,"--;Proxy;")
+  grid;
+  legend("location","southeast")
+  xlabel("t (msec)");
+  ylabel("Energy (nJ)");
+  fig(Name,"ATP",colour);
+  
+  ## Total energy and proxy (mol)
+  figure(35)
+  plot(mt,paE_all,";Actual;",  mt, px_atp,";Proxy;")
+  grid;
+  legend("location","southeast")
+  xlabel("t (msec)");
+  ylabel("Energy (pmol ATP)");
+  fig(Name,"ATP_mol",colour);
+
+## Plot electical energy in capacitor
+ figure(36)
+ V_e = V(length(mt));
+ plot(mt, (0.5*C_m*(V-V_eq).^2)*1e9 );
+ grid;
+ xlabel("t (msec)");
+ ylabel("E_c (nJ)");
+ fig(Name,"E_c",colour);
+endif
+
+## Energy calculations
+maxE_e = max(nE_all);
+maxE_e_n = max(nE_n);
+maxE_e_n = max(nE_n);
+maxE_e_k = max(nE_k);
+maxE_atp = max(nE_atp);
+disc = 100*(maxE_atp-maxE_e)/maxE_e;
+disp(sprintf("E_e=%g nJ, E_atp=%g nJ, discrepancy=%gpc",maxE_e,maxE_atp,disc));
+
+pX_k = max(abs(x_k))*1e12
+pX_n = max(abs(x_n))*1e12
+pX_l = max(abs(x_l))*1e12
+pX_atp = max(abs(x_atp))*1e12
+
+disp(sprintf("x_k=%g, x_n=%g, x_l=%g",pX_k,pX_n,pX_l));
+nE_comp_k = abs(G_k)*pX_k/1000;
+check_norm(nE_comp_k-maxE_e_k,"E_k");
+
+nE_comp_n = abs(G_n)*pX_n/1000;
+check_norm(nE_comp_n-maxE_e_n,"E_n");
+
+nE_comp = nE_comp_k+nE_comp_n;
+check_norm((nE_comp-maxE_e)./maxE_e,"E",1e-4);
+
+disp(sprintf("Computed: E_e=%g nJ, E_k=%g nJ, E_n=%g nJ", ...
+	     nE_comp, nE_comp_k, nE_comp_n));
+@
+
+
+1.32
+log
+@Summary: Not black anymore.
+@
+text
+@d2 1
+a2 1
+##Setplot;
+@
+
+
+1.31
+log
+@Summary: Legenf location.
+@
+text
+@d165 2
+a166 2
+  plot(mt,i_k*1e3,"-k;K;",
+       mt,i_n*1e3,"--k;Na;");
+@
+
+
+1.30
+log
+@Summary: Monochrome
+@
+text
+@d194 1
+@
+
+
+1.29
+log
+@Change check crit
+@
+text
+@d2 1
+a2 1
+Setplot;
+d153 1
+d161 1
+a161 1
+  fig(Name,"V",2);
+d165 5
+a169 5
+  plot(mt,i_k*1e3,";K;",
+       mt,i_n*1e3,";Na;",
+       mt,i_l*1e3,";L;",
+       mt,i_net*1e3,";Net;");
+  grid;
+d172 1
+a172 1
+  fig(Name,"I",2);
+d176 3
+a178 3
+  plot(mt,nI_g(1,:),";n;",\
+       mt,nI_g(2,:),";m;",
+       mt,nI_g(3,:),";h;");
+d182 1
+a182 1
+  fig(Name,"I_g",2);
+d190 3
+a192 3
+  plot(mt,X(3,:)/x_g,";n(t);",...
+       mt,X(7,:)/x_g,";m(t);",...
+       mt,X(8,:)/x_g,";h(t);");
+d196 1
+a196 1
+  fig(Name,"nmh",2);
+d205 1
+a205 1
+  fig(Name,"v_fix",2);
+d215 1
+a215 1
+  fig(Name,"v",2);
+d223 1
+a223 1
+## fig(Name,"mu_m",2);
+d233 1
+a233 1
+  fig(Name,"A",2);
+d237 1
+a237 1
+  plot(mt,sum(muP_e),mt,sum(muP_r));
+d243 1
+a243 1
+  fig(Name,"P_er",2);
+d254 1
+a254 1
+  fig(Name,"P_er_ch",2);
+d262 1
+a262 1
+## fig(Name,"E_er",2);
+d271 1
+a271 1
+## fig(Name,"E_r",2);
+d275 1
+a275 1
+  plot(mt,nE_all,";Actual;",  mt, nE_atp,";Proxy;")
+d280 1
+a280 1
+  fig(Name,"ATP",2);
+d289 1
+a289 1
+  fig(Name,"ATP_mol",2);
+d298 1
+a298 1
+ fig(Name,"E_c",2);
+@
+
+
+1.28
+log
+@Plot capacitor energy.
+@
+text
+@d322 1
+a322 1
+check_norm(nE_comp-maxE_e,"E",0);
+@
+
+
+1.27
+log
+@Extra info,
+@
+text
+@d14 1
+a14 1
+## Simulation
+d23 1
+a23 1
+
+d28 1
+d151 64
+a214 62
+## Action potential
+figure(10);
+one = ones(size(t));
+plot(mt,mV)
+grid;
+xlabel("t (msec)");
+ylabel("V(mV)");
+fig(Name,"V",2);
+
+## Channel flows
+figure(12);
+plot(mt,i_k*1e3,";K;",
+     mt,i_n*1e3,";Na;",
+     mt,i_l*1e3,";L;",
+     mt,i_net*1e3,";Net;");
+grid;
+xlabel("t (msec)");
+ylabel("I (mA)");
+fig(Name,"I",2);
+
+## Gate flows
+figure(13);
+plot(mt,nI_g(1,:),";n;",\
+     mt,nI_g(2,:),";m;",
+     mt,nI_g(3,:),";h;");
+grid;
+xlabel("t (msec)");
+ylabel("I_g (nA)");
+fig(Name,"I_g",2);
+
+I_k_0 = F*muv(2,1);
+I_n_0 = F*muv(5,1);
+I_l_0 = muv(6,1);
+
+## Gating functions
+figure(15)
+plot(mt,X(3,:)/x_g,";n(t);",...
+     mt,X(7,:)/x_g,";m(t);",...
+     mt,X(8,:)/x_g,";h(t);");
+grid;
+xlabel("t (msec)");
+ylabel("n(t),m(t),h(t)");
+fig(Name,"nmh",2);
+
+
+## External flows
+figure(20)
+plot(mt,nv_fix)
+grid;
+xlabel("t (msec)");
+ylabel("v_{fix} (nM/sec)");
+fig(Name,"v_fix",2);
+
+## Internal flows
+figure(21)
+plot(mt,nv(i_ch,:),mt,sum(nv(i_ch,:)))
+grid;
+xlabel("t (msec)");
+ylabel("v (nM/sec)");
+Legend = {"K" "N" "L" "Net"};
+legend(Legend);
+fig(Name,"v",2);
+d224 32
+a255 32
+## Affinities
+figure(23)
+plot(mt,kA(i_ch,:))
+grid;
+Legend = {"K" "N" "L" "Net"};
+legend(Legend);
+xlabel("t (msec)");
+ylabel("A (kJ/mol)");
+fig(Name,"A",2);
+
+## Ext and int power (total)
+figure(30)
+plot(mt,sum(muP_e),mt,sum(muP_r));
+grid;
+Legend = {"Ext.","Int."};
+legend(Legend);
+xlabel("t (msec)");
+ylabel("P_e,P_r (\\mu W)");
+fig(Name,"P_er",2);
+
+## Ext and int power (per channel)
+figure(31)
+plot(mt,P_r_n*1e6,";Na (int);",\
+     mt,P_e_n*1e6,";Na (ext);",\
+     mt,P_r_k*1e6,";K (int);",\
+     mt,P_e_k*1e6,";K (ext);")
+grid;
+xlabel("t (msec)");
+ylabel("P_r (\\mu W)");
+fig(Name,"P_er_ch",2);
+
+
+d272 27
+a298 17
+## Total energy and proxy (nJ)
+figure(34)
+plot(mt,nE_all,";Actual;",  mt, nE_atp,";Proxy;")
+grid;
+legend("location","southeast")
+xlabel("t (msec)");
+ylabel("Energy (nJ)");
+fig(Name,"ATP",2);
+
+## Total energy and proxy (mol)
+figure(35)
+plot(mt,paE_all,";Actual;",  mt, px_atp,";Proxy;")
+grid;
+legend("location","southeast")
+xlabel("t (msec)");
+ylabel("Energy (pmol ATP)");
+fig(Name,"ATP_mol",2);
+@
+
+
+1.26
+log
+@Comp proxy error.
+@
+text
+@d287 1
+d289 3
+d294 10
+d305 8
+a312 1
+disp(sprintf("E_e=%g nJ, E_atp=%g nJ, discrepancy=%gpc",maxE_e,maxE_atp,disc));
+@
+
+
+1.25
+log
+@Tidy + new figs.
+@
+text
+@d287 5
+@
+
+
+1.24
+log
+@Tidy.
+@
+text
+@d20 1
+a20 1
+## Put back actual unscaled flows & use mols/sec
+d25 1
+a25 1
+## Put back unscaled energy flow.
+d29 1
+a29 1
+
+d36 1
+a56 1
+
+a75 1
+
+a80 3
+## CHECK
+max(abs(x_n))*1e12
+
+d92 1
+a92 1
+q_k = cumsum(i_k)*dt;
+d118 3
+a120 5
+## E_ATP = G_ATP/Avogadro;		# J per molecule
+## v_ATP = -v_n/3;			# mol/sec assume 3 Na per ATP
+## x_ATP = cumsum(v_ATP)*dt;	# mol
+## N_ATP =  x_ATP*Avogadro;	# Molecules
+## GN_ATP = N_ATP/1e9		# G ATPs
+d125 1
+a125 1
+mt = t *1000;			# t in msec
+d147 4
+a156 1
+##axis([0 2 -100 150])
+d159 1
+a159 1
+
+d170 1
+d180 3
+a182 3
+I_k_0 = F*muv(2,1)
+I_n_0 = F*muv(5,1)
+I_l_0 = muv(6,1)
+d184 1
+d195 1
+a195 2
+## ## Flows are in M/sec
+## ## Mu is in J/mol
+d203 1
+a212 6
+figure(22)
+plot(mt,kmu(1,:))
+grid;
+xlabel("t (msec)");
+ylabel("mu (kJ/mol)");
+fig(Name,"mu_m",2);
+d214 8
+d231 1
+d235 1
+a235 1
+Legend = {"Ext.","Chan."};
+d239 1
+a239 1
+fig(Name,"P_e",2);
+d241 1
+d243 4
+a246 1
+plot(mt,muP_r(i_ch,:), mt,sum(muP_r(i_ch,:)))
+a247 2
+Legend = {"K" "N" "L" "Net"};
+legend(Legend);
+d250 1
+a250 1
+fig(Name,"P_r",2);
+a251 6
+figure(32)
+plot(mt,sum(nE_e), mt,sum(nE_r))
+grid;
+xlabel("t (msec)");
+ylabel("E_e, E_r (nJ)");
+fig(Name,"E_er",2);
+d253 15
+a267 8
+figure(33)
+plot(mt,nE_r(i_ch,:), mt,sum(nE_r(i_ch,:)))
+grid;
+xlabel("t (msec)");
+ylabel("E_r (nJ)");
+Legend = {"K" "N" "L" "Net"};
+legend(Legend);
+fig(Name,"E_r",2);
+d269 1
+d277 9
+@
+
+
+1.23
+log
+@pW -> nW
+@
+text
+@d29 11
+a39 4
+P_k = sum(P_e(1:2,:));		# Power- k channel
+P_n = sum(P_e(3:4,:));          # Power- Na channel
+P_l = sum(P_e(5:6,:));          # Power- NL channel
+P_all = sum(P_e(1:6,:));
+d56 1
+a57 1
+i_ch = [2 5 6];
+d61 12
+d113 4
+a116 4
+E_k = cumsum(P_k)*dt;
+E_n = cumsum(P_n)*dt;
+E_l = cumsum(P_l)*dt;
+E_all = cumsum(P_all)*dt;
+d140 2
+a141 2
+nE_r = E_r*1e9;			# pJ
+nE_e = E_e*1e9;			# pJ
+d143 5
+a147 5
+nE_k = E_k*1e9;			# pJ
+nE_n = E_n*1e9;			# pJ
+nE_l = E_l*1e9;			# pJ
+nE_all = E_all*1e9;		# pJ
+nE_atp = E_atp*1e9;		# pJ
+a148 2
+## aE_r = pE_r/G_ATP;		# Energy  (pmols of ATP)
+## aE_e = pE_e/G_ATP;		# Energy  (pmols of ATP)
+d151 1
+a151 22
+muI_g = I_g*1e6;		# muA
+
+## Specific channels
+## nP_K = sum(nP_e([1:2],:));	# nW
+## nP_N = sum(nP_e([3:4],:));	# nW
+## nP_L = sum(nP_e([5:6],:));	# nW
+
+## #
+# nE_K = sum(nE_e([1:2],:));	# pJ
+## nE_N = sum(nE_e([3:4],:));	# pJ
+
+## nA_K = nE_K/G_ATP;		# nmol ATP
+## nA_N = nE_N/G_ATP;		# nmol ATP
+
+
+
+
+## ## Channel currents (mu A)
+## I_k = F*muv(2,:);
+## I_n = F*muv(5,:);
+## I_l = F*muv(6,:);
+## I = I_k + I_n + I_l;
+a161 14
+## ## Work out cumulative external flows
+## Total_mol = sum(v_fix([1:2:6],:)')*dt # Moles
+## Total = Total_mol*Avogadro
+
+## ## Cumulative disipated power
+## Energy_r = sum(sum(P_r(i_ch,:)))*dt # Joules
+## nEnergy_r = Energy_r*1e9		  # nJ
+
+## figure(11);
+## plot(mt,I);
+## grid;
+## xlabel("t (msec)");
+## ylabel("I_{net} (\\mu A)");
+## fig(Name,"I_all",2);
+d174 3
+a176 3
+plot(mt,muI_g(1,:),";n;",\
+     mt,muI_g(2,:),";m;",
+     mt,muI_g(3,:),";h;");
+d179 1
+a179 1
+ylabel("I_g (\\mu A)");
+@
+
+
+1.22
+log
+@Sort out i_n plot
+@
+text
+@d121 2
+a122 2
+pE_r = E_r*1e9;			# pJ
+pE_e = E_e*1e9;			# pJ
+d124 5
+a128 5
+pE_k = E_k*1e9;			# pJ
+pE_n = E_n*1e9;			# pJ
+pE_l = E_l*1e9;			# pJ
+pE_all = E_all*1e9;		# pJ
+pE_atp = E_atp*1e9;		# pJ
+d130 2
+a131 2
+aE_r = pE_r/G_ATP;		# Energy  (pmols of ATP)
+aE_e = pE_e/G_ATP;		# Energy  (pmols of ATP)
+d137 3
+a139 3
+nP_K = sum(nP_e([1:2],:));	# nW
+nP_N = sum(nP_e([3:4],:));	# nW
+nP_L = sum(nP_e([5:6],:));	# nW
+d141 2
+a142 1
+## nE_K = sum(nE_e([1:2],:));	# pJ
+d267 1
+a267 1
+plot(mt,sum(pE_e), mt,sum(pE_r))
+d270 1
+a270 1
+ylabel("E_e, E_r (pJ)");
+d274 1
+a274 1
+plot(mt,pE_r(i_ch,:), mt,sum(pE_r(i_ch,:)))
+d277 1
+a277 1
+ylabel("E_r (pJ)");
+d283 1
+a283 1
+plot(mt,pE_all,";Actual;",  mt, pE_atp,";Proxy;")
+d287 1
+a287 1
+ylabel("Energy (pJ)");
+@
+
+
+1.21
+log
+@Tidy.
+@
+text
+@d74 1
+d87 1
+a87 1
+I_g = F*v(i_gate,:);		# mA
+d150 5
+a154 5
+## Channel currents (mu A)
+I_k = F*muv(2,:);
+I_n = F*muv(5,:);
+I_l = F*muv(6,:);
+I = I_k + I_n + I_l;
+d181 4
+a184 4
+plot(mt,I_k,";K;",
+     mt,I_n,";Na;",
+     mt,I_l,";L;",
+     mt,I,";Net;");
+d187 1
+a187 1
+ylabel("I (\\mu A)");
+@
+
+
+1.20
+log
+@Sort out A & mu
+@
+text
+@a14 1
+
+@
+
+
+1.19
+log
+@WORKING VERSION
+@
+text
+@d44 6
+d132 2
+a133 2
+kmu = Energy_var.mu*1e-3;	# kJ/mol
+kA  = Energy_var.A*1e-3;	# kJ/mol
+d158 1
+a158 1
+plot(mt,mV,mt,one*mV_eq)
+d165 14
+a178 16
+## Work out cumulative external flows
+Total_mol = sum(v_fix([1:2:6],:)')*dt # Moles
+Total = Total_mol*Avogadro
+
+## Cumulative disipated power
+Energy_r = sum(sum(P_r(i_ch,:)))*dt # Joules
+nEnergy_r = Energy_r*1e9		  # nJ
+
+
+
+figure(11);
+plot(mt,I);
+grid;
+xlabel("t (msec)");
+ylabel("I_{net} (\\mu A)");
+fig(Name,"I_all",2);
+@
+
+
+1.18
+log
+@New V_i V_e parameters
+Seperate numpar for Axon and Membrane
+@
+text
+@d21 4
+a24 3
+## Put back actual unscaled flows
+v = v_unit*v;
+v_fix = v_unit*v_fix;
+d27 16
+a42 2
+P_r = v_unit*Energy_var.P_r;	# Dissipated power.
+P_e = v_unit*Energy_var.P_ce;	# External power.
+d46 1
+a46 1
+v_k = v(2,:);
+d49 2
+d53 26
+d81 1
+a81 3
+I_g = F*v(i_gate,:);
+
+
+d87 7
+a93 1
+## ATP stuff
+d95 7
+a101 4
+E_ATP = G_ATP/Avogadro;		# J per molecule
+v_ATP = -v_n/3;			# Assume 3 Na per ATP
+x_ATP = cumsum(v_ATP)*dt;
+N_ATP = x_ATP*Avogadro;
+d113 13
+a125 4
+pE_r = E_r*1e12;		# pJ
+pE_e = E_e*1e12;		# pJ
+aE_r = E_r/E_ATP;		# Energy per mol of ATP
+aE_e = E_e/E_ATP;		# Energy per mol of ATP
+d130 14
+d278 1
+a278 1
+plot(mt,sum(aE_e),";Actual;",  mt, N_ATP,";Proxy;")
+d280 1
+a280 1
+axis([0,max(mt),0,5e9]);
+d282 1
+a282 1
+ylabel("ATP molecules");
+@
+
+
+1.17
+log
+@Sort out energy figs.
+@
+text
+@d7 4
+@
+
+
+1.16
+log
+@Simplify N_ATP stuff.
+@
+text
+@d23 1
+d32 6
+d40 1
+d45 1
+a45 1
+v_ATP = -v_n/3			# Assume 3 Na per ATP
+d58 1
+d60 1
+d62 1
+d65 1
+d67 5
+d87 2
+a88 3
+Energy = sum(sum(P_r(i_ch,:)))*dt # Joules
+nEnergy = Energy*1e9		  # nJ
+
+a89 8
+## Channel currents (mu A)
+I_k = F*muv(2,:);
+I_n = F*muv(5,:);
+I_l = F*muv(6,:);
+I = I_k + I_n + I_l;
+
+## Gate currents
+I_g = F*muv([1 3 4],:);
+d110 3
+a112 3
+plot(mt,I_g(1,:),";n;",\
+     mt,I_g(2,:),";m;",
+     mt,I_g(3,:),";h;");
+d166 9
+d184 6
+d191 1
+a191 1
+figure(32)
+d194 2
+a197 2
+xlabel("t (msec)");
+ylabel("E_r (pJ)");
+d200 2
+a201 2
+figure(33)
+plot(mt,sum(aE_r(i_ch,:)),";Actual;", mt, N_ATP,";Proxy;")
+@
+
+
+1.15
+log
+@tidy.
+@
+text
+@d178 1
+a178 1
+plot(mt,aE_r(i_ch,:), mt,sum(aE_r(i_ch,:)), mt, N_ATP)
+d180 1
+a180 2
+Legend = {"K" "N" "L" "Net" "Alt"};
+legend(Legend);
+@
+
+
+1.14
+log
+@Affinity etc.
+@
+text
+@d24 6
+d37 3
+d55 1
+a64 6
+## Channel fluxes
+i_ch = [2 5 6];
+v_k = v(2,:);
+v_n = v(5,:);
+v_l = v(6,:);
+
+a151 1
+grid;
+d178 1
+a178 1
+plot(mt,aE_r(i_ch,:), mt,sum(aE_r(i_ch,:)))
+d180 1
+a180 1
+Legend = {"K" "N" "L" "Net"};
+@
+
+
+1.13
+log
+@Energy stuff.
+@
+text
+@d12 1
+a12 1
+[x X v v_fix Energy] = stoich_sim ("Membrane","",t,X_0_d, i_fix);
+d22 2
+a23 1
+P_r = v_unit*Energy.P_r;	# Dissipated power.
+d43 2
+d56 1
+a56 1
+
+a128 1
+i_ch = [2 5 6];
+d139 1
+a139 1
+plot(mt,Energy.mu(1,:))
+d142 1
+a142 1
+ylabel("mu (J/M)");
+d144 10
+@
+
+
+1.12
+log
+@Cumulative flowes.
+@
+text
+@d9 1
+d21 10
+d39 3
+a41 1
+
+a58 1
+##Internal
+d62 4
+d143 27
+a169 58
+## figure(31)
+## plot(mt,Energy.P_r(i_ch,:)/1000, mt,sum(Energy.P_r(i_ch,:)/1000))
+## grid;
+## Legend = {"K" "N" "L" "Net"};
+## legend(Legend);
+## xlabel("t (msec)");
+## ylabel("P_r (\\mu W)");
+## fig(Name,"P_r",2);
+
+## figure(32)
+## plot(mt,sum(Energy.P_c)/1000)
+## grid;
+## ##Legend = {"K" "N" "L" "Net"};
+## ##legend(Legend);
+## xlabel("t (msec)");
+## ylabel("P_c (\\mu W)");
+## fig(Name,"P_c",2);
+
+
+## figure(33)
+## plot(mt,sum(Energy.P_ce)/1e3)
+## grid;
+## ##Legend = {"K" "N" "L" "Net"};
+## ##legend(Legend);
+## xlabel("t (msec)");
+## ylabel("P_ce (\\mu W)");
+## fig(Name,"P_e",2);
+
+## figure(34)
+## plot(mt,sum(Energy.P_ci)/1e3)
+## grid;
+## ##Legend = {"K" "N" "L" "Net"};
+## ##legend(Legend);
+## xlabel("t (msec)");
+## ylabel("P_{ci} (\\mu W)");
+## fig(Name,"P_i",2);
+
+## ## ATP stuff
+## v_N = v(5,:);		# nMoles/sec (??)
+## v_ATP = -v_N/3;			# ATPase stoichiometry from
+## 				# HasOttCal10
+
+## G_ATP = 31000;			# J/mol
+## P_ATP = G_ATP*v_ATP;		# nJ/sec
+
+## ### ARE THESE FACTORS CORRECT"!!!
+## figure(40),
+## plot(mt,P_ATP, mt,sum(Energy.P_r(i_ch,:)))
+
+## dt = mean(diff(t))/1000;	# Sec
+## E_r = sum(sum(Energy.P_r)/1e6)*dt # Joules
+## E_ATP = sum(P_ATP)*dt
+
+## Avagadro = 6.02214129e23;
+
+## figure(41),
+## plot(mt,v_ATP*Avagadro)
+## CumATP = sum(v_ATP*Avagadro)*dt
+@
+
+
+1.11
+log
+@WORKING VERSION.
+@
+text
+@d40 1
+d45 5
+a49 2
+Total.k = sum(v_k)*dt;
+Total.n = sum(v_n)*dt;
+@
+
+
+1.10
+log
+@WORKING VERSION with actual units + scaling.
+@
+text
+@d39 7
+@
+
+
+1.9
+log
+@*** empty log message ***
+@
+text
+@d6 1
+a6 1
+last = 20;
+d10 1
+d13 17
+a29 2
+FV = X(1,:)./(par(sympar.C_m)/F^2);
+V = FV/F;
+d32 1
+a32 1
+plot(t,V,t,one*V_eq)
+d40 4
+a43 4
+## Channel currents 
+I_k = F*v(2,:);
+I_n = F*v(5,:);
+I_l = F*v(6,:);
+d47 1
+a47 1
+I_g = F*v([1 3 4],:);
+d51 1
+a51 1
+plot(t,I);
+d58 4
+a61 4
+plot(t,I_k,";K;",
+     t,I_n,";Na;",
+     t,I_l,";L;",
+     t,I,";Net;");
+d68 3
+a70 3
+plot(t,I_g(1,:),";n;",\
+     t,I_g(2,:),";m;",
+     t,I_g(3,:),";h;");
+d76 3
+a78 3
+I_k_0 = F*v(2,1)
+I_n_0 = F*v(5,1)
+I_l_0 = v(6,1)
+d81 3
+a83 3
+plot(t,X(3,:)/x_g,";n(t);",...
+     t,X(7,:)/x_g,";m(t);",...
+     t,X(8,:)/x_g,";h(t);");
+d90 2
+a91 2
+## Flows are in pM/sec
+## Mu is in J/M or pJ/pM or mu/1000 in muJ/M 
+d93 1
+a93 1
+plot(t,v_fix)
+d96 1
+a96 1
+ylabel("v_{fix} (pM/sec)");
+a98 1
+
+d101 1
+a101 1
+plot(t,v(i_ch,:),t,sum(v(i_ch,:)))
+d104 1
+a104 1
+ylabel("v (pM/sec)");
+d110 1
+a110 1
+plot(t,Energy.mu(1,:))
+d116 58
+a173 58
+figure(31)
+plot(t,Energy.P_r(i_ch,:)/1000, t,sum(Energy.P_r(i_ch,:)/1000))
+grid;
+Legend = {"K" "N" "L" "Net"};
+legend(Legend);
+xlabel("t (msec)");
+ylabel("P_r (\\mu W)");
+fig(Name,"P_r",2);
+
+figure(32)
+plot(t,sum(Energy.P_c)/1000)
+grid;
+##Legend = {"K" "N" "L" "Net"};
+##legend(Legend);
+xlabel("t (msec)");
+ylabel("P_c (\\mu W)");
+fig(Name,"P_c",2);
+
+
+figure(33)
+plot(t,sum(Energy.P_ce)/1e3)
+grid;
+##Legend = {"K" "N" "L" "Net"};
+##legend(Legend);
+xlabel("t (msec)");
+ylabel("P_ce (\\mu W)");
+fig(Name,"P_e",2);
+
+figure(34)
+plot(t,sum(Energy.P_ci)/1e3)
+grid;
+##Legend = {"K" "N" "L" "Net"};
+##legend(Legend);
+xlabel("t (msec)");
+ylabel("P_{ci} (\\mu W)");
+fig(Name,"P_i",2);
+
+## ATP stuff
+v_N = v(5,:);		# nMoles/sec (??)
+v_ATP = -v_N/3;			# ATPase stoichiometry from
+				# HasOttCal10
+
+G_ATP = 31000;			# J/mol
+P_ATP = G_ATP*v_ATP;		# nJ/sec
+
+### ARE THESE FACTORS CORRECT"!!!
+figure(40),
+plot(t,P_ATP, t,sum(Energy.P_r(i_ch,:)))
+
+dt = mean(diff(t))/1000;	# Sec
+E_r = sum(sum(Energy.P_r)/1e6)*dt # Joules
+E_ATP = sum(P_ATP)*dt
+
+Avagadro = 6.02214129e23;
+
+figure(41),
+plot(t,v_ATP*Avagadro)
+CumATP = sum(v_ATP*Avagadro)*dt
+@
+
+
+1.8
+log
+@Start energy stuff.
+@
+text
+@d3 1
+d6 1
+a6 1
+last = 10;
+d15 2
+a16 1
+plot(t,V-V_eq)
+d19 1
+a19 1
+ylabel("V-V_{eq}");
+d38 1
+a38 1
+ylabel("I_{net}");
+d48 1
+a48 1
+ylabel("I");
+d57 1
+a57 1
+ylabel("I_g");
+d72 88
+@
+
+
+1.7
+log
+@WORKING VERSION with new gate and x_g.
+@
+text
+@d9 1
+a9 1
+[x X v] = stoich_sim ("Membrane","",t,X_0_d, i_fix);
+d40 1
+a40 1
+plot(t,I_k,";K;",\
+d42 2
+a43 1
+     t,I_l,";L;");
+d50 2
+a51 2
+plot(t,I_g(1,:),";m;",\
+     t,I_g(2,:),";n;",
+d56 1
+a56 1
+fig(Name,"I",2);
+a69 13
+
+## ## Conserved moieties
+## ##Gates
+## figure(16);
+## plot(t,stoich.G([1,3,4],:)*X);
+
+## ##Concentrations
+## figure(17);
+## plot(t,stoich.G([2,5],:)*X, t, sum(stoich.G([6,7],:))*X);
+
+## ## Other
+## figure(18);
+## plot(t,stoich.G([7],:)*X);
+@
+
+
+1.6
+log
+@WORKING VERSION
+@
+text
+@d62 3
+a64 3
+plot(t,X(3,:),";n(t);",\
+     t,X(7,:),";m(t);",\
+     t,X(8,:),";h(t);");
+@
+
+
+1.5
+log
+@Split out Set_Membrane.m
+@
+text
+@d5 1
+@
+
+
+1.4
+log
+@No CM check.
+@
+text
+@d4 2
+a5 71
+[rtf R F_0] = RTF;
+V_N = RTF*1000;		# Nernst voltage in mv
+
+last = 20;
+depolarisation = 7;		# mV
+depolarisation = 15;		# mV
+##  depolarisation = 50;		# mV
+depolarisation = 20;		# mV
+##depolarisation = 10;		# mV
+## depolarisation = 80;		# mV
+
+t = [0:0.01:last];
+i_fix = [4;5;10;11;12;13];	# Simulation
+i_fix_0 = [1;4;5;10;11];	# Equilibrium
+i_fix_1 = [1;4;5;10;11;12;13];	# Steady-state with depolarisation.
+
+
+par = Membrane_numpar;		# Parameters
+sympar = Membrane_sympar;		# Symbolic parameters
+
+##HH = par(sympar.HH)
+
+K_k = par(sympar.K_k)
+K_n = par(sympar.K_n)
+K_l = par(sympar.K_l)
+
+V_eq_0 = par(sympar.V_eq)
+C_m = par(sympar.C_m);
+RT = par(sympar.RT);
+F = par(sympar.F);
+kappa_k = par(sympar.kappa_k);
+kappa_n = par(sympar.kappa_n);
+kappa_l = par(sympar.kappa_n);
+v_k = par(sympar.v_k);
+v_n = par(sympar.v_n);
+v_l = par(sympar.v_l)
+
+Name = "GHK";
+
+## Stoichiometry
+stoich = dm2stoich("Membrane","");
+
+## Initial conditions
+x_i_k = 397/K_k;		# mM
+x_e_k = 20/K_k;			# mM
+
+x_i_n = 50/K_n;			# mM
+x_e_n = 437/K_n;		# mM
+
+x_i_l = 100/K_l;
+x_e_l = 12.193/K_l;		# From Figures_GHK
+
+
+X_000 = [(V_eq_0)*C_m/F;0;1;x_i_k; x_e_k;0;1;0;1;x_i_n; x_e_n;x_i_l;x_e_l];
+
+## Find initial steady state
+[x_0 X_0 v_0] = stoich_sim ("Membrane","",0,X_000,i_fix_0);
+V_eq = F*(X_0(1)/C_m)
+n_0 = X_0(3)
+m_0 = X_0(7)
+h_0 = X_0(8)
+
+## Put in depolarisation
+X_0_d = X_0;
+X_0_d(1) = X_0_d(1) + depolarisation*(C_m/F);
+
+[x_1 X_1 v_1] = stoich_sim ("Membrane","",0,X_0_d,i_fix_1);
+V_1 = F*(X_1(1)/C_m)
+n_1 = X_1(3)
+m_1 = X_1(7)
+h_1 = X_1(8)
+@
+
+
+1.3
+log
+@WORKING VERSION with AE
+@
+text
+@d138 4
+a141 4
+## Conserved moieties
+##Gates
+figure(16);
+plot(t,stoich.G([1,3,4],:)*X);
+d143 3
+a145 3
+##Concentrations
+figure(17);
+plot(t,stoich.G([2,5],:)*X, t, sum(stoich.G([6,7],:))*X);
+d147 3
+a149 3
+## Other
+figure(18);
+plot(t,stoich.G([7],:)*X);
+@
+
+
+1.2
+log
+@last 20.
+@
+text
+@d11 1
+a11 1
+depolarisation = 80;		# mV
+d16 4
+a19 1
+i_fix = [4;5;10;11;12;13];
+d43 3
+d60 5
+a64 4
+##i_fix_0 = [1;i_fix];
+i_fix_0 = [1;4;5;10;11];
+[x_00 X_00 v_00] = stoich_sim ("Membrane","",0,X_000,i_fix_0);
+V_eq = F*(X_00(1)/C_m)
+d67 2
+a68 2
+X_0 = X_00;
+X_0(1) = X_0(1) + depolarisation*(C_m/F);
+d70 8
+a77 1
+[x X v] = stoich_sim ("Membrane","",t,X_0, i_fix);
+d137 13
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d7 1
+a7 1
+last = 50;
+@

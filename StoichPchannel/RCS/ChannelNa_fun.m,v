@@ -1,0 +1,112 @@
+head	1.3;
+access;
+symbols;
+locks
+	peterg:1.3; strict;
+comment	@// @;
+
+
+1.3
+date	2015.02.11.03.37.45;	author peterg;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2015.02.09.23.02.09;	author peterg;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2015.02.09.22.58.32;	author peterg;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.3
+log
+@Working version for Physical gate.
+@
+text
+@function dx = ChannelNa_fun (x,t)
+
+  ## usage:  dx = ChannelNa_fun (x,t)
+  ##
+  ## 
+
+  ## TT is used for fsolve
+  global U
+    
+  par = ChannelNa_numpar;		# Parameters
+  sym = ChannelNa_sympar;		# Parameters
+  K_n = par(sym.K_n);
+
+  ## Full state
+  x_i_n = 50/K_n;			# mM
+  x_e_n = 437/K_n;	
+
+  ## Gate state
+  x_m = x(1);
+  x_h = x(2);
+
+  X = [(1-x_m) x_m (1-x_h) x_h x_i_n x_e_n]';
+
+
+  xx = zeros(6,1);		# Not used
+  yy = 0;			# Not used
+
+
+  if nargin<2
+    t = 0;
+    u = U;
+  else
+    u = ChannelNa_input(xx,yy,t,par);
+  end
+
+  dX = ChannelNa_ode(X,u,t,par);
+
+  ## Just return two gating states - others are constant.
+  dx = dX([2,4]);
+
+endfunction
+@
+
+
+1.2
+log
+@First try.
+@
+text
+@d18 3
+a20 1
+  X = [x x_i_n x_e_n]';
+d22 1
+d24 2
+a25 1
+  xx = zeros(4,1);		# Not used
+d36 1
+a36 1
+  dX = ChannelNa_ode(x,u,t,par);
+d38 2
+a39 2
+  ## Just return gating state - others are constant.
+  dx = dX(1);
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d11 11
+a21 1
+  xx = zeros(4,1);			# Not used
+d24 1
+d32 6
+a37 2
+  dx = ChannelNa_ode(x,u,t,par);
+endfunction@

@@ -1,0 +1,54 @@
+#! /bin/sh
+
+     ###################################### 
+     ##### Model Transformation Tools #####
+     ######################################
+
+# Bourne shell script: dat2sdat
+
+# Structure file - dat to sdat conversion
+# P.J.Gawthrop April 1997
+# Copyright (c) P.J.Gawthrop, 1997, 1999
+
+###############################################################
+## Version control history
+###############################################################
+## $Id: dat2sdat,v 1.2 2001/07/13 04:54:04 geraint Exp $
+## $Log: dat2sdat,v $
+## Revision 1.2  2001/07/13 04:54:04  geraint
+## Branch merge: numerical-algebraic-solution back to main.
+##
+## Revision 1.1.4.1  2001/06/26 00:57:21  geraint
+## Prints more useful name.
+##
+## Revision 1.1  2000/12/28 12:26:34  peterg
+## Put under RCS
+##
+## Revision 1.1  1999/03/28 21:29:40  peterg
+## Initial revision
+##
+###############################################################
+
+if [ "$2" = "odes" ]; then
+    which="state"
+else
+    which="output"
+fi
+
+awk '
+BEGIN{
+printf("Time");
+}
+{ 
+  if ($1==which)
+    printf(" %s(%s)", $4, $5);
+}
+END{
+printf("\n");
+}
+'  SYSTEM=$1 which=$which  < $1_struc.txt
+
+cat $1_$2.dat
+
+
+

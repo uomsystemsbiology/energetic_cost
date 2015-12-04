@@ -1,0 +1,68 @@
+head	1.2;
+access;
+symbols;
+locks; strict;
+comment	@// @;
+
+
+1.2
+date	2015.03.17.04.06.06;	author peterg;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2015.03.10.04.22.24;	author peterg;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@WORKING VERSION
+@
+text
+@function [V_N R F] = RTF (T,scale)
+
+  ## usage:  ratio = RTF (T)
+  ## Computes RT/F
+  ## 
+
+  if nargin<1
+    T = 300;			# K
+  end
+
+  if nargin<2
+    scale = 1;		
+  end
+
+  R = 8.3144621;		# Gas constant J K^-1 mol^-1
+  F = 9.64853399*10^4/scale;	# Faraday constant C mol^-1
+
+  V_N = (R*T)/F;
+
+endfunction
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d1 1
+a1 1
+function [ratio R F] = RTF (T)
+d11 4
+d16 1
+a16 1
+  F = 9.64853399*10^4;		# Faraday constant C mol^-1
+d18 1
+a18 1
+  ratio = (R*T)/F;
+d20 1
+a20 1
+endfunction@

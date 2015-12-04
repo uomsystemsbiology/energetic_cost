@@ -1,0 +1,43 @@
+%% Label file for system sC (sC_lbl.txt)
+%SUMMARY sC Sensitivity C component
+%DESCRIPTION 
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %% Version control history
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %% $Id: sC_lbl.txt,v 1.3 2001/04/24 16:41:54 gawthrop Exp $
+% %% $Log: sC_lbl.txt,v $
+% %% Revision 1.3  2001/04/24 16:41:54  gawthrop
+% %% New 2-port sensitivity components
+% %%
+% %% Revision 1.1  2001/04/05 12:00:18  gawthrop
+% %% Identification example
+% %%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% Port aliases
+%ALIAS	in	actual,sensitivity
+
+% Argument aliases
+%ALIAS	$1	effort,c
+%ALIAS	$2	cs
+
+%CR alias
+%ALIAS $1 slin
+
+%% Each line should be of one of the following forms:
+%	     a comment (ie starting with %)
+%	     component-name	cr_name	arg1,arg2,..argn
+%	     blank
+
+% ---- Component labels ----
+% Component type C
+	c	slin 	effort,c;cs
+
+% Component type SS
+	[actual]	SS		external,external
+	[sensitivity]	SS		external,external
+
+
+

@@ -1,0 +1,17 @@
+function ind = iname2index (name,i_name)
+
+  ## usage:  i = iname2index (iname)
+  ##
+  ## 
+
+  ind = [];
+  for i = 1:rows(name)
+    long_name = sprintf("decoli__%s__v_i_v_i",deblank(name(i,:)));
+    ii = strmatch(long_name,i_name);
+    if length(ii)>0
+      ind = [ind;ii];
+    end
+  end
+  
+
+endfunction

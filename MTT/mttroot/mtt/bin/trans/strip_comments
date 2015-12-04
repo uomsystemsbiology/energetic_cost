@@ -1,0 +1,31 @@
+#! /bin/sh
+
+     ###################################### 
+     ##### Model Transformation Tools #####
+     ######################################
+
+
+# Bourne shell script: strip_comments
+# Strips comments from mtt text files
+# P.J.Gawthrop July 1997
+# Copyright (c) P.J.Gawthrop, 1997.
+
+###############################################################
+## Version control history
+###############################################################
+## $Id: strip_comments,v 1.3 2002/04/28 18:55:03 geraint Exp $
+## $Log: strip_comments,v $
+## Revision 1.3  2002/04/28 18:55:03  geraint
+## Fixed [ 549658 ] awk should be gawk.
+## Replaced calls to awk with call to gawk.
+##
+## Revision 1.2  1998/11/18 11:30:19  peterg
+## Now strips blank lines as well
+##
+###############################################################
+
+
+sed 's/%/#/' |\
+gawk --field-separator '#' '{if (length($1)>0) print $1}'  |\
+gawk '{if (NF>0) print $0}'
+

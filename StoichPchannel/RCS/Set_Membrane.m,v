@@ -1,0 +1,409 @@
+head	1.14;
+access;
+symbols;
+locks; strict;
+comment	@// @;
+
+
+1.14
+date	2015.11.18.00.21.55;	author peterg;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	2015.11.17.23.17.32;	author peterg;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	2015.11.16.00.03.42;	author peterg;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2015.11.13.03.57.54;	author peterg;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2015.03.31.23.25.56;	author peterg;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2015.03.31.23.12.59;	author peterg;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2015.03.29.23.49.07;	author peterg;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2015.03.29.22.02.25;	author peterg;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2015.03.28.21.15.16;	author peterg;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2015.03.27.23.28.47;	author peterg;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2015.03.20.00.47.17;	author peterg;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2015.03.18.05.09.19;	author peterg;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2015.03.17.04.06.06;	author peterg;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2015.03.17.00.56.27;	author peterg;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.14
+log
+@Suppres soutput
+@
+text
+@## [rtf R F_0] = RTF;
+## V_N = RTF*1000;		# Nernst voltage in mv
+## Get some constants
+if !exist("VaryNa")
+   VaryNa=0;
+endif
+
+const = ThermoConstants;
+F = const.F;
+V_N = const.V_N;
+Avogadro = const.A;
+
+
+## Initial depolarisation
+depolarisation = 20e-3;		# V
+
+
+t = [0:last/1000:last];		# Time (sec)
+dt = mean(diff(t));	# Time step (sec);
+i_fix = [4;5;10;11;12;13];	# Simulation
+i_fix_0 = [1;4;5;10;11];	# Equilibrium
+i_fix_1 = [1;4;5;10;11;12;13];	# Steady-state with depolarisation.
+
+
+## Volumes
+V_i = par(sympar.V_i);
+V_e = par(sympar.V_e);
+
+## Thermo. gains
+K_k = par(sympar.K_k);
+K_n = par(sympar.K_n);
+K_l = par(sympar.K_l);
+
+V_eq_0 = par(sympar.V_eq);
+C_m = par(sympar.C_m);
+RT = par(sympar.RT);
+F = par(sympar.F);
+kappa_k = par(sympar.kappa_k);
+kappa_n = par(sympar.kappa_n);
+kappa_l = par(sympar.kappa_n);
+v_k = par(sympar.v_k);
+v_n = par(sympar.v_n);
+v_l = par(sympar.v_l);
+
+x_g = par(sympar.x_g);		# Total gate state
+
+v_unit = par(sympar.v_unit);	# Scaling factor
+
+Name = "Memb";
+
+## ## Stoichiometry
+## stoich = dm2stoich("Membrane","");
+
+## Initial conditions
+x_i_k = V_i*397/K_k;		# mmol
+x_e_k = V_e*20/K_k;		# mmol
+
+x_i_n = V_i*50/K_n;		# mmol
+if VaryNa
+   x_i_n = vary*x_i_n;
+endif
+x_e_n = V_e*437/K_n;		# mmol
+
+x_i_l = V_i*100e-3/K_l;
+x_e_l = V_e*12.193e-3/K_l;		# From Figures_GHK
+
+X_00 = [(V_eq_0)*C_m/F;0;x_g;x_i_k; x_e_k;0;x_g;0;x_g;x_i_n; x_e_n;x_i_l;x_e_l];
+
+## Find initial steady state
+[x_0 X_0 v_0] = stoich_sim ("Membrane","",0,X_00,i_fix_0);
+V_eq = F*(X_0(1)/C_m);
+n_0 = X_0(3);
+m_0 = X_0(7);
+h_0 = X_0(8);
+x_i_l_0 = X_0(12);
+x_e_l_0 = X_0(13);
+V_l_0 = V_N*log(x_e_l_0/x_i_l_0);
+
+## Put in depolarisation
+X_0_d = X_0;
+X_0_d(1) = X_0_d(1) + depolarisation*(C_m/F);
+
+## [x_1 X_1 v_1] = stoich_sim ("Membrane","",0,X_0_d,i_fix_1);
+## V_1 = F*(X_1(1)/C_m)
+## n_1 = X_1(3)
+## m_1 = X_1(7)
+## h_1 = X_1(8)
+
+## The Free-energy constants
+K_c = Membrane_K(par);
+
+## Compute some numbers
+K_m = (F^2)/(C_m*RT);
+
+@
+
+
+1.13
+log
+@Make vary external.
+@
+text
+@d11 1
+a11 1
+Avogadro = const.A
+d26 2
+a27 2
+V_i = par(sympar.V_i)
+V_e = par(sympar.V_e)
+d30 3
+a32 3
+K_k = par(sympar.K_k)
+K_n = par(sympar.K_n)
+K_l = par(sympar.K_l)
+d34 1
+a34 1
+V_eq_0 = par(sympar.V_eq)
+d47 1
+a47 1
+v_unit = par(sympar.v_unit)	# Scaling factor
+d71 4
+a74 4
+V_eq = F*(X_0(1)/C_m)
+n_0 = X_0(3)
+m_0 = X_0(7)
+h_0 = X_0(8)
+d77 1
+a77 1
+V_l_0 = V_N*log(x_e_l_0/x_i_l_0)
+d90 1
+a90 1
+K_c = Membrane_K(par)
+d93 1
+a93 1
+K_m = (F^2)/(C_m*RT)
+@
+
+
+1.12
+log
+@Measure dt in seconds, not ms.
+@
+text
+@a59 1
+   vary = 2;
+@
+
+
+1.11
+log
+@Optionaly vary initial Na
+@
+text
+@d19 1
+a19 1
+dt = mean(diff(t))/1000;	# Time step (sec);
+@
+
+
+1.10
+log
+@New V_i V_e parameters
+Seperate numpar for Axon and Membrane
+@
+text
+@d4 4
+d59 4
+@
+
+
+1.9
+log
+@Put in volumes.
+@
+text
+@a20 4
+par = Membrane_numpar;		# Parameters
+sympar = Membrane_sympar;	# Symbolic parameters
+
+
+@
+
+
+1.8
+log
+@Put in Avogadro
+@
+text
+@d24 6
+d55 2
+a56 2
+x_i_k = 397/K_k;		# mM
+x_e_k = 20/K_k;			# mM
+d58 2
+a59 2
+x_i_n = 50/K_n;			# mM
+x_e_n = 437/K_n;		# mM
+d61 2
+a62 2
+x_i_l = 100/K_l;
+x_e_l = 12.193/K_l;		# From Figures_GHK
+@
+
+
+1.7
+log
+@Compute dt here.
+@
+text
+@d7 1
+d9 2
+a10 1
+##depolarisation = 20e-3;		# V
+@
+
+
+1.6
+log
+@WORKING VERSION with actual units + scaling.
+@
+text
+@d12 2
+a13 1
+t = [0:last/1000:last];
+@
+
+
+1.5
+log
+@Extra stuff for power.
+@
+text
+@d1 6
+a6 2
+[rtf R F_0] = RTF;
+V_N = RTF*1000;		# Nernst voltage in mv
+d8 2
+a9 1
+depolarisation = 20;		# mV
+d19 1
+a19 3
+sympar = Membrane_sympar;		# Symbolic parameters
+
+##HH = par(sympar.HH)
+d34 3
+a36 1
+v_l = par(sympar.v_l)
+d38 1
+a38 1
+x_g = par(sympar.x_g)			# Total gate state
+@
+
+
+1.4
+log
+@WORKING VERSION with new gate and x_g.
+@
+text
+@d7 1
+a7 1
+t = [0:0.01:last];
+d71 7
+@
+
+
+1.3
+log
+@WORKING VERSION
+@
+text
+@d33 2
+d50 1
+a50 2
+
+X_00 = [(V_eq_0)*C_m/F;0;1;x_i_k; x_e_k;0;1;0;1;x_i_n; x_e_n;x_i_l;x_e_l];
+@
+
+
+1.2
+log
+@WORKING VERSION
+@
+text
+@d33 1
+a33 1
+Name = "GHK";
+d35 2
+a36 2
+## Stoichiometry
+stoich = dm2stoich("Membrane","");
+d49 1
+a49 1
+X_000 = [(V_eq_0)*C_m/F;0;1;x_i_k; x_e_k;0;1;0;1;x_i_n; x_e_n;x_i_l;x_e_l];
+d52 1
+a52 1
+[x_0 X_0 v_0] = stoich_sim ("Membrane","",0,X_000,i_fix_0);
+d57 3
+d65 5
+a69 5
+[x_1 X_1 v_1] = stoich_sim ("Membrane","",0,X_0_d,i_fix_1);
+V_1 = F*(X_1(1)/C_m)
+n_1 = X_1(3)
+m_1 = X_1(7)
+h_1 = X_1(8)
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@a3 4
+last = 20;
+depolarisation = 7;		# mV
+depolarisation = 15;		# mV
+##  depolarisation = 50;		# mV
+d5 1
+a5 2
+##depolarisation = 10;		# mV
+## depolarisation = 80;		# mV
+@

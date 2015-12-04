@@ -1,0 +1,58 @@
+head	1.2;
+access;
+symbols;
+locks; strict;
+comment	@// @;
+
+
+1.2
+date	2015.03.11.01.19.14;	author peterg;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2015.02.10.01.16.25;	author peterg;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@WORKING VERSIONS.
+@
+text
+@clear;
+Setpath;Setplot;
+
+## Extract parameters
+par = ChannelNaC_numpar;		# Parameters
+sym = ChannelNaC_sympar;
+K_n = par(sym.K_n);
+
+
+## Simulation
+sim_n;
+
+## Steady-state
+Figures_n_steady;
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d5 2
+a6 2
+par = ChannelNa_numpar;		# Parameters
+sym = ChannelNa_sympar;
+a8 3
+
+## CR
+##Figures_n_cr;
+@

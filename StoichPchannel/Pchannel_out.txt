@@ -1,0 +1,18 @@
+K_k =  0.0010000
+K_n =  0.0010000
+Name = GHK0
+dx =  0.22356
+gate_Na_1_x_0 =  0.052932
+dx =  0.070000
+gate_Na_2_x_0 =  0.59612
+GKH =  2.7357
+i_k_0 =  1.9088
+i_n_0 = -2.3052
+i_l_0 =  0.39643
+V_l_0 = -66.321
+CHECK_v_l =    4.2973e-04
+warning: using continuation marker \ outside of double quoted strings is deprecated and will be removed in a future version of Octave; near line 60 of file '/home/peterg/WORK/Research/SystemsBiology/Notes/2015/IonChannels/Examples/Pchannel/HH_odeo.m'
+warning: using continuation marker \ outside of double quoted strings is deprecated and will be removed in a future version of Octave; near line 62 of file '/home/peterg/WORK/Research/SystemsBiology/Notes/2015/IonChannels/Examples/Pchannel/HH_odeo.m'
+I_k_0 =  15.339
+I_n_0 = -1.0492
+I_l_0 =  15.396

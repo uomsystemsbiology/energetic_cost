@@ -1,0 +1,19 @@
+# Outline report file for system iRC2c (iRC2c_rep.txt)
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %% Version control history
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %% $Id: iRC2c_rep.txt,v 1.1 2000/12/28 17:52:17 peterg Exp $
+% %% $Log: iRC2c_rep.txt,v $
+% %% Revision 1.1  2000/12/28 17:52:17  peterg
+% %% To RCS
+% %%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+mtt iRC2c abg tex
+mtt iRC2c struc tex
+mtt iRC2c dae tex
+mtt iRC2c dm tex
+mtt iRC2c tf tex
+
+

@@ -1,0 +1,27 @@
+head	1.1;
+access;
+symbols;
+locks
+	peterg:1.1; strict;
+comment	@// @;
+
+
+1.1
+date	2015.12.02.03.09.42;	author peterg;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@##addpath("~/WORK/Research/IntermittentControl/lib/octave");
+addpath("~/WORK/Research/SystemsBiology/lib/octave");
+##addpath("~/WORK/Research/SystemsBiology/lib/metatool");
+@

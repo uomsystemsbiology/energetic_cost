@@ -1,0 +1,15 @@
+%% Simulation parameters for system Isovolumetric (Isovolumetric_simpar.txt)
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %% Version control history
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %% $Id: Isovolumetric_simpar.txt,v 1.1 2000/12/28 18:17:57 peterg Exp $
+% %% $Log: Isovolumetric_simpar.txt,v $
+% %% Revision 1.1  2000/12/28 18:17:57  peterg
+% %% To RCS
+% %%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+LAST=1.0
+DT=0.01
+STEPFACTOR=1

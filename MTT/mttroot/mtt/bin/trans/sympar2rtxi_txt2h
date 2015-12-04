@@ -1,0 +1,43 @@
+#! /bin/sh
+
+sys=$1
+sympar=${sys}_sympar.txt
+RTXI_H="${sys}_rtxi.h"
+program=$(basename $0)
+date=$(date)
+
+cat <<EOF > ${RTXI_H}
+// -*-c++-*- Put Emacs into c++-mode
+
+// Generated from $sympar by MTT
+// using $program
+// at $date
+
+#include <rt.h>
+#include <default_gui_model.h>
+
+class $sys : public DefaultGUIModel
+{
+
+public:
+  
+  $sys(void);
+  virtual ~$sys(void);
+  
+  virtual void execute(void);
+
+protected:
+
+  virtual void update(DefaultGUIModel::update_flags_t);
+
+private:
+
+EOF
+
+gawk '
+	{ printf("  double %s;\n", $1); }
+' $sympar >> ${RTXI_H}
+
+cat <<EOF >> ${RTXI_H}
+};
+EOF

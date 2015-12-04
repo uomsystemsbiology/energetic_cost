@@ -1,0 +1,53 @@
+head	1.2;
+access;
+symbols;
+locks; strict;
+comment	@// @;
+
+
+1.2
+date	2013.06.27.07.21.22;	author peterg;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2013.06.27.06.34.19;	author peterg;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@*** empty log message ***
+@
+text
+@function tex = mat2texmat (mat, matname,label)
+
+  ## usage:  tex = mat2texmat (mat,name)
+  ##
+  ## Produce matrix suitable for use in align.
+
+  if nargin<3
+    label = matname;
+  else
+    label = sprintf("%s_%s",label,matname);
+  end
+
+  texmat = mat2tex(mat);
+
+  tex = sprintf("%s &= \n\t\\begin{pmatrix}\n%s\n\t\\end{pmatrix}",matname,texmat);
+  tex = sprintf("%s \\label{eq:%s}\\\\\n",tex, label);
+endfunction@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d9 2
+@

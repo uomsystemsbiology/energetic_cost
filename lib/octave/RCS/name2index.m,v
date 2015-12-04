@@ -1,0 +1,35 @@
+head	1.1;
+access;
+symbols;
+locks; strict;
+comment	@// @;
+
+
+1.1
+date	2015.01.08.23.29.18;	author peterg;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@function ind = name2index (names)
+	 
+  ## usage: ind = name2index (names)
+  ## 
+  ## names is a cell array of strings
+	 
+  for i = 1:length(names)
+      eval(sprintf("ind.%s = %i;",names{i},i));
+  endfor
+  
+endfunction
+
+@

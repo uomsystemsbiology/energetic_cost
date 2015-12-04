@@ -1,0 +1,423 @@
+head	1.14;
+access;
+symbols;
+locks; strict;
+comment	@// @;
+
+
+1.14
+date	2015.03.31.00.50.16;	author peterg;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	2015.03.31.00.35.06;	author peterg;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	2015.03.30.02.22.43;	author peterg;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2015.03.30.01.05.07;	author peterg;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2015.03.30.01.00.34;	author peterg;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2015.03.20.01.57.20;	author peterg;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2015.03.11.01.05.15;	author peterg;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2015.03.10.02.50.48;	author peterg;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2015.02.11.03.33.20;	author peterg;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2015.02.10.22.49.50;	author peterg;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2015.02.10.01.22.45;	author peterg;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2015.02.10.01.03.52;	author peterg;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2015.02.10.00.22.18;	author peterg;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2015.02.09.02.33.48;	author peterg;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.14
+log
+@label
+@
+text
+@const = ThermoConstants;
+F = const.F;
+
+## Parameters etc.
+par = ChannelKC_numpar;
+sym = ChannelKC_sympar;
+K_k = par(sym.K_k)
+v_k = -77;
+
+x_g = par(sym.x_g)			# Total gate state
+
+## Initial cond.
+## Constant states
+x_i_k = 397/K_k;			# mM
+x_e_k = 20/K_k;	
+
+X_0 = [0
+       x_g
+       0
+       x_i_k
+       x_e_k];
+
+
+## simulate states
+i_fix = [1;4;5];
+t = [0:0.1:50]'*1e-3;		# Time
+[x X v] = stoich_sim ("ChannelKC","",t,X_0,i_fix,[],"","ChannelKC_Xfix");
+i_k = F*v(2,:);
+one = ones(size(t));
+V = 0.1*sin(2*pi*1e3*t/10);	# V
+x_open = X(3,:);
+
+mV = 1000*V;			# mV
+mi_k = 1000*i_k;		# mV
+
+mu = F*V;
+v_k  = i_k/F;
+kmu = mu*1e-3;			# kJ/mol
+nv_k = v_k*1e9;			# nmol/sec
+
+## Plot
+R = find(t>max(t)/2);
+figure(10);
+plot(kmu(R),nv_k(R));
+grid;
+xlabel("\\mu (kJ/mol)");
+ylabel("v_k (nmol/sec)");
+fig("Mk","vi_sin",2)
+
+figure(11);
+plot(kmu(R),x_open(R)/x_g);
+grid;
+xlabel("\\mu (kJ/mol)");
+ylabel("n");
+fig("Mk","vx_sin",2)
+
+## figure(12);
+## plot(t,i_k);
+## grid;
+## xlabel("t");
+## ylabel("i_k");
+## fig("Mk","i_sin",2)
+
+
+@
+
+
+1.13
+log
+@New units.
+@
+text
+@d54 1
+a54 1
+ylabel("x_o/x_g");
+@
+
+
+1.12
+log
+@i in mA
+@
+text
+@d34 6
+a39 1
+mi_k = 1000*i_k;			# mV
+d44 1
+a44 1
+plot(mV(R),mi_k(R));
+d46 2
+a47 3
+xlabel("V (mV)");
+ylabel("i_k (mA)");
+#axis([-150 150 -6 1])
+d51 1
+a51 1
+plot(mV(R),x_open(R)/x_g);
+d53 2
+a54 2
+xlabel("V (mV)");
+ylabel("x");
+@
+
+
+1.11
+log
+@Faraday.
+@
+text
+@d33 2
+a34 1
+mV = 1000*V;			# ,V
+d39 1
+a39 1
+plot(mV(R),i_k(R));
+d42 1
+a42 1
+ylabel("i_k");
+@
+
+
+1.10
+log
+@Sort units.
+@
+text
+@d1 2
+a2 1
+F = 96.4853399;			# Faraday constant m C mol^-1
+@
+
+
+1.9
+log
+@Fixed x_g not equal 1 issues.
+@
+text
+@d25 1
+a25 1
+t = [0:0.1:50]';		# Time
+d29 1
+a29 1
+V = 100*sin(2*pi*t/10);
+d32 2
+d37 1
+a37 1
+plot(V(R),i_k(R));
+d39 1
+a39 1
+xlabel("V");
+d45 1
+a45 1
+plot(V(R),x_open(R)/x_g);
+d47 1
+a47 1
+xlabel("V");
+@
+
+
+1.8
+log
+@*** empty log message ***
+@
+text
+@d9 2
+d17 1
+a17 1
+       1
+d43 1
+a43 1
+plot(V(R),x_open(R));
+@
+
+
+1.7
+log
+@Memristor k now works.
+@
+text
+@d3 6
+d23 1
+a23 1
+t = [0:0.1:50]';
+@
+
+
+1.6
+log
+@Sort out state
+@
+text
+@d1 14
+d16 1
+a16 3
+
+## Initiallise memristor state at x=v=0
+[dx,x_0] = mk_cr(0,0);
+d18 2
+a19 1
+x = lsode("ChannelK_fun",x_0,t);
+d21 2
+d24 1
+a24 21
+## Full state
+x_i_k = 397/K_k;			# mM
+x_e_k = 20/K_k;
+X = [1-x x x_i_k*one x_e_k*one]';
+
+## Get input & output
+par = ChannelK_numpar;
+Y = [];
+U = [];
+for i = 1:length(t)
+  xx = zeros(4,1);			# Not needed
+  yy = zeros(4,1);			# Not needed
+  U = [U, ChannelK_input(xx,yy,t(i),par)];
+  y = ChannelK_odeo(X(:,i),U(i),t(i),par);
+  Y = [Y;y(1)];
+end
+
+i_k = Y;
+V = U;
+v_k = -77;
+
+d35 1
+a35 1
+plot(V(R),x(R));
+a40 7
+figure(12);
+plot(t,i_k);
+grid;
+xlabel("t");
+ylabel("i_k");
+fig("Mk","i_sin",2)
+
+d42 1
+a42 1
+## plot(U(R),x(R).^4);
+d44 3
+a46 2
+## xlabel("v_k");
+## ylabel("x^4");
+@
+
+
+1.5
+log
+@*** empty log message ***
+@
+text
+@d12 1
+a12 1
+X = [x x_i_k*one x_e_k*one]';
+@
+
+
+1.4
+log
+@Tidy.
+@
+text
+@d28 1
+d34 1
+a34 1
+xlabel("v_k");
+d42 1
+a42 1
+xlabel("v_k");
+@
+
+
+1.3
+log
+@*** empty log message ***
+@
+text
+@d5 1
+a5 1
+t = [0:0.1:100]';
+d25 5
+a29 1
+R = find(t>50);
+d31 1
+a31 1
+plot(U(R),Y(R));
+d39 1
+a39 1
+plot(U(R),x(R));
+d44 7
+@
+
+
+1.2
+log
+@WORKING VERSION
+@
+text
+@d41 5
+a45 5
+figure(12);
+plot(U(R),x(R).^4);
+grid;
+xlabel("v_k");
+ylabel("x^4");
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d6 7
+a12 1
+X = lsode("Mk_fun",x_0,t);
+d15 1
+a15 1
+par = test_Mk_numpar;
+d17 1
+d19 5
+a23 5
+  xx = 0;			# Not needed
+  yy = 0;			# Not needed
+  U(i) = test_Mk_input(xx,yy,t(i),par);
+  y = test_Mk_odeo(X(i),U(i),t(i),par);
+  Y = [Y;y(2)];
+d31 1
+a31 1
+axis([-150 150 -6 1])
+d35 1
+a35 1
+plot(U(R),X(R));
+d42 1
+a42 1
+plot(U(R),X(R).^4);
+@

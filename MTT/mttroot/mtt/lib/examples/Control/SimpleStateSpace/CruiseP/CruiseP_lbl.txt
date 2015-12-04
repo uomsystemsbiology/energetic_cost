@@ -1,0 +1,33 @@
+%SUMMARY CruiseP: <brief description here>
+%DESCRIPTION <Detailed description here>
+%% Label file for system CruiseP (CruiseP_lbl.txt)
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %% Version control history
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %% $Id: CruiseP_lbl.txt,v 1.1 2000/12/28 17:34:36 peterg Exp $
+% %% $Log: CruiseP_lbl.txt,v $
+% %% Revision 1.1  2000/12/28 17:34:36  peterg
+% %% To RCS
+% %%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Each line should be of one of the following forms:
+%	a comment (ie starting with %)
+%	Component-name	CR_name	arg1,arg2,..argn
+%	blank
+
+
+
+% Component type I
+	m		lin	flow,m
+
+% Component type INTF
+	int		lin	flow,int
+
+% Component type R
+	b		lin	flow,b
+
+% Component type SS
+	u		SS	external,internal
+	y		SS	external,0

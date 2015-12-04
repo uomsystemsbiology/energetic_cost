@@ -1,0 +1,133 @@
+head	1.4;
+access;
+symbols;
+locks; strict;
+comment	@// @;
+
+
+1.4
+date	2014.09.10.07.16.48;	author peterg;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2014.09.05.01.28.31;	author peterg;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2014.09.05.01.18.23;	author peterg;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2014.09.03.05.55.15;	author peterg;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.4
+log
+@Changed error function.
+@
+text
+@function K_c = Keq2K (K_eq,N,K,G, k_c_1,tol)
+	 
+## usage: K_c = Keq2K (K_eq,N,K,G [,k_c_1])
+## 
+## 
+## Compute BG C parameters K_c from equilibrium constants K_eq.
+## NB K_eq must be thremodynamically consistent.
+
+  if nargin<6
+    tol = 1e-3;			# Error tolorance.
+  endif
+
+  logK_eq = log(K_eq);
+
+  ##First check that Keq is thermodynamically consistent.
+  check = norm(K'*logK_eq)/norm(logK_eq);
+  if (check>tol)
+     warning(sprintf("Thermodynamically inconsistent K_eq: check = %g",check));
+  endif
+  NN = -N';			# Transformation from mu to A
+  pNN = pinv(NN);		# Pseudo inverse
+
+  logK_c = pNN*logK_eq;		# Use pseudo inverse to solve for log K_c
+  K_c = exp(logK_c);		# Solution
+
+  ## Sanity check - reverse the solution
+  err = norm(NN*logK_c - logK_eq)/norm(logK_eq);
+  if (err>tol)
+    warning(sprintf("Incorrect solution: err = %g",err));
+  endif
+
+  if nargin>4
+    [n_g n_x] = size(G);
+    n_k = length(k_c_1);
+    if n_k!=n_g
+       error(sprintf("k_c_1 should be length %i, not %i",n_g,n_k));
+    else
+	K_c_1 = exp(G'*log(k_c_1));
+	K_c = K_c.*K_c_1;
+    endif
+    
+  endif
+  
+
+endfunction
+@
+
+
+1.3
+log
+@Extra k_c_1 parameter.
+@
+text
+@d1 1
+a1 1
+function K_c = Keq2K (K_eq,N,K,G, k_c_1)
+d9 3
+a11 1
+  tol = 1e-10;			# Error tolorance.
+d16 1
+a16 1
+  check = norm(K'*logK_eq);
+d27 1
+a27 1
+  err = norm(NN*logK_c - logK_eq);
+@
+
+
+1.2
+log
+@*** empty log message ***
+@
+text
+@d1 1
+a1 1
+function K_c = Keq2K (K_eq,N,K,G)
+d3 1
+a3 1
+## usage: K_c = Keq2K (K_eq,N,K,G)
+d29 13
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d19 1
+a19 1
+  pNN = pinv(NN);
+d21 2
+a22 2
+  logK_c = pNN*logK_eq;
+  K_c = exp(logK_c);
+@

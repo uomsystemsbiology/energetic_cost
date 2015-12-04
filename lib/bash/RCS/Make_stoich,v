@@ -1,0 +1,212 @@
+head	1.7;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.7
+date	2015.12.02.00.00.51;	author peterg;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2015.10.13.23.52.30;	author peterg;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2015.10.13.23.52.03;	author peterg;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2015.09.23.23.33.22;	author peterg;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2015.08.10.01.54.41;	author peterg;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2015.03.31.22.36.45;	author peterg;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2015.03.19.23.48.13;	author peterg;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.7
+log
+@*** empty log message ***
+@
+text
+@#!/bin/bash
+
+usage="Usage: Make_stoic system_name"
+blurb="Creating stoichiometric analysis and simulation files for"
+
+if [ -z "$1" ]; then
+    echo $usage
+    exit
+fi
+
+if [ -z "$2" ]; then
+    syss=$1
+    echo "$blurb $syss"
+else
+    syss=$2
+    args=$1
+    echo "$blurb $syss using $args"
+fi
+
+reps="dm numpar sympar struc odeo"
+ireps="dm sympar struc"
+
+function info() {
+    fun=$1_$2_info.m
+    echo Creating $fun
+     mtt -q -nas  $1 struc txt
+     echo "function info = $1_$2_info" > $fun
+     struc_info $1 $2 >> $fun
+     echo "endfunction" >> $fun
+}
+
+function stoich() {
+    sys=$1
+    echo Doing $sys
+    
+    # ## Find the free-energy constants (experimental)
+    # mtt -q -nas  $sys odeo m
+    # if [ "${sys}_odeo.m" -nt "${sys}_K.m" ]; then
+    # 	## Zap crs & recreate odeo.m
+    # 	(cd MTT_work; mv -v ${sys}_cr.r ${sys}_cr_old; sed 's/in /%% in /'<${sys}_cr_old > ${sys}_cr.r)
+    # 	mtt -q -nas $sys odeo m
+    # 	## Generate the _K.m file
+    # 	odeo2kpar $sys
+	
+    # 	## Reinstate crs & recreate odeo.m
+    # 	(cd MTT_work; rm -v ${sys}_cr.r)
+    # fi
+
+    for rep in $reps; do
+    	echo Doing $rep
+    	mtt -q -nas  $sys $rep m
+    done
+   
+    info $sys input
+
+    if [ -e i${sys}_abg.fig ]; then
+	echo Doing i$sys
+	for rep in $ireps; do
+    	    echo Doing $rep
+    	    mtt -q -nas $args i$sys $rep m
+        done
+    fi
+
+}
+for sys in $syss; do
+    abg=${sys}_abg.fig 
+
+    if [ -f "$abg" ]; then
+	stoich $sys
+    else
+	echo $abg does not exist
+    fi
+done
+
+@
+
+
+1.6
+log
+@*** empty log message ***
+@
+text
+@d23 8
+d53 3
+@
+
+
+1.5
+log
+@Usage message.
+@
+text
+@d8 1
+@
+
+
+1.4
+log
+@Zap experimental K stuff.
+@
+text
+@d3 1
+d5 4
+@
+
+
+1.3
+log
+@Reorganise.
+Error if file not found.
+@
+text
+@d22 8
+a29 8
+    ## Find the free-energy constants (experimental)
+    mtt -q -nas  $sys odeo m
+    if [ "${sys}_odeo.m" -nt "${sys}_K.m" ]; then
+	## Zap crs & recreate odeo.m
+	(cd MTT_work; mv -v ${sys}_cr.r ${sys}_cr_old; sed 's/in /%% in /'<${sys}_cr_old > ${sys}_cr.r)
+	mtt -q -nas $sys odeo m
+	## Generate the _K.m file
+	odeo2kpar $sys
+d31 3
+a33 3
+	## Reinstate crs & recreate odeo.m
+	(cd MTT_work; rm -v ${sys}_cr.r)
+    fi
+@
+
+
+1.2
+log
+@Tidy.
+@
+text
+@d17 3
+a19 1
+for sys in $syss; do
+d21 1
+a21 1
+
+d47 9
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d2 12
+a13 1
+syss=$1
+d19 14
+d41 1
+a41 1
+    	    mtt -q -nas  i$sys $rep m
+d44 1
+d46 1
+@

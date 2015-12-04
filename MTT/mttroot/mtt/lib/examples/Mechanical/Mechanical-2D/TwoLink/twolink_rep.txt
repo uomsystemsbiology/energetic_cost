@@ -1,0 +1,22 @@
+%% Outline report file for system twolink (twolink_rep.txt)
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %% Version control history
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %% $Id: twolink_rep.txt,v 1.1 1997/06/13 15:58:38 peterg Exp $
+% %% $Log: twolink_rep.txt,v $
+% %% Revision 1.1  1997/06/13 15:58:38  peterg
+% %% Initial revision
+% %%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+abg tex
+struc tex
+dae tex
+csm tex
+sro ps
+lmfr ps
+odeso ps
+input txt
+numpar txt
+

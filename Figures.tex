@@ -1,0 +1,81 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage{a4wide}
+\usepackage{siunitx}
+
+% Figs
+\usepackage{graphicx,subfigure,fancybox,color}
+
+\newcommand{\Fig}[2]{
+ \includegraphics[width=#2\linewidth]{Figs/#1.pdf}
+  \label{subfig:#1}
+}
+
+\newcommand{\SubFig}[3]{
+ \subfigure[#2]{
+   \includegraphics[width=#3\linewidth]{Figs/#1.pdf}
+   \label{subfig:#1}
+ }
+}
+
+\begin{document}
+\begin{figure}[htbp]
+ \centering
+ \SubFig{K_i}{$\text{K}^+$: current (\si{mA})}{0.45}
+ \SubFig{Na_i}{$\text{Na}^+$: current (\si{mA})}{0.45}
+ \caption{Comparison of current(\si{mA})--voltage(\si{mV}) relationships for
+   $\text{Na}^+$ and $\text{K}^+$ currents  for $G_{pore}=G_{HH}$ and $G_{pore}=G_{GHK}$
+   models.}
+ \label{fig:comparison}
+\end{figure}
+
+\begin{figure}[htbp]
+ \centering
+ \SubFig{Pgate_n_g}{n-gate $g_{ss}$}{0.45}
+ \SubFig{Pgate_n_tau}{n-gate $\tau$}{0.45}
+ \SubFig{Pgate_m_g}{m-gate $g_{ss}$}{0.45}
+ \SubFig{Pgate_m_tau}{m-gate $\tau$}{0.45}
+ \SubFig{Pgate_h_g}{h-gate $g_{ss}$}{0.45}
+ \SubFig{Pgate_h_tau}{h-gate $\tau$}{0.45}
+ \caption{Physical Gate Models fitted to Hodgkin-Huxley equations.}
+ \label{fig:pGate_HH}
+\end{figure}
+
+\begin{figure}[htbp]
+ \centering
+ \SubFig{Memb_V}{Voltage: $V$~\si{mV}}{0.45}
+ \SubFig{Memb_I}{$I_k$ \& $I_n$~\si{\mu A.cm^{-2}}}{0.45}
+ \SubFig{Memb_nmh}{Gating functions}{0.45}
+ \SubFig{Memb_I_g}{Gate current: $I_g$~\si{nA.cm^{-2}}}{0.45}
+   \caption{Membrane response: electrical domain. 
+     % 
+     (a) The membrane voltage (\si{mV}) is plotted against time
+     (\si{msec}) for a single action potential.
+     % 
+     (b) The corresponding channel currents $I_k$ \& $I_n$,$I_l$ (\si{\mu A.cm^{-2}}).
+     % 
+     (c) The corresponding three gating functions $n$, $m$ and $h$.
+     % 
+     (d) The gate currents for the three gates (\si{nA.cm^{-2}}).  }
+ \label{fig:membrane_resp}
+\end{figure}
+
+\begin{figure}[htbp]
+ \centering
+ \SubFig{Memb_P_er}{Net power \si{\mu W.cm^{-2}}}{0.45}
+ \SubFig{Memb_ATP}{Energy \si{nJ.cm^{-2}}}{0.45}
+   \caption{ Power \& Energy plotted against time (\si{msec}).
+     % 
+     (a)~The net external power and dissipated power (\si{\mu
+       W.cm^{-2}}).
+     (b)~The external energy (time integral of
+     external power) and the ATP-proxy energy (\si{nJ.cm^{-2}}). 
+}
+\label{fig:membrane_resp_energy}
+\end{figure}
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

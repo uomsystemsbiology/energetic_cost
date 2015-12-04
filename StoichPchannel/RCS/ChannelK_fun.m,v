@@ -1,0 +1,98 @@
+head	1.3;
+access;
+symbols;
+locks
+	peterg:1.3; strict;
+comment	@// @;
+
+
+1.3
+date	2015.02.11.01.31.35;	author peterg;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2015.02.09.04.27.29;	author peterg;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2015.02.09.00.43.39;	author peterg;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.3
+log
+@Version for Physical ate.
+@
+text
+@function dx = ChannelK_fun (x,t)
+
+  ## usage:  dx = ChannelK_fun (x,t)
+  ##
+  ## 
+
+  ## X is the on gate state
+  ## TT is used for fsolve
+  global U
+    
+  par = ChannelK_numpar;		# Parameters
+  sym = ChannelK_sympar;
+  K_k = par(sym.K_k);
+
+  ## Full state
+  x_i_k = 397/K_k;			# mM
+  x_e_k = 20/K_k;	
+  X = [1-x x x_i_k x_e_k]';
+
+  
+  xx = zeros(4,1);			# Not used
+  yy = 0;			# Not used
+
+  if nargin<2
+    t = 0;
+    u = U;
+  else
+    u = ChannelK_input(xx,yy,t,par);
+  end
+
+  dX = ChannelK_ode(X,u,t,par);
+
+  ## Just return on gating state
+  dx = dX(2);
+
+endfunction
+@
+
+
+1.2
+log
+@Fix concs.
+@
+text
+@d7 1
+d18 1
+a18 1
+  X = [x x_i_k x_e_k]';
+d33 2
+a34 2
+  ## Just return gating state - others are constant.
+  dx = dX(1);
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d11 9
+d30 6
+a35 2
+  dx = ChannelK_ode(x,u,t,par);
+endfunction@

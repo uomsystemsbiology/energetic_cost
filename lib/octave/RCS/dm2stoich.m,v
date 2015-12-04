@@ -1,0 +1,1658 @@
+head	1.58;
+access;
+symbols;
+locks; strict;
+comment	@// @;
+
+
+1.58
+date	2015.11.08.22.18.39;	author peterg;	state Exp;
+branches;
+next	1.57;
+
+1.57
+date	2015.11.05.22.40.53;	author peterg;	state Exp;
+branches;
+next	1.56;
+
+1.56
+date	2015.10.12.02.58.00;	author peterg;	state Exp;
+branches;
+next	1.55;
+
+1.55
+date	2015.08.11.23.32.30;	author peterg;	state Exp;
+branches;
+next	1.54;
+
+1.54
+date	2015.08.11.23.24.32;	author peterg;	state Exp;
+branches;
+next	1.53;
+
+1.53
+date	2015.03.09.05.36.57;	author peterg;	state Exp;
+branches;
+next	1.52;
+
+1.52
+date	2015.01.28.01.27.34;	author peterg;	state Exp;
+branches;
+next	1.51;
+
+1.51
+date	2015.01.08.05.33.09;	author peterg;	state Exp;
+branches;
+next	1.50;
+
+1.50
+date	2014.12.23.22.46.33;	author peterg;	state Exp;
+branches;
+next	1.49;
+
+1.49
+date	2014.12.23.22.44.39;	author peterg;	state Exp;
+branches;
+next	1.48;
+
+1.48
+date	2014.12.23.22.37.37;	author peterg;	state Exp;
+branches;
+next	1.47;
+
+1.47
+date	2014.12.09.23.11.24;	author peterg;	state Exp;
+branches;
+next	1.46;
+
+1.46
+date	2014.12.08.05.55.22;	author peterg;	state Exp;
+branches;
+next	1.45;
+
+1.45
+date	2014.07.18.03.24.22;	author peterg;	state Exp;
+branches;
+next	1.44;
+
+1.44
+date	2014.07.18.03.21.51;	author peterg;	state Exp;
+branches;
+next	1.43;
+
+1.43
+date	2014.07.02.22.27.05;	author peterg;	state Exp;
+branches;
+next	1.42;
+
+1.42
+date	2014.06.25.03.39.55;	author peterg;	state Exp;
+branches;
+next	1.41;
+
+1.41
+date	2014.06.25.03.13.15;	author peterg;	state Exp;
+branches;
+next	1.40;
+
+1.40
+date	2014.06.25.03.08.24;	author peterg;	state Exp;
+branches;
+next	1.39;
+
+1.39
+date	2014.05.30.02.41.49;	author peterg;	state Exp;
+branches;
+next	1.38;
+
+1.38
+date	2014.05.30.02.09.12;	author peterg;	state Exp;
+branches;
+next	1.37;
+
+1.37
+date	2014.05.30.01.59.38;	author peterg;	state Exp;
+branches;
+next	1.36;
+
+1.36
+date	2014.05.28.00.18.35;	author peterg;	state Exp;
+branches;
+next	1.35;
+
+1.35
+date	2014.05.09.02.36.04;	author peterg;	state Exp;
+branches;
+next	1.34;
+
+1.34
+date	2014.05.09.02.19.52;	author peterg;	state Exp;
+branches;
+next	1.33;
+
+1.33
+date	2014.05.09.01.35.09;	author peterg;	state Exp;
+branches;
+next	1.32;
+
+1.32
+date	2014.04.29.00.29.23;	author peterg;	state Exp;
+branches;
+next	1.31;
+
+1.31
+date	2014.04.17.04.17.41;	author peterg;	state Exp;
+branches;
+next	1.30;
+
+1.30
+date	2014.04.15.01.49.13;	author peterg;	state Exp;
+branches;
+next	1.29;
+
+1.29
+date	2014.04.07.07.17.38;	author peterg;	state Exp;
+branches;
+next	1.28;
+
+1.28
+date	2014.04.03.22.28.18;	author peterg;	state Exp;
+branches;
+next	1.27;
+
+1.27
+date	2014.04.02.22.36.28;	author peterg;	state Exp;
+branches;
+next	1.26;
+
+1.26
+date	2014.04.02.21.51.56;	author peterg;	state Exp;
+branches;
+next	1.25;
+
+1.25
+date	2014.04.01.21.51.33;	author peterg;	state Exp;
+branches;
+next	1.24;
+
+1.24
+date	2014.04.01.01.37.30;	author peterg;	state Exp;
+branches;
+next	1.23;
+
+1.23
+date	2014.03.31.23.54.18;	author peterg;	state Exp;
+branches;
+next	1.22;
+
+1.22
+date	2014.03.31.23.53.51;	author peterg;	state Exp;
+branches;
+next	1.21;
+
+1.21
+date	2014.03.31.22.17.41;	author peterg;	state Exp;
+branches;
+next	1.20;
+
+1.20
+date	2013.10.31.23.24.07;	author peterg;	state Exp;
+branches;
+next	1.19;
+
+1.19
+date	2013.10.29.03.31.04;	author peterg;	state Exp;
+branches;
+next	1.18;
+
+1.18
+date	2013.10.29.02.51.36;	author peterg;	state Exp;
+branches;
+next	1.17;
+
+1.17
+date	2013.10.18.05.28.55;	author peterg;	state Exp;
+branches;
+next	1.16;
+
+1.16
+date	2013.10.18.04.01.28;	author peterg;	state Exp;
+branches;
+next	1.15;
+
+1.15
+date	2013.10.09.21.35.45;	author peterg;	state Exp;
+branches;
+next	1.14;
+
+1.14
+date	2013.10.07.00.12.01;	author peterg;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	2013.10.03.06.58.55;	author peterg;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	2013.08.05.05.51.17;	author peterg;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2013.07.23.23.11.45;	author peterg;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2013.07.23.22.52.57;	author peterg;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2013.07.22.07.12.29;	author peterg;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2013.07.22.06.05.25;	author peterg;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2013.07.22.00.54.37;	author peterg;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2013.07.21.23.44.14;	author peterg;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2013.07.17.06.19.49;	author peterg;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2013.07.17.06.18.49;	author peterg;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2013.07.11.00.54.32;	author peterg;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2013.06.27.07.21.22;	author peterg;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2013.06.27.06.33.23;	author peterg;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.58
+log
+@Save names for two arg version as well.
+@
+text
+@function [m tex var_names] = dm2stoich (sys_name,dsys_name,X_0)
+
+  ## usage:  [stoich tex var_names] = dm2stoich (sys_name,dsys_name)
+  ## stoich.N Stoichiometric matrix
+  ## 
+	 
+  ## Generate stoichiometric matrix etc.
+
+  ##Defaults
+
+  ## Don't care version
+  X_00 = ones(1000,1);
+
+  if nargin<3
+    X_0 = X_00;
+  endif
+  
+  ## Function names
+  name_dm = sprintf("%s_dm",sys_name);
+  name_struc = sprintf("%s_struc",sys_name);
+
+  eval(sprintf("par = %s_numpar;",sys_name));
+  ## Descriptor matrices for system in integral causality
+   if exist(name_dm)
+    eval(sprintf("[A,B,C,D] = %s(par,X_0);", name_dm));
+  else
+    error(sprintf("%s.m does not exist. Please execute ""mtt %s dm m""", name_dm,sys_name))
+  endif
+
+  ## Names for system in integral causality
+  if exist(name_struc)
+    eval(sprintf("[input_name, output_name,state_name] = %s;", name_struc));
+    i_name = cellstr(long2short(mtt_strip_name(input_name,sys_name)));
+    o_name = cellstr(long2short(mtt_strip_name(output_name,sys_name)));
+    s_name = cellstr(long2short(mtt_strip_name(state_name,sys_name)));
+  else
+    error(sprintf("%s.m does not exist. Please execute ""mtt %s struc m""", name_struc,sys_name))
+  endif
+
+  ## Are we using the new form of Re with separate v_f v_r?
+  [n_V,n_X] = size(C);	# Induced flows (number of Re)
+  [n_XX,n_VV] = size(B);	# Generated flows (number of Re OR 2x number of Re
+  single_v = (n_VV==n_V);
+  double_v = (n_VV==(2*n_V));
+  if (single_v==double_v)
+     error("Wrong number of flows: double_v==single_v")
+  endif
+
+  ## If no inverse system; generate N from BG and rest numerically
+  if (length(dsys_name)==0)
+    ##warning("dm2stoich: No inverse system, using stoich2stoich");
+    if double_v
+      m.N_f = -B(:,1:2:n_VV);	# Odd cols
+      m.N_r =  B(:,2:2:n_VV);	# Even cols
+      m.N = -m.N_f + m.N_r;
+      m.reaction = i_name(1:2:n_VV,:);	# Save reaction names
+    else
+      m.N = B;			# N Stoichiometric matrix
+      m.N_f = (m.N<0).*abs(m.N);
+      m.N_r = (m.N>0).*abs(m.N);
+      m.reaction = i_name;	# Save reaction names
+    endif
+    m.N_fr = [m.N_f m.N_r];
+    m = stoich2stoich (m);	# Compute null space matrices etc.
+    m.species = s_name;		# Save species names
+    return
+  endif
+
+  m.species = s_name;		# Save species names
+  m.reaction = i_name;	# Save reaction names
+  
+  ## Function names
+  dname_dm = sprintf("%s_dm",dsys_name);
+  dname_struc = sprintf("%s_struc",dsys_name);
+
+  ## Descriptor matrices for system in derivative causality
+  if exist(dname_dm)
+    eval(sprintf("[AA,BB,CC,DD,EE] = %s(par,X_00);", dname_dm));
+  else
+    error(sprintf("%s.m does not exist. Please execute ""mtt %s dm m""", dname_dm,dsys_name))
+  endif
+ ## Names for system in integral causality
+  if exist(name_struc)
+    eval(sprintf("[input_name, output_name,state_name] = %s;", name_struc));
+    i_name = cellstr(mtt_strip_name(input_name,sys_name));
+    o_name = cellstr(mtt_strip_name(output_name,sys_name));
+    s_name = cellstr(mtt_strip_name(state_name,sys_name));
+  else
+    error(sprintf("%s.m does not exist. Please execute ""mtt %s struc m""", name_struc,sys_name))
+  endif
+
+
+  ## Names for system in derivative causality
+  if exist(dname_struc)
+    eval(sprintf("[input_name, output_name,state_name,nonstate_name] = %s;", dname_struc));
+    di_name = cellstr(mtt_strip_name(input_name,dsys_name));
+    do_name = cellstr(mtt_strip_name(output_name,dsys_name));
+    ds_name = cellstr(mtt_strip_name(state_name,dsys_name));
+    dn_name = cellstr(mtt_strip_name(nonstate_name,dsys_name));
+  else
+    error(sprintf("%s.m does not exist. Please execute ""mtt %s struc m""", dname_struc,dsys_name))
+  endif
+
+  ## Dimensions from inverse system
+  [NN,MM] = size(EE);
+  n_z = NN-rank(EE); 		# Non-states
+  n_x = NN - 2*n_z;		# States
+  n_X = n_x + n_z;		# Nonstates + states
+
+  [n_V,n_u] = size(DD);		# Rates and independent rates.
+  n_v = n_V-n_u;		# Dependent rates
+
+  ## Other dimensions from forward system.
+  I_ext = find(sum(abs(D))>0);	# Indices of external flows.
+  I_int = setdiff([1:n_V],I_ext);
+  n_v_e = length(I_ext);
+  n_v_i = length(I_int);
+
+  ## Save some dimensions for Actual system
+  m.n_x = n_z;			# Actual
+  m.n_X = n_X;
+  m.n_z = n_x;			# Actual
+  m.n_V = n_V;
+  m.n_v = n_v;
+  m.n_u = n_u;
+
+ ## Create matrices relating dependent and independent flows to all
+  ## flows.
+  ## Assumes that do_list contains all flows and di_list the independent
+  ## flows.
+  ## Transformation from v to v_i (T_vi) and v to v_d (T_vd)
+  I_i = [];		
+  for i = 1:n_u
+    for j = 1:n_V
+      if strcmp(di_name{i},o_name{j})
+	I_i = [I_i j];
+      endif
+    endfor
+  endfor
+  I_d = setdiff(1:n_V,I_i);
+  T = eye(n_V);
+  T_vi = T(I_i,:);		
+  T_vd = T(I_d,:);
+
+  ## Matrix to convert between original and inverse output list.
+  I_o = [];		
+  for i = 1:n_V
+    for j = 1:n_V
+      if strcmp(do_name{i},o_name{j})
+	I_o = [I_o j];
+      endif
+    endfor
+  endfor
+  T = eye(n_V);
+  T_o = T(:,I_o);
+
+  ## Sanity check
+  if (rank(T_o)!=n_V)
+     disp("system reaction names");
+     o_name
+     disp("inverse system reaction names");
+     do_name
+     error("Reaction names of system and inverse do not match: see above");
+  endif
+
+  ## Create matrices relating all states to independent and dependent states
+  ## Assumes that s_list contains all states and dn_list the dependent states
+  I_x = [];		
+  for i = 1:n_x
+    for j = 1:(n_x+n_z)
+      if strcmp(ds_name{i},s_name{j})
+	I_x = [I_x j];
+      endif
+    endfor
+  endfor
+  I_z = setdiff(1:(n_x+n_z),I_x);
+  T = eye(n_x+n_z);
+  L_xX = T(I_z,:);
+  L_dX = T(I_x,:);
+
+  ## Convert C and D matrices from derivative system to
+  ## original coordinate system
+  CCC = T_o*CC;
+  DDD = T_o*DD;
+
+  ## Create matrix relating dependent to independent states
+  L_dx = AA(1:n_x,n_X+1:n_X+n_z);
+ 
+  ## The matrices
+  N = B;			# N Stoichiometric matrix
+
+  ## Decompose N.
+  N_i = N(:,I_int);		# Reaction flows
+  N_e = N(:,I_ext);		# Input flows
+  
+  ## Forward and reverse components of N
+  N_f = (N<0).*abs(N);
+  N_r = (N>0).*abs(N);
+
+  ## Forward and reverse components of N_i
+  N_if = (N_i<0).*abs(N_i);
+  N_ir = (N_i>0).*abs(N_i);
+
+  ## Forward and reverse components of N_e
+  N_ef = (N_e<0).*abs(N_e);
+  N_er = (N_e>0).*abs(N_e);
+
+  K_Vu = K = DDD;			# K (from v_i to v)
+  K_du = K_d = T_vd*K;			# K_d (from v_i to v_d)
+  K_Vx = M = CCC(:,n_X+1:n_X+n_z);	# M (from zdot to v)
+  K_dx = M_d = T_vd*M;    		# M_d (from zdot to v_d) 
+  L_Xx = L = N*M;			# L (from z to entire state)
+  G = L_dX - L_dx*L_xX;			# Left null space matrix
+  G_X = L_dX'*G;			# For reconstructing X from x
+
+  ##N_C_R
+  iN_C_R = CCC(n_u+1:n_V,n_X+1:n_X+n_z);
+
+
+  ## Reduced-order system
+  #N_d = round(inv(M_d));
+  #N_i = N_d*K_d;
+
+  ## Sanity checks
+  tol = 1e-14;
+  if norm(N*K)>tol
+    warning("NK is not zero");
+  endif
+
+  if norm(G*N)>tol
+    warning("GN is not zero");
+  endif
+
+  ## Linearisation
+  J_VX = C;			# dV/dX
+  J_XX = N*J_VX;		# dXdot/dX
+  J_Vx = J_VX*L_Xx;		# dV/dx
+  J_Xx = N*J_Vx;		# dXdot/dx
+  J_xx = L_xX*J_Xx;		# dxdot/dx
+
+  J_vX = J_VX(1:n_v,:);		# dv/dX
+  J_vx = J_Vx(1:n_v,:);		# dv/dx
+
+  names = {"N","K","L","G","M","K_d","M_d","G_X", ...
+	   "N_f","N_r", ...
+	   "N_i", "N_if","N_ir", ...
+	   "N_e", "N_ef","N_er", ...
+	   "T_vi","T_vd","T_o", ...
+	   "L_xX","L_dX","L_dx","L_Xx", ...
+	   "K_Vx","K_dx","K_du","K_Vu", ...
+	   "I_i" "I_d", ...
+	   "J_VX" "J_XX" "J_Vx" "J_Xx" "J_xx", ...
+	   "J_vX" "J_vx"};
+
+  for i = 1:length(names)
+    name = names{i};
+    cmd = sprintf("mat = %s;", name);
+    eval(cmd);
+    ## Replace zero-dimension matrices by scalar zero.
+    if length(mat(:))==0
+      mat = 0;
+    end
+    cmd = sprintf("m.%s = mat;", name);
+    eval(cmd);
+     cmd = sprintf("tex.%s = mat2tex(%s,""%s"",sys_name);",name,name,name);
+    eval(cmd);
+  endfor
+
+  ## Save variable names
+  var_names.X = s_name;
+  var_names.x = var_names.X(I_z,1);
+  var_names.X_d = var_names.X(I_x,1);
+
+  var_names.V = i_name;
+  var_names.v = var_names.V(I_i,1);
+  var_names.V_d = var_names.V(I_d,1);
+
+endfunction
+@
+
+
+1.57
+log
+@N_fr added.
+@
+text
+@d69 3
+@
+
+
+1.56
+log
+@Fix issues with reaction names.
+@
+text
+@d63 1
+@
+
+
+1.55
+log
+@Remove debugs.
+NB still not fixed for double_v  when using inverse system ....
+@
+text
+@d56 1
+d61 1
+d64 1
+a64 4
+
+    ## Save variable names
+    m.species = s_name;
+    m.reaction = i_name;
+@
+
+
+1.54
+log
+@New double v version if no inverse.
+@
+text
+@d41 4
+a44 4
+  [n_V,n_X] = size(C)	# Induced flows (number of Re)
+  [n_XX,n_VV] = size(B)	# Generated flows (number of Re OR 2x number of Re
+  single_v = (n_VV==n_V)
+  double_v = (n_VV==(2*n_V))
+@
+
+
+1.53
+log
+@Don't warn whe using stoich2stoich
+@
+text
+@d40 9
+d52 9
+a60 1
+    m.N = B;			# N Stoichiometric matrix
+a61 2
+    m.N_f = (m.N<0).*abs(m.N);
+    m.N_r = (m.N>0).*abs(m.N);
+@
+
+
+1.52
+log
+@When using inverse system ...
+Reinstate i_name etc - no long2short
+@
+text
+@d42 1
+a42 1
+    warning("dm2stoich: No inverse system, using stoich2stoich");
+@
+
+
+1.51
+log
+@Names
+@
+text
+@d64 9
+@
+
+
+1.50
+log
+@Reorder names
+@
+text
+@d30 10
+d45 6
+a64 9
+  ## Names for system in integral causality
+  if exist(name_struc)
+    eval(sprintf("[input_name, output_name,state_name] = %s;", name_struc));
+    i_name = cellstr(mtt_strip_name(input_name,sys_name));
+    o_name = cellstr(mtt_strip_name(output_name,sys_name));
+    s_name = cellstr(mtt_strip_name(state_name,sys_name));
+  else
+    error(sprintf("%s.m does not exist. Please execute ""mtt %s struc m""", name_struc,sys_name))
+  endif
+@
+
+
+1.49
+log
+@New version for dsys = [];
+@
+text
+@a19 1
+  dname_dm = sprintf("%s_dm",dsys_name);
+a20 1
+  dname_struc = sprintf("%s_struc",dsys_name);
+d32 1
+a32 1
+    warning("No inverse system: using stoich2stoich");
+d37 4
+@
+
+
+1.48
+log
+@Version with no inverse causality.
+@
+text
+@d34 1
+@
+
+
+1.47
+log
+@doc
+@
+text
+@d6 1
+a6 1
+
+d30 7
+@
+
+
+1.46
+log
+@Sanity check
+@
+text
+@d3 1
+a3 1
+  ## usage:  stoich = dm2stoich (sys_name,dsys_name)
+@
+
+
+1.45
+log
+@\ --> ...
+@
+text
+@d113 9
+d234 1
+a234 1
+endfunction@
+
+
+1.44
+log
+@J_VX etc.
+@
+text
+@d191 9
+a199 9
+  names = {"N","K","L","G","M","K_d","M_d","G_X",\
+	   "N_f","N_r",\
+	   "N_i", "N_if","N_ir",\
+	   "N_e", "N_ef","N_er",\
+	   "T_vi","T_vd","T_o",\
+	   "L_xX","L_dX","L_dx","L_Xx",\
+	   "K_Vx","K_dx","K_du","K_Vu",\
+	   "I_i" "I_d",\
+	   "J_VX" "J_XX" "J_Vx" "J_Xx" "J_xx",\
+@
+
+
+1.43
+log
+@Notation J_v-->J_V
+@
+text
+@d182 1
+a182 1
+  J_VX = C;			# dv/dX
+d184 1
+a184 1
+  J_Vx = J_VX*L_Xx;		# dv/dx
+d188 3
+d199 2
+a200 1
+	   "J_VX" "J_XX" "J_Vx" "J_Xx" "J_xx"};
+@
+
+
+1.42
+log
+@Notation.
+@
+text
+@d182 4
+a185 4
+  J_vX = C;			# dv/dX
+  J_XX = N*J_vX;		# dXdot/dX
+  J_vx = J_vX*L_Xx;		# dv/dx
+  J_Xx = N*J_vx;		# dXdot/dx
+d196 1
+a196 1
+	   "J_vX" "J_XX" "J_vx" "J_Xx" "J_xx"};
+@
+
+
+1.41
+log
+@Remove debug.
+@
+text
+@d140 2
+a141 2
+  N_v = N(:,I_int);		# Reaction flows
+  N_u = N(:,I_ext);		# Input flows
+d147 7
+a153 7
+  ## Forward and reverse components of N_v
+  N_vf = (N_v<0).*abs(N_v);
+  N_vr = (N_v>0).*abs(N_v);
+
+  ## Forward and reverse components of N_u
+  N_uf = (N_u<0).*abs(N_u);
+  N_ur = (N_u>0).*abs(N_u);
+d190 2
+a191 2
+	   "N_v", "N_vf","N_vr",\
+	   "N_u", "N_uf","N_ur",\
+@
+
+
+1.40
+log
+@Redo N_v and N_u
+@
+text
+@d70 4
+a73 4
+  I_ext = find(sum(abs(D))>0)	# Indices of external flows.
+  I_int = setdiff([1:n_V],I_ext)
+  n_v_e = length(I_ext)
+  n_v_i = length(I_int)
+@
+
+
+1.39
+log
+@Save actual NOT inverse n_x and n_z !!!
+@
+text
+@d69 6
+d138 4
+a141 3
+  ## Decompose N ASSUME that the v components are befor the u components
+  N_v = N(:,1:n_v);		# Reaction flows
+  N_u = N(:,1+n_v:n_V);		# Input flows
+@
+
+
+1.38
+log
+@Third arg (X_0) not used for inverse system.
+@
+text
+@d60 1
+a60 1
+  ## Dimensions
+d69 2
+a70 2
+  ## Save some dimensions.
+  m.n_x = n_x;
+d72 1
+a72 1
+  m.n_z = n_z;
+@
+
+
+1.37
+log
+@Linearisations stuff.
+@
+text
+@d10 4
+d15 1
+a15 1
+    X_0 = ones(1000,1);
+d34 1
+a34 1
+    eval(sprintf("[AA,BB,CC,DD,EE] = %s(par,X_0);", dname_dm));
+d64 1
+a64 1
+  nn = n_x + n_z;		# Nonstates + states
+d71 1
+d128 1
+a128 1
+  L_dx = AA(1:n_x,nn+1:nn+n_z);
+d150 1
+a150 1
+  K_Vx = M = CCC(:,nn+1:nn+n_z);	# M (from zdot to v)
+d157 1
+a157 1
+  iN_C_R = CCC(n_u+1:n_V,nn+1:nn+n_z);
+@
+
+
+1.36
+log
+@Changed tol on N*K etc
+Temp. removal of N_d,N_i
+@
+text
+@d1 1
+a1 1
+function [m tex var_names] = dm2stoich (sys_name,dsys_name)
+d9 5
+d22 1
+a22 3
+  ## States don't matter fo the purposes of this function.
+  X_0 = ones(1000,1);
+  if exist(name_dm)
+d168 7
+a174 1
+  
+d183 3
+a185 1
+	   "I_i" "I_d"};
+@
+
+
+1.35
+log
+@Remove debug.
+@
+text
+@d153 2
+a154 2
+  N_d = round(inv(M_d));
+  N_i = N_d*K_d;
+d157 2
+a158 1
+  if norm(N*K)>eps
+d162 1
+a162 1
+  if norm(G*N)>eps
+d168 1
+a168 1
+	   "N_f","N_r","N_i","N_d",\
+@
+
+
+1.34
+log
+@Use mtt_strip_name not long2short.
+@
+text
+@d37 1
+a37 1
+    s_name = cellstr(mtt_strip_name(state_name,sys_name))
+d47 1
+a47 1
+    ds_name = cellstr(mtt_strip_name(state_name,dsys_name))
+@
+
+
+1.33
+log
+@Compure N_u components
+@
+text
+@d35 3
+a37 3
+    i_name = cellstr(long2short(input_name));
+    o_name = cellstr(long2short(output_name));
+    s_name = cellstr(long2short(state_name));
+d45 4
+a48 4
+    di_name = cellstr(long2short(input_name));
+    do_name = cellstr(long2short(output_name));
+    ds_name = cellstr(long2short(state_name));
+    dn_name = cellstr(long2short(nonstate_name));
+@
+
+
+1.32
+log
+@N_f etc from N not N_v
+@
+text
+@d136 4
+d167 1
+a167 1
+	   "N_u","N_f","N_r","N_i","N_d",\
+d169 1
+@
+
+
+1.31
+log
+@Return I_i and I_d as well.
+@
+text
+@d128 4
+d133 2
+a134 2
+  N_f = (N_v<0).*abs(N_v);
+  N_r = (N_v>0).*abs(N_v);
+d163 2
+a164 1
+	   "N_v","N_u","N_f","N_r","N_i","N_d",\
+@
+
+
+1.30
+log
+@Modified defn of A_r
+Avoid -0
+@
+text
+@d162 2
+a163 1
+	   "K_Vx","K_dx","K_du","K_Vu"};
+@
+
+
+1.29
+log
+@Allow X in dm functions
+@
+text
+@d129 2
+a130 2
+  N_f = (N_v<0).*N_v;
+  N_r = (N_v>0).*N_v;
+@
+
+
+1.28
+log
+@Sort out varianblenames/cell arraks.
+@
+text
+@d17 2
+d20 1
+a20 1
+    eval(sprintf("[A,B,C,D] = %s(par);", name_dm));
+d27 1
+a27 1
+    eval(sprintf("[AA,BB,CC,DD,EE] = %s(par);", dname_dm));
+@
+
+
+1.27
+log
+@Corrected transformation between flows in inverse system and flows in
+actual system.
+@
+text
+@d177 2
+a178 2
+  var_names.x = var_names.X(I_z);
+  var_names.X_d = var_names.X(I_x);
+d181 2
+a182 2
+  var_names.v = var_names.V(I_i);
+  var_names.V_d = var_names.V(I_d);
+@
+
+
+1.26
+log
+@Produce variable names as var_names.
+@
+text
+@d57 2
+a58 2
+  [n_V,n_u] = size(DD)	# Rates and independent rates.
+  n_v = n_V-n_u;		# dependent rates
+d85 11
+a95 2
+  ## Matrix to convert between original and inverse flow list.
+  T_vv = [T_vi;T_vd]; 		
+d114 2
+a115 2
+  CCC = T_vv*CC;
+  DDD = T_vv*DD;
+d158 1
+a158 1
+	   "T_vi","T_vd","T_vv",\
+@
+
+
+1.25
+log
+@Compute G_X matrix.
+@
+text
+@d1 1
+a1 1
+function [m tex] = dm2stoich (sys_name,dsys_name)
+d165 9
+@
+
+
+1.24
+log
+@Sorted out conversion between flow indices in system and inverse system.
+@
+text
+@d126 3
+a128 2
+  G = L_dX - L_dx*L_xX;
+ 
+d147 1
+a147 1
+  names = {"N","K","L","G","M","K_d","M_d",\
+@
+
+
+1.23
+log
+@Doc.
+@
+text
+@d103 5
+d121 1
+a121 1
+  K_Vu = K = T_vv*DD;			# K (from v_i to v)
+d123 1
+a123 1
+  K_Vx = M = CC(:,nn+1:nn+n_z);	# M (from zdot to v)
+d129 1
+a129 1
+  iN_C_R = CC(n_u+1:n_V,nn+1:nn+n_z);
+@
+
+
+1.22
+log
+@Take account of diferent orderings of flow variables.
+@
+text
+@d67 4
+a70 4
+ ## Create matrices relating dependent and independent variables to all
+  ## variables.
+  ## Assumes that do_list contains all variables and di_list the independent
+  ## variables.
+d85 1
+a85 1
+  ## Matrix to convert between original and inverse variable list.
+@
+
+
+1.21
+log
+@Tidy
+@
+text
+@d75 1
+a75 1
+      if strcmp(di_name{i},do_name{j})
+d82 1
+a82 1
+  T_vi = T(I_i,:);
+d85 3
+d116 1
+a116 1
+  K_Vu = K = DD;			# K (from v_i to v)
+d143 1
+a143 1
+	   "T_vi","T_vd",\
+@
+
+
+1.20
+log
+@tidy
+@
+text
+@d7 1
+a7 4
+  ## Generate stoichiometric matrix etc.b
+
+  ##system("mtt Glycolytic3 sm m");
+  ##system("mtt -dc Glycolytic3 dm m");
+d9 1
+@
+
+
+1.19
+log
+@N_v anf N_u
+@
+text
+@d59 1
+a59 1
+  [n_V,n_u] = size(DD);		# Rates and independent rates.
+@
+
+
+1.18
+log
+@N_u & N_v
+@
+text
+@d111 4
+d141 1
+a141 1
+	   "N_v","N_u","N_i","N_d",\
+@
+
+
+1.17
+log
+@Notation: T_ --> L_
+@
+text
+@d59 2
+a60 1
+  [n_v,n_u] = size(DD);		# Rates and independent rates.
+d65 1
+d76 1
+a76 1
+    for j = 1:n_v
+d82 2
+a83 2
+  I_d = setdiff(1:n_v,I_i);
+  T = eye(n_v);
+d107 4
+a114 1
+
+d119 1
+a119 1
+  iN_C_R = CC(n_u+1:n_v,nn+1:nn+n_z);
+d136 2
+a137 1
+  names = {"N","K","L","G","M","K_d","M_d","N_i","N_d",\
+@
+
+
+1.16
+log
+@New matrices.
+@
+text
+@d97 2
+a98 2
+  T_xX = T(I_z,:);
+  T_dX = T(I_x,:);
+d101 1
+a101 1
+  T_dx = AA(1:n_x,nn+1:nn+n_z);
+d110 3
+a112 11
+  T_Xx = L = N*M;			# L (from z to entire state)
+  # L_x = T_xd*L;			# L_x (from z to dependent state)
+  # G = T_xd - L_x*T_xX;		# Gxd/dt(entire state) = 0
+  G = T_dX - T_dx*T_xX;
+  # ## L Matrix (from z to  [z,x] 
+  # L_0 = AA(1:n_x,nn+1:nn+n_z)
+  # ##L = [eye(n_z);L_0];
+
+  # ## G Matrix.
+  # G = [-L_0 eye(n_x)]
+
+d133 1
+a133 1
+	   "T_xX","T_dX","T_dx","T_Xx",\
+@
+
+
+1.15
+log
+@doc
+@
+text
+@d97 2
+a98 2
+  T_xi = T(I_z,:);
+  T_xd = T(I_x,:);
+d101 1
+a101 1
+  T_id = AA(1:n_x,nn+1:nn+n_z);
+d105 6
+a110 5
+  K = DD;			# K (from v_i to v)
+  K_d = T_vd*K;			# K_d (from v_i to v_d)
+  M = CC(:,nn+1:nn+n_z);	# M (from zdot to v)
+  M_d = T_vd*M;    		# M_d (from zdot to v_d) 
+  L = N*M;			# L (from z to entire state)
+d112 2
+a113 2
+  # G = T_xd - L_x*T_xi;		# Gxd/dt(entire state) = 0
+  G = T_xd - T_id*T_xi;
+d140 3
+a142 1
+	   "T_vi","T_vd","T_xi","T_xd","T_id"};
+@
+
+
+1.14
+log
+@Tidy
+@
+text
+@d71 1
+a71 1
+  ## Transformation from v to v_i (T_i) and v to v_d (T_d)
+@
+
+
+1.13
+log
+@Sort out numpar stuff.
+@
+text
+@d15 1
+a15 1
+  dname_struc = sprintf("%s_struc",dsys_name)
+@
+
+
+1.12
+log
+@Sort out warkings.
+@
+text
+@d7 1
+a7 1
+  ## Generate stoichiometric matrix etc.
+d15 1
+a15 1
+  dname_struc = sprintf("%s_struc",dsys_name);
+d17 1
+d20 1
+a20 1
+    eval(sprintf("[A,B,C,D] = %s;", name_dm));
+d27 1
+a27 1
+    eval(sprintf("[AA,BB,CC,DD,EE] = %s;", dname_dm));
+d144 1
+a144 1
+    ## Replace zero-dimemsion matrices by scalar zero.
+@
+
+
+1.11
+log
+@Sanity checks
+@
+text
+@d32 1
+a32 1
+  if exist(dname_struc)
+d38 1
+a38 1
+    error(sprintf("%s.m does not exist. Please execute ""mtt %s struc m""", dname_dmstrucdsys_name))
+d49 1
+a49 1
+    error(sprintf("%s.m does not exist. Please execute ""mtt %s struc m""", dname_dmstrucdsys_name))
+@
+
+
+1.10
+log
+@Chane notaton
+@
+text
+@d127 10
+@
+
+
+1.9
+log
+@More consistent computation approach.
+@
+text
+@d81 2
+a82 2
+  T_i = T(I_i,:);
+  T_d = T(I_d,:);
+d84 1
+a84 1
+   ## Create matrices relating dependent to independent states
+d96 5
+a100 2
+  T_z = T(I_z,:);
+  T_x = T(I_x,:);
+d105 1
+a105 1
+  K_d = T_d*K;			# K_d (from v_i to v_d)
+d107 1
+a107 1
+  M_d = T_d*M;    		# M_d (from zdot to v_d) 
+d109 3
+a111 3
+  L_x = T_x*L;			# L_x (from z to dependent state)
+  G = T_x - L_x*T_z;		# Gxd/dt(entire state) = 0
+
+d127 2
+a128 1
+  names = {"N","K","L","G","M","K_d","M_d","N_i","N_d"};
+d131 7
+a137 1
+    cmd = sprintf("m.%s = %s;", name,name);
+d139 1
+a139 1
+    cmd = sprintf("tex.%s = mat2tex(%s,""%s"",sys_name);",name,name,name);
+@
+
+
+1.8
+log
+@Yet more matrices
+@
+text
+@d1 1
+a1 1
+function [mat tex] = dm2stoich (sys_name,dsys_name)
+d4 1
+a4 1
+  ##
+d9 2
+a10 2
+##system("mtt Glycolytic3 sm m");
+##system("mtt -dc Glycolytic3 dm m");
+d12 120
+a131 97
+name_dm = sprintf("%s_dm",sys_name);
+dname_dm = sprintf("%s_dm",dsys_name);
+dname_struc = sprintf("%s_struc",dsys_name);
+
+## Descriptor matrices for system in integral causality
+if exist(name_dm)
+  eval(sprintf("[A,B,C,D] = %s;", name_dm));
+else
+  error(sprintf("%s.m does not exist. Please execute ""mtt %s dm m""", name_dm,sys_name))
+endif
+
+## Descriptor matrices for system in derivative causality
+if exist(dname_dm)
+eval(sprintf("[AA,BB,CC,DD,EE] = %s;", dname_dm));
+else
+  error(sprintf("%s.m does not exist. Please execute ""mtt %s dm m""", dname_dm,dsys_name))
+endif
+
+## Descriptor matrices for system in derivative causality
+if exist(dname_struc)
+eval(sprintf("[input_name, output_name] = %s;", dname_struc));
+i_name = cellstr(long2short(input_name));
+o_name = cellstr(long2short(output_name));
+else
+  error(sprintf("%s.m does not exist. Please execute ""mtt %s struc m""", dname_dmstrucdsys_name))
+endif
+
+## Dimensions
+[NN,MM] = size(EE);
+n_z = NN-rank(EE); 		# Non-states
+n_x = NN - 2*n_z;		# States
+nn = n_x + n_z;			# Nonstates + states
+
+[n_v,n_u] = size(DD);		# Rates and independent rates.
+
+## Save some dimensions.
+mat.n_x = n_x;
+mat.n_z = n_z;
+mat.n_v = n_v;
+mat.n_u = n_u;
+
+## N matrix: Stoichiometric matrix
+N = B;
+mat.N = N;
+tex.N = mat2tex(mat.N,"N",sys_name);
+
+## K matrix (from v_i to v)
+K = DD;
+
+## M Matrix (from zdot to v)
+M = CC(:,nn+1:nn+n_z);
+
+## L Matrix (from z to  [z,x] 
+L_0 = AA(1:n_x,nn+1:nn+n_z);
+L = [eye(n_z);L_0];
+
+## G Matrix.
+G = [-L_0 eye(n_x)];
+
+##N_C_R
+iN_C_R = CC(n_u+1:n_v,nn+1:nn+n_z);
+
+
+## Create matrices relating dependent and independent variables to all
+## variables.
+## Assumes that o_list contains all variables and i_list the independent
+## variables.
+## Transformation from v to v_i (T_i) and v to v_d (T_d)
+ I_i = [];		
+ for i = 1:n_u
+   for j = 1:n_v
+     if i_name{i}==o_name{j}
+       I_i = [I_i j];
+     endif
+   endfor
+ endfor
+I_d = setdiff(1:n_v,I_i);
+T = eye(n_v);
+T_i = T(I_i,:);
+T_d = T(I_d,:);
+
+## Submatrices
+K_d = T_d*K;
+M_d = T_d*M;    
+
+## Reduced-order system
+N_d = round(inv(M_d));
+N_i = N_d*K_d;
+
+names = {"N","K","L","G","M","K_d","M_d","N_i","N_d"};
+for i = 1:length(names)
+  name = names{i};
+  cmd = sprintf("mat.%s = %s;", name,name);
+  eval(cmd);
+  cmd = sprintf("tex.%s = mat2tex(%s,""%s"",sys_name);",name,name,name);
+  eval(cmd);
+endfor
+@
+
+
+1.7
+log
+@Tidy up.
+@
+text
+@d7 1
+a7 1
+  ## Generate K,G and  matrices
+d14 1
+d29 10
+d74 28
+a101 1
+names = {"N","K","L","G","M"};
+@
+
+
+1.6
+log
+@Simplify code.
+@
+text
+@d47 1
+a47 1
+## K matrix
+a48 1
+##ERROR = norm(N*K)
+d50 4
+a53 1
+## L Matrix
+a55 1
+##ERROR = norm(L*N_R-N)
+a58 1
+##ERROR = norm(G*N)
+a59 3
+## K_z Matrix (from zdot to v)
+K_z = CC(:,nn+1:nn+n_z);
+ 
+d62 2
+a63 2
+ 
+names = {"N","K","L","G","K_z","iN_C_R"}
+@
+
+
+1.5
+log
+@misprint
+@
+text
+@d43 2
+a44 1
+mat.N = B;
+a46 2
+##N_R = N(1:n_z,:);
+
+d48 1
+a48 1
+mat.K = DD;
+a49 1
+tex.K = mat2tex(mat.K,"K", sys_name);
+d53 1
+a53 1
+mat.L = [eye(n_z);L_0];
+a54 1
+tex.L = mat2texmat(mat.L, "L", sys_name);
+d57 1
+a57 1
+mat.G = [-L_0 eye(n_x)];
+a58 1
+tex.G = mat2tex(mat.G, "G", sys_name);
+a61 2
+mat.K_z = K_z;
+tex.K_z = mat2tex(mat.K_z, "K_z", sys_name);
+d66 8
+@
+
+
+1.4
+log
+@K_z matrix
+@
+text
+@d67 1
+a67 1
+tex.k_z = mat2tex(mat.K_z, "K_z", sys_name);
+@
+
+
+1.3
+log
+@*** empty log message ***
+@
+text
+@d44 1
+a44 1
+tex.N = mat2texmat(mat.N,"N",sys_name);
+d51 1
+a51 1
+tex.K = mat2texmat(mat.K,"K", sys_name);
+d62 1
+a62 2
+tex.G = mat2texmat(mat.G, "G", sys_name);
+
+d64 5
+d70 2
+a71 1
+iN_C_R = CC(n_u+1:n_v,nn+1:nn+n_z) ;
+@
+
+
+1.2
+log
+@*** empty log message ***
+@
+text
+@d35 7
+a41 1
+ 
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d45 1
+a45 1
+tex.K = mat2texmat(mat.K,"K");
+@

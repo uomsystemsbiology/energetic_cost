@@ -1,0 +1,16 @@
+%% Simulation parameters for system Isentropic (Isentropic_simpar.txt)
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %% Version control history
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %% $Id: Isentropic_simpar.txt,v 1.1 2000/12/28 18:16:47 peterg Exp $
+% %% $Log: Isentropic_simpar.txt,v $
+% %% Revision 1.1  2000/12/28 18:16:47  peterg
+% %% To RCS
+% %%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+LAST=1.0
+DT=0.01
+STEPFACTOR=1
+

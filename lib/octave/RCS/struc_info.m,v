@@ -1,0 +1,46 @@
+head	1.1;
+access;
+symbols;
+locks
+	peterg:1.1; strict;
+comment	@// @;
+
+
+1.1
+date	2015.11.09.22.18.44;	author peterg;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@function info = struc_info (name,par)
+	 
+	 ## usage: info = struc_info (name,par)
+	 ## 
+	 ## Finds out various structural info
+         ## Use <struc_info name input>  (shell script) to generate name_input_info.m
+	 
+
+	 if nargin<2
+	    par.signal="input";
+	 endif
+
+
+	 ## Causality
+	 info = eval(sprintf("%s_%s_info;", name, par.signal));
+
+         info.i_flow = find(strcmp(info.cause,"flow")==1);
+         info.i_effort = find(strcmp(info.cause,"effort")==1);
+
+
+
+endfunction
+@

@@ -1,0 +1,809 @@
+head	1.28;
+access;
+symbols;
+locks; strict;
+comment	@// @;
+
+
+1.28
+date	2015.10.14.01.04.10;	author peterg;	state Exp;
+branches;
+next	1.27;
+
+1.27
+date	2015.10.12.22.33.07;	author peterg;	state Exp;
+branches;
+next	1.26;
+
+1.26
+date	2015.10.08.05.21.49;	author peterg;	state Exp;
+branches;
+next	1.25;
+
+1.25
+date	2015.10.08.01.20.47;	author peterg;	state Exp;
+branches;
+next	1.24;
+
+1.24
+date	2015.10.07.04.05.02;	author peterg;	state Exp;
+branches;
+next	1.23;
+
+1.23
+date	2015.10.07.01.01.40;	author peterg;	state Exp;
+branches;
+next	1.22;
+
+1.22
+date	2015.10.07.00.24.06;	author peterg;	state Exp;
+branches;
+next	1.21;
+
+1.21
+date	2015.10.05.00.23.25;	author peterg;	state Exp;
+branches;
+next	1.20;
+
+1.20
+date	2015.10.01.01.05.40;	author peterg;	state Exp;
+branches;
+next	1.19;
+
+1.19
+date	2015.09.30.05.57.35;	author peterg;	state Exp;
+branches;
+next	1.18;
+
+1.18
+date	2015.09.30.05.37.50;	author peterg;	state Exp;
+branches;
+next	1.17;
+
+1.17
+date	2015.09.14.23.28.02;	author peterg;	state Exp;
+branches;
+next	1.16;
+
+1.16
+date	2015.09.11.01.41.20;	author peterg;	state Exp;
+branches;
+next	1.15;
+
+1.15
+date	2015.08.28.02.12.15;	author peterg;	state Exp;
+branches;
+next	1.14;
+
+1.14
+date	2015.07.29.01.02.17;	author peterg;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	2015.07.25.03.26.16;	author peterg;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	2015.07.21.06.08.57;	author peterg;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2015.07.13.04.05.58;	author peterg;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2015.07.13.03.12.09;	author peterg;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2015.07.13.02.11.22;	author peterg;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2015.07.07.01.16.44;	author peterg;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2015.07.02.23.17.41;	author peterg;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2015.07.02.04.30.18;	author peterg;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2015.07.02.02.58.28;	author peterg;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2015.07.02.01.50.02;	author peterg;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2015.04.07.22.47.38;	author peterg;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2015.04.07.04.51.01;	author peterg;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2015.04.07.02.12.06;	author peterg;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.28
+log
+@Sanity checks.
+@
+text
+@function [SYS sys comp m_0] = stoich_lin (stoich,normalise)
+	 
+  ## usage: [SYS sys comp m_0] = stoich_lin (stoich)
+  ## 
+  ## SYS: full-order system
+  ## sys: reduced-order system
+  ## comp: linearised component values
+  ## m_0: stoichiometric matrices with chemostats
+
+  if nargin<2
+     normalise = 0;
+  endif
+	 
+  ## Extract from stoich data structure
+  n_X = stoich.n_X;
+  n_x = stoich.n_x;
+  n_V = stoich.n_V;
+  N = stoich.N;			# Stoichiometric matrix
+  N_f = stoich.N_f;		# Forward stoichiometric matrix
+  N_r = stoich.N_r;		# Backward stoichiometric matrix
+  K = stoich.K_c;		# Thermodynamic constants
+  kappa = stoich.kappa;		# Reaction gains (=v_max/k_v)
+  
+  if isfield(stoich,"k_v")
+    k_v = stoich.k_v;
+    rho_v = stoich.rho_v;
+    MassAction = 0;
+  else
+    MassAction = 1;
+  endif
+
+  X_ss = stoich.X_ss;
+
+  if isfield(stoich,"i_fix")
+    i_fix = stoich.i_fix;		# Fixed (ie external) state indices
+  else
+    i_fix = [];
+  endif
+
+  if isfield(stoich,"j_fix")
+    j_fix = stoich.j_fix;		# Fixed (ie external) flows
+  else
+    j_fix = [];
+  endif
+
+  if isfield(stoich,"module")
+    module = stoich.module;
+  else
+    module = 0;
+  endif
+
+  ## Sanity checks
+  if (length(X_ss)!=n_X)
+     error(sprintf("X_ss should have %i elements, not %i",n_X,length(X_ss)));
+  endif
+  if (length(K)!=n_X)
+     error(sprintf("K should have %i elements, not %i",n_X,length(K)));
+  endif
+  if (length(kappa)!=n_V)
+     error(sprintf("kappa should have %i elements, not %i",n_V,length(kappa)));
+  endif
+
+  ## Non-fixed state indices
+  ##[n_X, n_V] = size(N);		# dimensions
+  i_free = setdiff([1:n_X],i_fix);
+  j_free = setdiff([1:n_V],j_fix);
+  
+  ## Steady-state flows
+  mu_ss = log(K.*X_ss);		# Chemical potential
+  Vplus0  = exp(N_f'*mu_ss);	# Forward nominal reaction flow
+  Vminus0 = exp(N_r'*mu_ss);	# Backward nominal reaction flow
+
+  if MassAction
+    Den = ones(n_V,1);
+  else
+    Den = (1 + ((1-rho_v).*Vplus0 + rho_v.*Vminus0)./k_v );
+  endif
+
+  v_ss = kappa.*(Vplus0 - Vminus0)./Den; # Mass-action reaction flow
+    
+  ## Linearise about steady state
+
+  ## Derivatives of affinities wrt X
+  dA_f = N_f'/diag(X_ss);
+  dA_r = N_r'/diag(X_ss);
+
+  ## Derivatives of Vplus0,  Vminus0 wrt X
+  dVplus0  =  diag(Vplus0)*dA_f;
+  dVminus0  = diag(Vminus0)*dA_r;
+
+  ## ## ## Derivatives of Vplus0,  Vminus0 wrt X
+  ## check_norm(dVplus0-diag(Vplus0)*N_f'/diag(X_ss), "dVplus0",0)
+  ## check_norm(dVminus0-diag(Vminus0)*N_r'/diag(X_ss), "dVminus0",0)
+
+  ## Full-order system
+  C = diag(kappa./Den)*(dVplus0 - dVminus0);
+  if !MassAction
+     C = C - diag(v_ss./Den)*(diag((1-rho_v)./k_v)*dVplus0 + diag(rho_v./k_v)*dVminus0);
+  endif
+  if normalise
+    D = eye(n_V);
+  else
+    D = diag(v_ss./kappa);
+  endif
+  
+  ## Create N_d: N with zero rows for fixed states
+  N_d = N;
+  N_d(i_fix,:) = zeros(length(i_fix),n_V);
+  ##N_d(:,j_fix) = zeros(n_X,length(j_fix));
+  A = N_d*C;
+  B = N_d*D;
+  SYS = ss(A,B,C,D);
+  
+  ## Reduced-order system
+  if nargout>1
+
+    ## Find the relevant transformation matrixes
+    m_0.N = N_d;
+    m_0 = stoich2stoich(m_0,i_fix);
+    L_xX = m_0.L_xX;
+    L_Xx = m_0.L_Xx;
+    G_X_cs = m_0.G_X_cs;
+    N_d = m_0.N_d;
+    
+    if (length(i_fix)==0)		# Old version
+      a = L_xX*A*L_Xx;
+      b = L_xX*B;
+      c = c_out = C*L_Xx;
+      d = D;
+    else			# New version
+      n_fix = length(j_fix);
+      c = c_0 = C*L_Xx;
+      c_0(j_fix,:) = zeros(n_fix,m_0.n_x); # Zap j_fix rows
+      d_x = C*G_X_cs;		# Chemostat
+      d_v = zeros(n_V,n_fix);	# Flowstat
+      for jj = 1:n_fix
+	d_v(j_fix(jj),jj) = 1;
+      endfor
+
+      d = [d_x d_v];
+      a = L_xX*N_d*c_0;
+      b = L_xX*N_d*d;
+
+      if module
+	## Species flows as chemostat outputs
+	N_s = N - N_d;
+	c_cs = N_s(i_fix,:)*c;
+	d_cs = N_s(i_fix,:)*d;
+	
+	## Reaction affinities as flowstat outputs
+	dAdX = dA_r-dA_f;		# dA/dX
+	dAdx = dAdX*L_Xx;		# dA/dx
+	c_fs = dAdx(j_fix,:);
+	c_out = [c_cs;c_fs];
+
+        [n_stat junk] = size(c_out);
+	d_fs = zeros(length(j_fix),n_stat);
+	d_out = [d_cs;d_fs];
+
+	io_name = {stoich.species{i_fix} stoich.reaction{j_fix}};
+      else
+	c_out = c;
+	d_out = d;
+      endif
+    endif
+    if exist("io_name")
+      sys = ss(a,b,c_out,d_out,"INNAME",io_name,"OUTNAME",io_name);
+    else
+      sys = ss(a,b,c_out,d_out);
+    endif
+  endif
+
+  ## Component linearisation.
+  if nargout>2
+     if normalise
+       comp.gamma = ones(length(kappa),1);
+     else
+       comp.gamma = v_ss./kappa;
+     endif
+    comp.K = 1./X_ss;
+
+    if MassAction
+      Den = ones(n_V,1);
+    else
+      Den = (1 + ((1-rho_v).*Vplus0 + rho_v.*Vminus0)./k_v );
+    endif
+
+    kappa_f = kappa.*Vplus0./Den;
+    kappa_r = kappa.*Vminus0./Den;
+
+    if !MassAction
+       kappa_f = kappa_f - k_v.\(1-rho_v).*(v_ss./Den).*Vplus0;
+       kappa_r = kappa_r + k_v.\rho_v    .*(v_ss./Den).*Vminus0;
+   endif
+    comp.kappa_f = kappa_f;
+    comp.kappa_r = kappa_r;
+    comp.kappa_0 = (kappa_f + kappa_r)/2;
+    comp.kappa_1 = (kappa_f - kappa_r)/2;
+  endif
+endfunction
+@
+
+
+1.27
+log
+@Tidy.
+@
+text
+@d52 11
+@
+
+
+1.26
+log
+@Chage sign of affinities at flowstat outputs
+@
+text
+@d148 2
+d155 5
+a159 1
+    sys = ss(a,b,c_out,d_out);
+@
+
+
+1.25
+log
+@Fix problem with d in modular form.
+@
+text
+@d140 1
+a140 1
+	dAdX = dA_f-dA_r;		# dA/dX
+@
+
+
+1.24
+log
+@stoich.module==1 gives linear system with module-orientated inputs and
+outputs corresponding to chemostats & flowstats.
+@
+text
+@d128 1
+d137 1
+d139 1
+a139 1
+	## Reaction affinitiies as flowstat outputs
+d144 4
+d150 1
+d153 1
+a153 1
+    sys = ss(a,b,c_out,d);
+@
+
+
+1.23
+log
+@Use reaction affinities as flowstat outputs.
+@
+text
+@d46 6
+d117 1
+a117 1
+      c = C*L_Xx;
+d121 2
+a122 2
+      c = C*L_Xx;
+      c(j_fix,:) = zeros(n_fix,m_0.n_x); # Zap j_fix rows
+d129 1
+a129 1
+      a = L_xX*N_d*c;
+d132 13
+a144 4
+      ## Insert reaction affinitiies as flowstat outputs
+      dAdX = dA_f-dA_r;		# dA/dX
+      dAdx = dAdX*L_Xx;		# dA/dx
+      c(j_fix,:) = dAdx(j_fix,:);
+d146 1
+a146 1
+    sys = ss(a,b,c,d);
+@
+
+
+1.22
+log
+@Explicitly calculate deviation affinities.
+@
+text
+@d66 1
+a66 1
+  ## Derivatives of affinities wrtx
+d125 5
+@
+
+
+1.21
+log
+@G_X_c --> G_X_cs
+@
+text
+@d66 4
+d71 6
+a76 2
+  dVplus0  = diag(Vplus0)*N_f'/diag(X_ss);
+  dVminus0 = diag(Vminus0)*N_r'/diag(X_ss);
+@
+
+
+1.20
+log
+@Flowstat/j_fix/j_zero stuff.
+@
+text
+@d97 1
+a97 1
+    G_X_s = m_0.G_X_s;
+d109 1
+a109 1
+      d_x = C*G_X_s;		# Chemostat
+@
+
+
+1.19
+log
+@New chemostat approach with G_X_s
+@
+text
+@d15 3
+d39 1
+a39 1
+i_fix
+d47 1
+a47 1
+  [n_X, n_V] = size(N);		# dimensions
+d83 1
+a83 1
+  N_d(i_fix,:) = zeros(length(i_fix),n_V)
+d95 5
+a99 5
+    L_xX = m_0.L_xX
+    L_Xx = m_0.L_Xx
+    G_X_s = m_0.G_X_s
+    N_d = m_0.N_d
+
+d106 11
+a116 4
+      c = C*L_Xx
+      d = C*G_X_s
+      a = L_xX*N_d*c
+      b = L_xX*N_d*d
+@
+
+
+1.18
+log
+@New version using G_X
+@
+text
+@d36 1
+a36 1
+
+d78 6
+a83 6
+  ## Create N_0: N with zero rows for fixed states
+  N_0 = N;
+  N_0(i_fix,:) = zeros(length(i_fix),n_V);
+  N_0(:,j_fix) = zeros(n_X,length(j_fix));
+  A = N_0*C;
+  B = N_0*D;
+d90 6
+a95 6
+    m_0.N = N_0;
+    m_0 = stoich2stoich(m_0);
+    L_xX = m_0.L_xX;
+    L_Xx = m_0.L_Xx;
+    G_X = m_0.G_Xx;
+    N_d = m_0.N_d;
+d97 1
+a97 1
+    if length(i_fix==0)		# Old version
+d103 4
+a106 4
+      c = C*L_Xx;
+      d = C*G_X;
+      a = L_xX*N_d*c;
+      b = L_xX*N_d*d;
+@
+
+
+1.17
+log
+@Document
+@
+text
+@d94 14
+a107 5
+    
+    a = L_xX*A*L_Xx;
+    b = L_xX*B;
+    c = C*L_Xx;
+    d = D;
+@
+
+
+1.16
+log
+@Include j_fix
+@
+text
+@d3 1
+a3 2
+  ## usage: [A B C D] = stoich_lin (stoich)
+  ## 
+d5 4
+@
+
+
+1.15
+log
+@Tidy.
+@
+text
+@d27 12
+a38 1
+  i_fix = stoich.i_fix;		# Fixed (ie external) state indices
+d43 1
+d78 1
+@
+
+
+1.14
+log
+@Output m_0 as well.
+@
+text
+@a52 1
+  ##C = ( diag(kappa.*Vplus0)*N_f' - diag(kappa.*Vminus0)*N_r' )/diag(X_ss);
+@
+
+
+1.13
+log
+@Added ;
+@
+text
+@d1 1
+a1 1
+function [SYS sys comp] = stoich_lin (stoich,normalise)
+@
+
+
+1.12
+log
+@kappa_f and r as well.
+@
+text
+@d8 1
+a8 1
+     normalise = 0
+@
+
+
+1.11
+log
+@Now works for GC CR
+@
+text
+@d109 2
+a110 1
+
+@
+
+
+1.10
+log
+@Set gamma_i = 1 if normalising.
+@
+text
+@d95 15
+a109 5
+    mu_ss = log(K.*X_ss);
+    A_f_ss = N_f'*mu_ss;
+    A_r_ss = N_r'*mu_ss;
+    kappa_f = kappa.*exp(A_f_ss)./Den;
+    kappa_r = kappa.*exp(A_r_ss)./Den;
+@
+
+
+1.9
+log
+@Generate component linearisation as well.
+@
+text
+@d89 5
+a93 1
+    comp.gamma = v_ss./kappa;
+@
+
+
+1.8
+log
+@Notation
+@
+text
+@d1 1
+a1 1
+function [SYS sys m_0] = stoich_lin (stoich,normalise)
+d85 13
+@
+
+
+1.7
+log
+@Simplify D computation.
+@
+text
+@d35 2
+a36 2
+  Vplus  = exp(N_f'*mu_ss);	# Forward nominal reaction flow
+  Vminus = exp(N_r'*mu_ss);	# Backward nominal reaction flow
+d41 1
+a41 1
+    Den = (1 + ((1-rho_v).*Vplus + rho_v.*Vminus)./k_v );
+d44 1
+a44 1
+  v_ss = kappa.*(Vplus - Vminus)./Den; # Mass-action reaction flow
+d48 3
+a50 3
+  ## Derivatives of Vplus,  Vminus wrt X
+  dVplus  = diag(Vplus)*N_f'/diag(X_ss);
+  dVminus = diag(Vminus)*N_r'/diag(X_ss);
+d53 2
+a54 2
+  ##C = ( diag(kappa.*Vplus)*N_f' - diag(kappa.*Vminus)*N_r' )/diag(X_ss);
+  C = diag(kappa./Den)*(dVplus - dVminus);
+d56 1
+a56 1
+     C = C - diag(v_ss./Den)*(diag((1-rho_v)./k_v)*dVplus + diag(rho_v./k_v)*dVminus);
+@
+
+
+1.6
+log
+@WORKING VERSION
+@
+text
+@d61 1
+a61 1
+    D = diag(kappa)\diag(v_ss);
+@
+
+
+1.5
+log
+@More reorganisation.
+@
+text
+@d38 4
+a41 2
+  if !MassAction
+    kappa = kappa./(1 + ((1-rho_v).*Vplus + rho_v.*Vminus)./k_v );
+d44 1
+a44 1
+  v_ss = kappa.*(Vplus - Vminus); # Mass-action reaction flow
+d48 4
+d53 5
+a57 1
+  C = ( diag(kappa.*Vplus)*N_f' - diag(kappa.*Vminus)*N_r' )/diag(X_ss);
+@
+
+
+1.4
+log
+@Reorganise to use V+ V-
+@
+text
+@d37 3
+a39 3
+ 
+  if MassAction
+    v_ss = kappa.*(Vplus - Vminus); # Total reaction flow
+d42 2
+@
+
+
+1.3
+log
+@Tidy.
+@
+text
+@d15 11
+a25 2
+  K = stoich.K_c;			# Thermodynamic constants
+  kappa = stoich.kappa;		# Reaction gains
+d34 7
+a40 3
+  vplus  = kappa.*exp(N_f'*log(K.*X_ss));
+  vminus = kappa.*exp(N_r'*log(K.*X_ss));
+  v_ss = vplus - vminus;
+d45 1
+a45 1
+  C = ( diag(vplus)*N_f' - diag(vminus)*N_r' )/diag(X_ss);
+@
+
+
+1.2
+log
+@New N_free version - set i_fix rows to zero
+Optional normalise.
+@
+text
+@d1 1
+a1 1
+function [SYS sys m_fix] = stoich_lin (stoich,normalise)
+d39 5
+a43 4
+  N_free = N;
+  N_free(i_fix,:) = zeros(length(i_fix),n_V);
+  A = N_free*C;
+  B = N_free*D;
+d48 6
+a53 4
+    m_fix.N = N_free;
+    m_fix = stoich2stoich(m_fix);
+    L_xX = m_fix.L_xX;
+    L_Xx = m_fix.L_Xx;
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d1 1
+a1 1
+function [A B C D] = stoich_lin (stoich)
+d6 4
+d15 1
+a15 1
+  K = stoich.K;			# Thermodynamic constants
+d23 1
+a23 2
+
+
+d30 14
+a43 4
+  C = (diag(vplus)*N_f(i_free,:)' - diag(vminus)*N_r(i_free,:)' )/diag(X_ss(i_free));
+  D = (diag(kappa)\diag(v_ss));
+  A = N(i_free,:)*C;
+  B = N(i_free,:)*D;
+d45 13
+@

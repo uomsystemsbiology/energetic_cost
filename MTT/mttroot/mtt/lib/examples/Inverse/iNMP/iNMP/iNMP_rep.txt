@@ -1,0 +1,20 @@
+# Outline report file for system iNMP (iNMP_rep.txt)
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %% Version control history
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %% $Id: iNMP_rep.txt,v 1.1 2000/12/28 17:51:08 peterg Exp $
+% %% $Log: iNMP_rep.txt,v $
+% %% Revision 1.1  2000/12/28 17:51:08  peterg
+% %% To RCS
+% %%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+mtt iNMP abg tex
+mtt iNMP struc tex
+mtt iNMP ode tex
+mtt iNMP dm tex
+mtt iNMP tf tex
+
+mtt iNMP lmfr ps
+mtt iNMP lpfr ps

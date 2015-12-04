@@ -1,0 +1,382 @@
+head	1.11;
+access;
+symbols;
+locks; strict;
+comment	@// @;
+
+
+1.11
+date	2015.01.08.22.36.54;	author peterg;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2015.01.07.22.27.05;	author peterg;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2014.11.05.04.34.44;	author peterg;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2014.11.04.01.14.51;	author peterg;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2014.10.31.03.47.54;	author peterg;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2014.10.30.23.52.49;	author peterg;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2014.10.30.23.39.36;	author peterg;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2014.10.30.23.01.03;	author peterg;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2014.10.30.22.56.58;	author peterg;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2014.10.30.22.49.21;	author peterg;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2014.10.30.01.13.06;	author peterg;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.11
+log
+@J ->V
+@
+text
+@function stoich_info (N_f,N_r,Ne_f,Ne_r,name,species,reaction)
+	 
+  ## usage: stoich_info (N_f,N_r,Ne_f,Ne_r,name,species,reaction)
+  ## 
+  ## 
+	 
+  if nargin<3
+    Ne_f = [];
+  endif
+
+  if nargin<4
+    Ne_r = [];
+  endif
+
+
+  N = -N_f + N_r;			# Stoichiometric matrix
+  NN_f = [N_f;Ne_f];			# Include external species
+  NN_r = [N_r;Ne_r];			# Include external species
+
+  ## Sizes
+  [n_X,n_V] = size(N_f);	# States
+  [nn_X,nn_V] = size(NN_f);	# States + Inputs
+  n_U = nn_X - n_X;		# Inputs
+
+  ## Default names
+  if nargin<5
+     name = "noname";
+  endif
+
+  if nargin<6
+    for i=1:n_X
+	species{i} = sprintf("c_%i",i);
+    endfor
+  endif
+
+  if nargin<7
+    for i=1:n_V
+	reaction{i} = sprintf("r_%i",i);
+    endfor
+  endif
+
+  ## Find isolated Cs
+  I_C = find(sum(N_f+N_r,2)==0);
+  if length(I_C)>0
+     printf("The following species are isolated:\n");
+     for i=I_C
+       printf("\t%s\n", species{i});
+     endfor
+  endif
+
+  ## Find disconnected reactions
+  I_f = find(sum(NN_f,1)==0);
+  if length(I_f)>0
+     printf("The following reactions have no forward connection:\n");
+     for i=I_f
+       printf("\t%s\n", reaction{i});
+     endfor
+  endif
+
+  I_r = find(sum(NN_r,1)==0);
+  if length(I_r)>0
+     printf("The following reactions have no reverse connection:\n");
+     for i=I_r
+       printf("\t%s\n", reaction{i});
+     endfor
+  endif
+
+  ## ODES for species
+  filename = sprintf("%s_ode.tex",name);
+  fid = fopen(filename,"w");
+  for i_X=1:n_X
+    fprintf(fid,"\\dot{X}_{%s} &= ",species{i_X})
+    for i_V=1:n_V
+	if N(i_X,i_V)!=0
+	   if N(i_X,i_V)>0
+	      pm = "+";
+	   else
+	     pm = "-";
+	   endif
+	   if abs(N(i_X,i_V))>1
+	      num = num2str(abs(N(i_X,i_V)));
+	   else
+	       num = "";
+	   endif
+	  fprintf(fid," %s %sV_{%s} ",pm,num,reaction{i_V});
+	endif
+    endfor
+    #if i_X==n_X
+    #  eol = " ";
+    #else
+      eol = "\\\\";
+    #endif
+    fprintf(fid,"%s\n",eol);
+  endfor
+  fclose(fid);
+
+  ## Flow equations
+  filename = sprintf("%s_flow.tex",name);
+  fid = fopen(filename,"w");
+  fr = ["f" "r"];
+  for i_V=1:n_V
+    fprintf(fid,"V_{%s} \t&= k(X)(",reaction{i_V})
+    for i_fr=[1 2];
+      for i_X=1:nn_X
+	n = eval(sprintf("NN_%s'(i_V,i_X);",fr(i_fr)));
+	if n!=0
+	  if n>1
+	    ex = sprintf("^{%i}",n);
+	  else
+	    ex = "";
+	  endif
+	  fprintf(fid,"X_{%s}%s ",species{i_X},ex);
+	endif
+      endfor
+      if i_fr==1
+	fprintf(fid," - K_{%s}",reaction{i_V});
+      endif
+    endfor
+    ## if i_V=n_V
+    ##   eol = "";
+    ## else
+      eol = "\\\\";
+    ##endif			
+    fprintf(fid,")%s\n",eol);
+  endfor
+  fclose(fid);
+  
+  ## Reactions
+  filename = sprintf("%s_reac.tex",name);
+  fid = fopen(filename,"w");
+  Eqn_list = reaction2str (1:n_V,species,NN_f,NN_r);
+  for i_V = 1:n_V
+      fprintf(fid,"\\text{%s}:\t&%s\\\\\n",reaction{i_V}, Eqn_list{i_V});
+  endfor
+  fclose(fid);
+
+endfunction
+@
+
+
+1.10
+log
+@Default args.
+@
+text
+@d85 1
+a85 1
+	  fprintf(fid," %s %sJ_{%s} ",pm,num,reaction{i_V});
+d102 1
+a102 1
+    fprintf(fid,"J_{%s} \t&= k(X)(",reaction{i_V})
+@
+
+
+1.9
+log
+@Doc.
+@
+text
+@d6 9
+@
+
+
+1.8
+log
+@Reacions as well.
+@
+text
+@d3 1
+a3 1
+  ## usage: stoich_info (N_f,N_r,name)
+@
+
+
+1.7
+log
+@*** empty log message ***
+@
+text
+@d119 9
+@
+
+
+1.6
+log
+@tidy.
+@
+text
+@d79 3
+a81 3
+    ## if i_X<n_X
+    ##   eol = "";
+    ## else
+d83 1
+a83 1
+    ##endif
+d99 1
+a99 1
+	    ex = sprintf("^%i",n);
+d110 1
+a110 1
+    ## if i_V<n_V
+@
+
+
+1.5
+log
+@Include constant species in the reaction equations ...
+@
+text
+@d12 3
+a14 2
+  [n_X,n_V] = size(N_f)
+  [nn_X,nn_V] = size(NN_f)
+@
+
+
+1.4
+log
+@Flow equations include fixed states.
+@
+text
+@d8 1
+a9 1
+  NN_f = [N_f;Ne_f];			# Include external species
+d13 2
+a14 1
+  
+d94 1
+a94 1
+      for i_X=1:n_X
+@
+
+
+1.3
+log
+@Use Ne as well.
+@
+text
+@d94 1
+a94 1
+	n = eval(sprintf("N_%s'(i_V,i_X);",fr(i_fr)));
+@
+
+
+1.2
+log
+@WORKING VERSION
+@
+text
+@d1 1
+a1 1
+function stoich_info (N_f,N_r,name,species,reaction)
+a6 2
+  ## Extract various stoichiometric matrices
+
+d8 2
+d15 1
+a15 1
+  if nargin<3
+d19 1
+a19 1
+  if nargin<4
+d25 1
+a25 1
+  if nargin<5
+d41 1
+a41 1
+  I_f = find(sum(N_f,1)==0);
+d49 1
+a49 1
+  I_r = find(sum(N_r,1)==0);
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d7 2
+d12 1
+a12 1
+  [n_X,n_V] = size(N_f);
+d57 3
+d61 1
+a61 1
+    printf("d%s/dt = ",species{i_X})
+d74 1
+a74 1
+	  printf(" %s %sJ_{%s} ",pm,num,reaction{i_V});
+d77 6
+a82 1
+    printf("\n");
+d84 1
+d86 3
+d91 1
+a91 1
+    printf("J_%s \t= k(X)(",reaction{i_V})
+d101 1
+a101 1
+	  printf("%s%s ",species{i_X},ex);
+d105 1
+a105 1
+	printf(" - (1/K_eq)");
+d108 6
+a113 1
+    printf(")\n");
+d115 1
+@

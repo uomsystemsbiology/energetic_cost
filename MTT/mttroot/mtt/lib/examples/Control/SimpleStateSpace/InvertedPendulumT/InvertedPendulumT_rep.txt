@@ -1,0 +1,25 @@
+# Outline report file for system InvertedPendulumT (InvertedPendulumT_rep.txt)
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %% Version control history
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %% $Id: InvertedPendulumT_rep.txt,v 1.1 2000/12/28 17:37:56 peterg Exp $
+% %% $Log: InvertedPendulumT_rep.txt,v $
+% %% Revision 1.1  2000/12/28 17:37:56  peterg
+% %% To RCS
+% %%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+mtt InvertedPendulumT abg tex
+
+mtt -o InvertedPendulumT ode tex
+mtt -o InvertedPendulumT sm tex
+mtt -o InvertedPendulumT tf tex
+
+mtt -o InvertedPendulumT smc tex
+mtt -o InvertedPendulumT ssk tex
+
+mtt -o InvertedPendulumT smo tex
+mtt -o InvertedPendulumT ssl tex
+
+

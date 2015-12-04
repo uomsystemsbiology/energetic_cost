@@ -1,0 +1,61 @@
+head	1.2;
+access;
+symbols;
+locks; strict;
+comment	@// @;
+
+
+1.2
+date	2015.02.25.22.54.33;	author peterg;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2015.02.11.04.15.02;	author peterg;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@*** empty log message ***
+@
+text
+@function dx = HH_fun (x,t)
+
+  ## usage:  dx = HH_fun (x,t)
+  ##
+  ## 
+
+  ## TT is used for fsolve
+  global U_HH
+    
+  par = HH_numpar;		# Parameters
+  xx = zeros(8,1);			# Not used
+  yy = 0;			# Not used
+
+  u = U_HH;
+  dx = HH_ode(x,u,t,par);
+endfunction
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@a13 6
+  # if nargin<2
+  #   t = 0;
+  #   u = U;
+  # else
+  #   u = HH_input(xx,yy,t,par);
+  # end
+d16 1
+a16 1
+endfunction@

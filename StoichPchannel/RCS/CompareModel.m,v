@@ -1,0 +1,453 @@
+head	1.10;
+access;
+symbols;
+locks; strict;
+comment	@// @;
+
+
+1.10
+date	2015.12.01.22.44.51;	author peterg;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2015.03.28.00.17.49;	author peterg;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2015.03.28.00.06.32;	author peterg;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2015.03.28.00.04.48;	author peterg;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2015.03.28.00.01.06;	author peterg;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2015.03.16.23.08.43;	author peterg;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2015.03.12.02.36.41;	author peterg;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2015.03.12.01.55.49;	author peterg;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2015.03.11.22.24.21;	author peterg;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2015.03.11.21.47.12;	author peterg;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.10
+log
+@Summary: Monochrome
+@
+text
+@## Compare simple physical 2-state model (KeeSne 3.5.1) with HH model.
+Setplot; Setpath
+graphics_toolkit('gnuplot')
+addpath("~/WORK/Research/SystemsBiology/Notes/2015/IonChannels/Examples/StoichPchannel");
+i_fig = 10;
+
+## Get some constants
+const = ThermoConstants;
+F = const.F;
+V_N = const.V_N;
+
+## KeeSne 5.1 subtract V_eq in their equations
+V_eq = -65; 			# mV (KeeSne 5.1  p 206)
+V_0 = 0;
+v = [-10:0.1 0.1:0.1:100];	# KeeSne Voltage (mV)
+V = (v + V_eq)*1e-3;;			# actual voltage (V)
+one = ones(size(v));
+
+##K = 100;			# C gain 
+K = 1;				# C gain ?????
+Gate_types = {"n" "m" "h"};
+
+for i = 1:length(Gate_types);
+  gate_type = Gate_types{i};
+  disp(" ")
+  disp("###############")
+  name = sprintf("Pgate_%s", gate_type)
+  disp("###############")
+
+  ## Hodgkin-Huxley equations + Physical parameters.
+  if strcmp(gate_type,"n")
+    V_g = V_N;
+
+    HH.alpha = 0.01*(-v+10)./(exp( (-v+10)/10 ) - 1);
+    HH.beta  = 0.125*exp(-v/80); 
+
+  elseif strcmp(gate_type,"m")
+    V_g = V_N/3;
+
+    HH.alpha = 0.1*(-v+25)./(exp( (-v+25)/10 ) - 1);
+    HH.beta  = 4*exp(-v/18);
+
+  elseif strcmp(gate_type,"h")
+    V_g = V_N/4;
+
+    HH.beta = 0.07*exp(-v/20);
+    HH.alpha  = 1./(exp((30-v)/10) + 1);
+  else
+      error(sprintf("Gate type %s not known",gate_type))
+  endif
+
+  ## HH stuff in msec - change to sec.
+  HH.alpha = HH.alpha*1e3;
+  HH.beta = HH.beta*1e3;
+
+  ## Gain and time-constant
+  [HH.g,HH.tau] = GateProps(HH.alpha,HH.beta);
+  
+  ## Physical (unit parameters)
+  ph.alpha = exp(V/V_g);
+  ph.beta = one;
+  
+  ## Rescale
+  i_0 = find(v==V_0);
+  factor = (HH.beta(i_0)/HH.alpha(i_0))/(ph.beta(i_0)/ph.alpha(i_0));
+  ph.beta =  ph.beta*factor;
+
+  ## Make k for gate output unity.
+  if strcmp(gate_type,"h")
+    k_c = K;
+    k_o = K*factor;
+  else
+    k_c = K/factor;
+    k_o = K;
+  endif
+
+
+  k_c = k_c
+  k_o = k_o
+
+  K_eq = k_c/k_o;
+  
+  ## Recompute
+  ph.alpha = k_c*exp(V/V_g);
+  ph.beta  = k_o*one;
+
+  ## Gain and time-constant
+  [ph.g,ph.tau] = GateProps(ph.alpha,ph.beta);
+  
+  ## Work out kappa function
+  kappa = ph.tau./HH.tau;	# Ideal
+
+  ## CHECK
+  kappa_mma = mma_cr(i,F*V);
+  CHECK_mma_cr = max(abs(kappa-kappa_mma))/ max(abs(kappa_mma))
+
+  ## Multiply and recompute
+  [gph.g,gph.tau] = GateProps(kappa.*ph.alpha, kappa.*ph.beta);
+  
+  ##Plots
+  colour = 1;
+  figure(i_fig++); 
+  if strcmp(gate_type,"h")
+    plot(V*1e3,1-gph.g,"-;Phy;", V*1e3,1-HH.g,"--;HH;");
+  else
+    plot(V*1e3,gph.g,"-;Phy;", V*1e3,HH.g,"--;HH;");
+  endif
+  y_lim = ylim;
+  axis([min(V*1e3) max(V*1e3) 0 y_lim(2)])
+  xlabel("V (mV)")
+  ylabel("g_{ss}")
+  title(gate_type);
+  legend("location","southeast")
+  grid;
+  fig(name, "g",colour);
+  
+  figure(i_fig++); 
+  plot(V*1e3,gph.tau*1e3,"-;Phy;", V*1e3,HH.tau*1e3,";--HH;");
+  y_lim = ylim;
+  axis([min(V*1e3) max(V*1e3) 0 y_lim(2)])
+  xlabel("V (mV)")
+  ylabel("\\tau (msec)")
+  title(gate_type);
+  grid;
+  fig(name, "tau",colour);
+  
+  ## figure(12); 
+  ## plot(V,kappa);
+  ## xlabel("V")
+  ## ylabel("\\kappa")
+  ## grid
+  ## y_lim = ylim;
+  ## axis([min(V) max(V) 0 y_lim(2)])
+  ## fig(name, "kappa",colour);
+  
+endfor
+
+@
+
+
+1.9
+log
+@sec, not msec
+@
+text
+@d101 1
+d104 1
+a104 1
+    plot(V*1e3,1-gph.g,";Phy;", V*1e3,1-HH.g,";HH;");
+d106 1
+a106 1
+    plot(V*1e3,gph.g,";Phy;", V*1e3,HH.g,";HH;");
+d115 1
+a115 1
+  fig(name, "g",2);
+d118 1
+a118 1
+  plot(V*1e3,gph.tau*1e3,";Phy;", V*1e3,HH.tau*1e3,";HH;");
+d125 1
+a125 1
+  fig(name, "tau",2);
+d134 1
+a134 1
+  ## fig(name, "kappa",2);
+@
+
+
+1.8
+log
+@But plot tau in ms.
+@
+text
+@d95 1
+a95 1
+  CHECK_mma_cr = max(abs(kappa - kappa_mma))
+@
+
+
+1.7
+log
+@Tau in sec, not ms.
+@
+text
+@d117 1
+a117 1
+  plot(V*1e3,gph.tau,";Phy;", V*1e3,HH.tau,";HH;");
+d121 1
+a121 1
+  ylabel("\\tau")
+@
+
+
+1.6
+log
+@Set K=1 ????
+@
+text
+@d23 2
+a24 2
+for i = 1:length(gate_types);
+  gate_type = gate_types{i};
+d51 4
+@
+
+
+1.5
+log
+@Put in K factor.
+@
+text
+@d7 4
+a10 2
+V_N = RTF*1000;
+F = 96.4853399;			# Faraday constant m C mol^-1
+d15 2
+a16 2
+v = [-10:0.1 0.1:0.1:100];	# KeeSne Voltage
+V = v + V_eq;			# Actual voltage
+d19 3
+a21 2
+K = 100;			# C gain 
+gate_types = {"n" "m" "h"};
+d32 1
+a32 1
+    V_g = V_N
+d38 1
+a38 1
+    V_g = V_N/3
+d44 1
+a44 1
+    V_g = V_N/4
+d99 1
+a99 1
+    plot(V,1-gph.g,";Phy;", V,1-HH.g,";HH;");
+d101 1
+a101 1
+    plot(V,gph.g,";Phy;", V,HH.g,";HH;");
+d104 2
+a105 2
+  axis([min(V) max(V) 0 y_lim(2)])
+  xlabel("V")
+d107 1
+d113 1
+a113 1
+  plot(V,gph.tau,";Phy;", V,HH.tau,";HH;");
+d115 2
+a116 2
+  axis([min(V) max(V) 0 y_lim(2)])
+  xlabel("V")
+d118 1
+@
+
+
+1.4
+log
+@WORKING VERSION
+@
+text
+@d5 1
+d17 1
+d63 2
+a64 2
+    k_c = 1;
+    k_o = factor;
+d66 2
+a67 2
+    k_c = 1/factor;
+    k_o = 1;
+d94 1
+a94 1
+  figure(10); 
+d108 2
+a109 1
+  figure(11); plot(V,gph.tau,";Phy;", V,HH.tau,";HH;");
+d117 8
+a124 7
+  figure(12); plot(V,kappa);
+  xlabel("V")
+  ylabel("\\kappa")
+  grid
+  y_lim = ylim;
+  axis([min(V) max(V) 0 y_lim(2)])
+  fig(name, "kappa",2);
+@
+
+
+1.3
+log
+@WORKING version
+@
+text
+@d58 10
+a67 3
+  k_c = 1/factor;
+  k_o = 1;
+  K_eq = k_c/k_o;
+d70 3
+a72 1
+  k_o = 1
+@
+
+
+1.2
+log
+@New ver with k_c = 1
+@
+text
+@a28 3
+    k_c = 1;			
+    k_o = 20;			# Rescale later
+
+a33 2
+    k_c = 1
+    k_o = 5;			# Rescale later
+a39 2
+    k_c = 1;
+    k_o = 25;			# Rescale later
+d51 2
+a52 2
+  ph.alpha = k_c*exp(V/V_g);
+  ph.beta = k_o*one;
+d56 1
+a56 1
+  factor = (HH.beta(i_0)/HH.alpha(i_0))/(ph.beta(i_0)/ph.alpha(i_0))
+d58 3
+a60 2
+  k_o = k_o*factor;
+  K_eq = 1/k_o
+d63 1
+a63 1
+  k_o = k_o
+d65 4
+d73 1
+a73 2
+  kappa_0 = ph.tau./HH.tau;	# Ideal
+  kappa = kappa_0;
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d7 1
+a26 1
+    ##V_g = 20
+d29 2
+a30 3
+    k_c = 0.05
+
+    ##V_kappa = 70
+a35 1
+##    V_g = 9;
+d37 2
+a38 2
+    k_c = 0.2
+    ##V_kappa = 18
+d44 3
+a46 4
+##    V_g = 7
+	 V_g = V_N/4
+    k_c = 0.05
+##    V_kappa = 15
+d57 1
+a57 1
+  ## Physical
+d59 1
+a59 1
+  ph.beta = one;
+d63 7
+a69 5
+  #ph.alpha = ph.alpha*HH.alpha(i_0)/ph.alpha(i_0);
+  k_o = (HH.beta(i_0)/HH.alpha(i_0))/(ph.beta(i_0)/ph.alpha(i_0))
+  ph.beta =  k_o*ph.beta;
+  
+  K_eq = k_c/k_o
+a75 4
+  ## i_1 = find(V==V_1);
+  ## kappa_1 = kappa_0(i_1)
+  ## V_kappa = -V(i_1)/log(kappa_1)
+  ##kappa = exp(-V/V_kappa);
+d79 1
+a79 1
+  kappa_mma = mma_cr(i,V);
+@

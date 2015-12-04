@@ -1,0 +1,27 @@
+%SUMMARY INTFX
+%DESCRIPTION <Detailed description here>
+%% Label file for system INTFX (INTFX_lbl.txt)
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %% Version control history
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %% $Id: INTFX_lbl.txt,v 1.1 2000/12/28 17:25:34 peterg Exp $
+% %% $Log: INTFX_lbl.txt,v $
+% %% Revision 1.1  2000/12/28 17:25:34  peterg
+% %% To RCS
+% %%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Each line should be of one of the following forms:
+%	a comment (ie starting with %)
+%	Component-name	CR_name	arg1,arg2,..argn
+%	blank
+
+
+
+% Component type CX
+	c		lin	effort,1
+
+% Component type SS
+	[in]		SS	external,external
+	[out]		SS	external,external

@@ -1,0 +1,48 @@
+head	1.1;
+access;
+symbols;
+locks
+	peterg:1.1; strict;
+comment	@// @;
+
+
+1.1
+date	2014.09.30.06.20.57;	author peterg;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@function [A B C D x_ss v_ss] = stoic2lin (N,kappa,K,N_e,Kx_e)
+	 
+  ## usage: [A B C D x_ss v_ss] = stoic2lin (N,kappa,K,N_e,Kx_e)
+  ## 
+  ## 
+	 
+  ## Required matrices
+	 
+  kNK = diag(kappa)*N'*diag(K);
+  NkNK = N*kNK
+  kN_e = diag(kappa)*N_e';
+  NkN_e = N*kN_e;
+  
+  ## Steady state
+  x_ss = -(NkNK\NkN_e*Kx_e);
+  v_ss = -kNK*x_ss - kN_e*Kx_e	 
+  
+  ## Linearise about steady state
+  C = -kNK;
+  D = (diag(kappa)\diag(v_ss));
+  A = N*C;
+  B = N*D;
+  
+endfunction
+@

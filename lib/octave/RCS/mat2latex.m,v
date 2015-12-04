@@ -1,0 +1,36 @@
+head	1.1;
+access;
+symbols;
+locks; strict;
+comment	@// @;
+
+
+1.1
+date	2015.10.21.02.43.58;	author peterg;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@function str = mat2latex (A,name)
+	 
+  ## usage: str = mat2latex (A,name)
+  ## 
+  ## Converts matrix A   into a LaTeX string with optional name etc.
+	 
+  str = strrep(strrep(mat2str(A)," ","&"),";","\\\\\n")(2:end-1);
+  
+  if nargin>1
+    str = sprintf("%s =\n\\begin{pmatrix}\n%s\n\\end{pmatrix}\n", name, str);
+  endif
+
+endfunction
+@

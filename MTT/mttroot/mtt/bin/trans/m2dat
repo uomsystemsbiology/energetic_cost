@@ -1,0 +1,30 @@
+#! /bin/sh
+
+     ###################################### 
+     ##### Model Transformation Tools #####
+     ######################################
+
+# Bourne shell script: m2dat
+
+# Transforms data in .m file to just the data - ie strips the matlab stuff
+
+# Copyright (c) P.J.Gawthrop, 1996.
+
+###############################################################
+## Version control history
+###############################################################
+## $Id: m2dat,v 1.2 2002/04/28 18:41:27 geraint Exp $
+## $Log: m2dat,v $
+## Revision 1.2  2002/04/28 18:41:27  geraint
+## Fixed [ 549658 ] awk should be gawk.
+## Replaced calls to awk with call to gawk.
+##
+## Revision 1.1  1996/08/14 08:36:16  peter
+## Initial revision
+##
+###############################################################
+
+echo Creating $1.dat
+
+gawk '$1 ~ /[0-9]/ && NF>0 {print} ' <$1.m  >$1.dat
+

@@ -1,0 +1,537 @@
+head	1.16;
+access;
+symbols;
+locks; strict;
+comment	@// @;
+
+
+1.16
+date	2015.12.01.22.48.09;	author peterg;	state Exp;
+branches;
+next	1.15;
+
+1.15
+date	2015.11.17.22.22.49;	author peterg;	state Exp;
+branches;
+next	1.14;
+
+1.14
+date	2015.03.29.22.14.28;	author peterg;	state Exp;
+branches;
+next	1.13;
+
+1.13
+date	2015.03.27.22.49.00;	author peterg;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	2015.03.27.22.36.05;	author peterg;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2015.03.27.22.35.20;	author peterg;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2015.03.20.00.47.17;	author peterg;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2015.03.19.23.54.49;	author peterg;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2015.03.19.23.50.06;	author peterg;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2015.03.17.04.06.06;	author peterg;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2015.03.16.01.49.06;	author peterg;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2015.03.16.00.40.35;	author peterg;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2015.03.15.22.55.02;	author peterg;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2015.03.15.22.08.05;	author peterg;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2015.03.13.04.11.19;	author peterg;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2015.02.03.02.13.03;	author peterg;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.16
+log
+@Summary: Monochrome
+@
+text
+@## Plot the GHK function
+Setplot;
+Setpath;
+
+if !exist("Ion")
+  Ion = "K";
+endif
+Ion
+
+V_eq = -65e-3;			# mV from K&S
+
+## Get some constants
+const = ThermoConstants;
+F = const.F;
+V_N = const.V_N;
+
+if strcmp(Ion,"Na")
+  ## Values from KeeSne09 Table 2.1
+  c_i = 50;			# mM
+  c_e = 437;			# mM
+  g = 120e-3;			# S/cm^2
+  ## Guess
+  k_mm = 0.1;
+ elseif strcmp(Ion,"K")
+  ## Values from KeeSne09 Table 2.1
+  c_i = 397;
+  c_e = 20;
+  g = 36e-3;			# S/cm^2
+  ## Guess
+  k_mm = 50;
+ elseif strcmp(Ion,"L")		# Leakage
+   c_i = 100;
+   v_0 = -54.4e-3;		# Give value
+   c_e = c_i*exp(v_0/V_N)	# Equiv. concentration
+   g = 0.3e-3;			# S/cm^2
+   ## Guess
+   k_mm = 50;
+ else
+   error(sprintf("Ion %s not recognised", Ion));
+ endif
+
+V_0 = V_N*log(c_e/c_i)
+V_match = -V_0;		# Voltage at which HH & MM matches GHK
+FV_match = F*V_match;
+
+V = [-99:1:99]*1e-3;		# V
+V = V + 1e-6;			# Avoid zero!
+VV = V/V_N;			# V_bar = V/V_N
+
+FV = F*V;
+
+## Compute HH flow
+VT = (V-V_0)/V_N;		# V tilde
+VT_match = (V_match-V_0)/V_N;	# V tilde at match voltage
+
+v_HH = g*(V_N/F)*VT;		# HH
+v_HH_match =  g*(V_N/F)*VT_match; # Matched
+
+## Work out equivalent kappa. (Match at V_match)
+## BG
+v_BG_match = (exp(VT_match) - 1); 
+kappa_bg = (v_HH_match/v_BG_match)*(1/c_e);
+
+## GHK
+kappa_ghk = kappa_bg/ghk_fun(F*V_match,0)
+
+## MM
+kappa_mm = kappa_bg/mm_fun(F*V_match,V_0,k_mm)
+
+## HH Using BG
+kappa_hh = kappa_bg/ghk_fun(F*V_match,V_0)
+
+## Compute flows.
+v_0 =   (exp(VT) - 1);
+v_BG =  kappa_bg*c_e*v_0;
+v_GHK = kappa_ghk*c_e*ghk_fun(F*V,0).*v_0;
+v_MM  = kappa_mm*c_e*mm_fun(F*V,V_0,k_mm).*v_0;
+
+## Check
+v_BG_HH = kappa_hh*c_e*ghk_fun(F*V,V_0).*v_0;
+
+
+
+## Plot the flows.
+colour = 1;
+figure(1)
+plot(V*1e3,v_GHK*1e9, "-;GHK;", ...
+     V*1e3,v_BG_HH*1e9, "--;HH;");
+grid;
+Xlabel = "V (mV)";
+title(Ion)
+xlabel(Xlabel)
+ylabel("v (nmol/sec)")
+legend("location","northwest")
+fig(Ion,"v",colour)
+
+## Plot the currents
+figure(2)
+plot(V*1e3,F*v_GHK*1e3, "-;GHK;", ...
+     V*1e3,F*v_BG_HH*1e3, "--;HH;");
+grid;
+Xlabel = "V (mV)";
+title(Ion)
+xlabel(Xlabel)
+ylabel("i mA")
+legend("location","northwest")
+fig(Ion,"i",colour)
+
+## Plot the Ratios.
+figure(3)
+plot(1000*V,v_GHK./v_BG, "-;GHK;", ...
+     1000*V,v_BG_HH./v_BG, "--;HH;");
+grid;
+title(Ion)
+xlabel(Xlabel)
+ylabel("G")
+legend("location","northwest")
+fig(Ion,"G",colour)
+
+@
+
+
+1.15
+log
+@Plot i as well.
+@
+text
+@d85 1
+d87 2
+a88 2
+plot(V*1e3,v_GHK*1e9, ";GHK;", ...
+     V*1e3,v_BG_HH*1e9, ";HH;");
+d95 1
+a95 1
+fig(Ion,"v",2)
+d99 2
+a100 2
+plot(V*1e3,F*v_GHK*1e3, ";GHK;", ...
+     V*1e3,F*v_BG_HH*1e3, ";HH;");
+d107 1
+a107 1
+fig(Ion,"i",2)
+d111 2
+a112 2
+plot(1000*V,v_GHK./v_BG, ";GHK;", ...
+     1000*V,v_BG_HH./v_BG, ";HH;");
+d118 1
+a118 1
+fig(Ion,"G",2)
+@
+
+
+1.14
+log
+@Correct L parameters.
+@
+text
+@d96 12
+d109 1
+a109 1
+figure(2)
+@
+
+
+1.13
+log
+@New ThermoConstants fun.
+@
+text
+@d33 3
+a35 3
+   v_0 = -54.4;
+   c_e = c_i*exp(v_0/V_N)
+   g = 3e-3;			# S/cm^2
+@
+
+
+1.12
+log
+@Plot units.
+@
+text
+@d12 4
+a15 2
+## Compute V_N (V) and F (Faraday constant (J/mV)/M)
+[V_N R F] = RTF(300);	# Unscaled
+@
+
+
+1.11
+log
+@All in proper units!
+@
+text
+@d96 2
+a97 2
+plot(V,v_GHK./v_BG, ";GHK;", ...
+     V,v_BG_HH./v_BG, ";HH;");
+@
+
+
+1.10
+log
+@WORKING VERSION with new gate and x_g.
+@
+text
+@d10 1
+a10 1
+V_eq = -65;			# mV from K&S
+d12 2
+a13 4
+## Compute V_N (mV) and F (Faraday constant (J/mV)/M)
+[V_N R F] = RTF(300,1000);
+## V_N = RTF*1;		# Nernst voltage in mv
+## F = F_0/1000;
+d19 1
+a19 1
+  g = 120;			# mA/cm^2/mV
+d26 1
+a26 1
+  g = 36;			# muA/cm^2/mV
+d33 1
+a33 1
+   g = 3;			# muA/cm^2/mV
+a41 1
+##V_match = V_eq			# Voltage at which HH & MM matches GHK
+d44 2
+a45 4
+## VV = [-4:0.01:3.9] + 0.001;	# V_bar = V/V_N
+## V = V_N*VV;
+V = [-99:1:99];
+V = V + 0.001;			# Avoid zero!
+a47 1
+F = 96.4853399;			# Faraday constant m C mol^-1
+d84 2
+a85 2
+plot(V,v_GHK, ";GHK;", ...
+     V,v_BG_HH, ";HH;");
+d87 1
+a87 3
+##axis([-4 4 -20 80])
+##Xlabel = sprintf("(V-V_{%s})/V_N",Ion);
+Xlabel = "V";
+d90 1
+a90 1
+ylabel("v")
+d101 1
+a101 1
+ylabel("v")
+@
+
+
+1.9
+log
+@Plot V
+@
+text
+@d47 5
+a51 2
+VV = [-4:0.01:3.9] + 0.001;	# V_bar = V/V_N
+V = V_N*VV;
+d94 2
+a95 1
+Xlabel = sprintf("(V-V_{%s})/V_N",Ion);
+@
+
+
+1.8
+log
+@*** empty log message ***
+@
+text
+@d87 2
+a88 2
+plot(VT,v_GHK, ";GHK;", ...
+     VT,v_BG_HH, ";HH;");
+d100 2
+a101 2
+plot(VT,v_GHK./v_BG, ";GHK;", ...
+     VT,v_BG_HH./v_BG, ";HH;");
+@
+
+
+1.7
+log
+@WORKING VERSION
+@
+text
+@d83 2
+d86 11
+d98 1
+d100 2
+a101 1
+plot(VT,v_GHK, ";GHK;", VT,v_MM, ";MM;", VT,v_HH, ";HH;");# VT,v_BG, ";BG;");
+a102 1
+##axis([-4 4 -20 80])
+d104 1
+a104 1
+xlabel("(V-V_0)/V_N")
+d107 1
+a107 1
+fig(Ion,"v",2)
+@
+
+
+1.6
+log
+@New version with direct comp of kappa.
+@
+text
+@d6 1
+a6 1
+  Ion = "K"
+d10 2
+d31 10
+a40 1
+ end
+d44 1
+d86 1
+a86 1
+plot(VV,v_GHK, ";GHK;", VV,v_MM, ";MM;", VV,v_HH, ";HH;", VV,v_BG, ";BG;");
+d89 2
+a90 1
+xlabel("V/V_N")
+d92 1
+a92 1
+legend("location","southeast")
+@
+
+
+1.5
+log
+@Working version.
+@
+text
+@d41 26
+a66 2
+## GHK function
+A_GHK = log(ghk_fun(FV,0));
+d68 2
+a69 16
+## Now do the MM version
+MM_fac = ghk_fun(FV_match,0)/mm_fun(FV_match,V_0,k_mm)
+A_MM = log(MM_fac*mm_fun(FV,V_0,k_mm));
+
+## HH version
+HH_fac = ghk_fun(FV_match,0)/ghk_fun(FV_match,V_0)
+A_HH = log(HH_fac*ghk_fun(FV,V_0));
+
+## Plot the affinities.
+## figure(1);
+## plot(VV,A_GHK, ";GHK;", VV,A_MM, ";MM;", VV,A_HH, ";HH;");
+## grid;
+## xlabel("V/V_N")
+## ylabel("A")
+## ##axis([-5 5 -4 2])
+## fig(Ion,"A",2)
+a71 6
+VT = (V-V_0)/V_N;
+
+v_BG = (exp(VT) - 1);
+v_HH = exp(A_HH).*v_BG;
+v_MM = exp(A_MM).*v_BG;
+v_GHK = exp(A_GHK).*v_BG;
+d76 1
+a76 1
+axis([-4 4 -20 80])
+@
+
+
+1.4
+log
+@Tidy.
+@
+text
+@d19 1
+d26 1
+d52 8
+a59 8
+## Plot the factors 
+figure(1);
+plot(VV,A_GHK, ";GHK;", VV,A_MM, ";MM;", VV,A_HH, ";HH;");
+grid;
+xlabel("V/V_N")
+ylabel("A")
+##axis([-5 5 -4 2])
+fig(Ion,"A",2)
+d70 1
+a70 1
+plot(VV,v_GHK, ";GHK;", VV,v_MM, ";MM;", VV,v_HH, ";HH;");
+d72 1
+@
+
+
+1.3
+log
+@Compute F from RTF
+@
+text
+@d10 4
+a13 3
+[rtf R F_0] = RTF;
+V_N = RTF*1000;		# Nernst voltage in mv
+F = F_0/1000;
+a28 1
+2/c_e
+d39 1
+@
+
+
+1.2
+log
+@Put in F factor (as in CRs)
+@
+text
+@d12 1
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d30 1
+d35 2
+a36 1
+##den = exp(VV)-1;
+d38 1
+a38 1
+A_GHK = log(ghk_fun(V,0));
+d41 2
+a42 2
+MM_fac = ghk_fun(V_match,0)/mm_fun(V_match,V_0,k_mm)
+A_MM = log(MM_fac*mm_fun(V,V_0,k_mm));
+d45 2
+a46 2
+HH_fac = ghk_fun(V_match,0)/ghk_fun(V_match,V_0)
+A_HH = log(HH_fac*ghk_fun(V,V_0));
+@

@@ -1,0 +1,17 @@
+#! /bin/bash
+
+## abg eps files
+syss="Channel Gate gate GateK GateNa ChannelK ChannelNa ChannelL Membrane ChannelR Axon"
+for sys in $syss; do
+    echo Creating ${sys}_abg.eps
+    fig2eps --nogv ${sys}_abg.fig &> /dev/null
+    mv -v ${sys}_abg.eps Figs
+done
+
+## Stoichiometric stuff.
+Make_stoich "ChannelKC ChannelNaC Membrane"
+
+## Figures
+octave -q Figures.m
+
+

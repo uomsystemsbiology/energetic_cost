@@ -1,0 +1,23 @@
+#! /bin/sh
+# Generates the tables of timings
+# PJG 17/8/98
+
+###############################################################
+## Version control history
+###############################################################
+## $Id: Run_All,v 1.1 1998/08/17 09:43:04 peterg Exp $
+## $Log: Run_All,v $
+## Revision 1.1  1998/08/17 09:43:04  peterg
+## Initial revision
+##
+###############################################################
+
+
+Run 2	0.25	'ImplicitS Implicit Euler'
+Run 10	0.25	'ImplicitS Implicit Euler'
+Run 20	0.25	'ImplicitS Implicit Euler'
+Run 50	0.25	'ImplicitS Implicit Euler'
+Run 100	0.25	'ImplicitS Implicit Euler'
+Run 200 0.25	'ImplicitS Implicit'
+
+cat Run*_table.txt | sort

@@ -1,0 +1,42 @@
+#!/bin/bash
+
+## Edits dae.tex to give chemical style names
+
+dae=$1
+
+name=`basename $dae _dae.tex`
+fullname=${name}_dae.tex
+
+## Generate sed script for states
+octave -q <<EOF > state.sed
+Setpath
+[input_name,output_name,state_name,nonstate_name] = ${name}_struc;
+s_name = lower(long2short(state_name));
+
+for i=1:rows(s_name)
+  name = deblank(s_name(i,:));
+  printf("s/x_{%i}/X_{%s}/g\n", i,name)
+endfor
+
+printf("s/\\pi/pi/g");
+
+EOF
+
+## Generate sed script for flows
+octave -q <<EOF > flows.sed
+Setpath
+[input_name,output_name,state_name,nonstate_name] = ${name}_struc;
+i_name = lower(long2short(input_name));
+
+for i=1:rows(i_name)
+  name = deblank(i_name(i,:));
+  printf("s/[uy]_{%i}/V_{%s}/g\n", i,name)
+endfor
+
+printf("s/\\pi/pi/g");
+EOF
+
+## Edit the tex file
+mv $fullname junk
+sed -f flows.sed < junk | sed -f state.sed > $fullname
+

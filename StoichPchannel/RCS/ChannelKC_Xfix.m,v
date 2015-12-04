@@ -1,0 +1,61 @@
+head	1.2;
+access;
+symbols;
+locks; strict;
+comment	@// @;
+
+
+1.2
+date	2015.03.30.00.58.19;	author peterg;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2015.03.30.00.55.11;	author peterg;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@Use actual F ie volts
+@
+text
+@function X_fix = ChannelKC_Xfix (X,t)
+	 
+	 ## usage: X_fix = ChannelKC_Xfix (X,t)
+	 ## 
+	 ## 
+
+  global STOICH
+
+  const = ThermoConstants;
+  F = const.F;
+
+  i_fix = STOICH.i_fix;
+  X_0 = STOICH.X_0;
+
+  X_fix = X_0(i_fix);		# Leave the same
+
+  X_fix(1) = F*0.1*sin(2*pi*1e3*t/10);
+	 
+endfunction
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d9 3
+a11 1
+  F = 96.4853399;			# Faraday constant m C mol^-1
+d17 1
+a17 1
+  X_fix(1) = F*100*sin(2*pi*1e3*t/10);
+@

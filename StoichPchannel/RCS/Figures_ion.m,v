@@ -1,0 +1,71 @@
+head	1.1;
+access;
+symbols;
+locks
+	peterg:1.1; strict;
+comment	@// @;
+
+
+1.1
+date	2015.02.09.00.50.01;	author peterg;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@Setpath;
+
+if !exist("Ion")
+  Ion = "K";
+endif
+
+Ion
+
+## Steady-state stuff
+##Channel_props;
+V_eq = -65;		# mV Resting potential
+
+t = [0:1:4000];			# Time (ms)
+
+if strcmp(Ion,"K")
+  X_0 = [0;397;20];		# Initial state
+  i_fig = 10;
+elseif strcmp(Ion,"Na")
+  X_0 = [0;1;50;437];		# Initial state
+  i_fig = 20;
+else 
+  error(sprintf("Ion %s not recognised", Ion));
+endif
+
+
+X = lsode(sprintf("Channel%s_fun",Ion),X_0,t)';
+
+par = eval(sprintf("Channel%s_numpar;",Ion));		# Parameters
+Y = [];
+for i = 1:length(t)
+  xx = zeros(4,1);			# Not needed
+  yy = 0;			# Not needed
+  U(i) = eval(sprintf("Channel%s_input(xx,yy,t(i),par);",Ion));
+  y = eval(sprintf("Channel%s_odeo(X(:,i),U(i),t(i),par);",Ion));
+  Y = [Y y];
+end
+
+VV = U-V_eq;
+
+R = (find(t>max(t)/2));
+figure(i_fig++);
+plot(VV(R),X([1:length(X_0)-2],R));grid
+
+figure(i_fig++);
+plot(VV(R),Y(R));grid
+
+
+@

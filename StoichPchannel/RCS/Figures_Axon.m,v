@@ -1,0 +1,361 @@
+head	1.8;
+access;
+symbols;
+locks; strict;
+comment	@// @;
+
+
+1.8
+date	2015.03.31.23.25.56;	author peterg;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2015.03.31.04.28.42;	author peterg;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2015.03.30.01.11.52;	author peterg;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2015.03.29.22.46.18;	author peterg;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2015.03.18.05.09.19;	author peterg;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2015.03.17.04.56.09;	author peterg;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2015.03.17.04.08.04;	author peterg;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2015.03.17.04.06.22;	author peterg;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.8
+log
+@New V_i V_e parameters
+Seperate numpar for Axon and Membrane
+@
+text
+@Setpath;
+Setplot;
+graphics_toolkit("gnuplot");
+
+## Set up state etc.
+last = 25e-3;;
+par = Axon_numpar;		# Parameters
+sympar = Axon_sympar;	# Symbolic parameters
+
+Set_Membrane;
+Name = "Axon";
+
+## Stoichiometry
+stoich_memb = dm2stoich("Membrane","");
+stoich_axon = dm2stoich("Axon","");
+
+## Sizes
+N_X = stoich_axon.n_X;
+n_X = stoich_memb.n_X;
+N_seg = N_X/n_X
+
+n_v = stoich_memb.n_V + 1;	# Extra R
+N_v = N_seg*n_v - 1;		
+
+XX_00 = [];
+ii_fix_0 = [];
+for i=1:N_seg
+    XX_00 = [XX_00; X_0];
+    ii_fix_0 = [ii_fix_0; (i_fix_0 + (i-1)*n_X)];
+endfor
+
+
+## Refine  XX_0
+##[xx_0 XX_0 vv_0] = stoich_sim ("Axon","",0,XX_00,ii_fix_0);
+XX_0 = XX_00;
+
+## Put in depolarisation
+XX_0_d = XX_0;
+dep = depolarisation*(C_m/F);
+XX_0_d(1) = XX_0_d(1) + dep;
+
+## And add a small amount
+ ## I_1 = 1:n_X:N_X
+ ## XX_0_d(I_1) = XX_0_d(I_1) + 0.2*dep*ones(N_seg,1);
+
+## Simulation
+[x X v] = stoich_sim ("Axon","",t,XX_0_d, []);
+
+FV = X(1:n_X:N_X,:)./(par(sympar.C_m)/F^2);
+V = FV/F;
+
+## Figure scaling
+mt = t*1e3;			# msec
+mV = V*1e3;			# mV
+mV_eq = V_eq*1e3;		# mV
+
+figure(10);
+one = ones(size(t));
+plot(mt,mV, mt,mV_eq*one,".")
+grid;
+xlabel("t (msec)");
+ylabel("V (mV)");
+Legend = num2str([1:N_seg]')
+legend(Legend)
+##axis([0 2 -100 150])
+fig(Name,"V",2);
+
+figure(11);
+i_seg = 1:N_seg;
+mesh(mt,i_seg,mV)
+xlabel("t (msec)");
+ylabel("i_{seg}");
+zlabel("V (mV)");
+
+fig(Name,"V3D",2);
+
+@
+
+
+1.7
+log
+@WORKING VERSION
+@
+text
+@d7 3
+@
+
+
+1.6
+log
+@*** empty log message ***
+@
+text
+@d3 1
+a3 1
+
+d64 9
+@
+
+
+1.5
+log
+@WORKING VERSION -- needed to scale flows by 10^-9.
+@
+text
+@d48 6
+d55 2
+a56 1
+plot(t,V-V_eq)
+d59 1
+a59 1
+ylabel("V-V_{eq}");
+a64 60
+
+## ## Channel currents 
+## I_k = F*v(3:n_v:N_v,:);
+## I_n = F*v(6:n_v:N_v,:);
+## I_l = F*v(7:n_v:N_v,:);
+## I = I_k + I_n + I_l;
+
+## ## Gate currents
+## ##I_g = F*v([2 4 5],:);
+
+## figure(11);
+## plot(t,I);
+## grid;
+## xlabel("t (msec)");
+## ylabel("I_{net}");
+## fig(Name,"I_all",2);
+
+## figure(12);
+## plot(t,I_k,";K;",\
+##      t,I_n,";Na;",
+##      t,I_l,";L;");
+## grid;
+## xlabel("t (msec)");
+## ylabel("I");
+## fig(Name,"I",2);
+
+## figure(13);
+## plot(t,I_g(1,:),";m;",\
+##      t,I_g(2,:),";n;",
+##      t,I_g(3,:),";h;");
+## grid;
+## xlabel("t (msec)");
+## ylabel("I_g");
+## fig(Name,"I",2);
+
+## I_k_0 = F*v(2,1)
+## I_n_0 = F*v(5,1)
+## I_l_0 = v(6,1)
+
+## figure(15)
+## plot(t,X(3,:),";n(t);",\
+##      t,X(7,:),";m(t);",\
+##      t,X(8,:),";h(t);");
+## grid;
+## xlabel("t (msec)");
+## ylabel("n(t),m(t),h(t)");
+## fig(Name,"nmh",2);
+
+## ## Conserved moieties
+## ##Gates
+## figure(16);
+## plot(t,stoich.G([1,3,4],:)*X);
+
+## ##Concentrations
+## figure(17);
+## plot(t,stoich.G([2,5],:)*X, t, sum(stoich.G([6,7],:))*X);
+
+## ## Other
+## figure(18);
+## plot(t,stoich.G([7],:)*X);
+@
+
+
+1.4
+log
+@WORKING VERSION
+@
+text
+@d6 1
+a6 1
+last = 10;;
+d20 1
+a20 1
+N_v = N_seg*n_v + 1;		# Extra R
+d31 2
+a32 2
+[xx_0 XX_0 vv_0] = stoich_sim ("Axon","",0,XX_00,ii_fix_0);
+##XX_0 = XX_00;
+d44 1
+a44 1
+[x X v] = stoich_sim ("Axon","",t,XX_0_d, i_fix);
+d53 2
+d59 24
+a82 24
+## Channel currents 
+I_k = F*v(3:n_v:N_v,:);
+I_n = F*v(6:n_v:N_v,:);
+I_l = F*v(7:n_v:N_v,:);
+I = I_k + I_n + I_l;
+
+## Gate currents
+##I_g = F*v([2 4 5],:);
+
+figure(11);
+plot(t,I);
+grid;
+xlabel("t (msec)");
+ylabel("I_{net}");
+fig(Name,"I_all",2);
+
+figure(12);
+plot(t,I_k,";K;",\
+     t,I_n,";Na;",
+     t,I_l,";L;");
+grid;
+xlabel("t (msec)");
+ylabel("I");
+fig(Name,"I",2);
+@
+
+
+1.3
+log
+@WORKING VERSION
+@
+text
+@d6 1
+a6 1
+last = 10;
+d10 4
+d15 6
+a20 5
+N_seg = 10;				# Number of segs.
+[n_X,n_v] = size(stoich.N);
+n_v = n_v + 1;
+N_X = N_seg*n_X	;	# States
+N_v = N_seg*n_v	;	# Flows
+d32 1
+d36 6
+a41 1
+XX_0_d(1) = XX_0_d(1) + depolarisation*(C_m/F);
+d64 1
+a64 1
+I_g = F*v([2 4 5],:);
+d82 21
+a102 21
+figure(13);
+plot(t,I_g(1,:),";m;",\
+     t,I_g(2,:),";n;",
+     t,I_g(3,:),";h;");
+grid;
+xlabel("t (msec)");
+ylabel("I_g");
+fig(Name,"I",2);
+
+I_k_0 = F*v(2,1)
+I_n_0 = F*v(5,1)
+I_l_0 = v(6,1)
+
+figure(15)
+plot(t,X(3,:),";n(t);",\
+     t,X(7,:),";m(t);",\
+     t,X(8,:),";h(t);");
+grid;
+xlabel("t (msec)");
+ylabel("n(t),m(t),h(t)");
+fig(Name,"nmh",2);
+@
+
+
+1.2
+log
+@Name.
+@
+text
+@d6 1
+a6 1
+last = 50;
+d8 1
+a8 1
+Name = Axon;
+d17 5
+a21 3
+XX_0 = X_0_d;
+for i=2:N_seg
+    XX_0 = [XX_0; X_0];
+d25 7
+d33 1
+a33 1
+[x X v] = stoich_sim ("Axon","",t,XX_0, i_fix);
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d8 1
+@

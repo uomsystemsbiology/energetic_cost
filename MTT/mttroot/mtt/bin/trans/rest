@@ -1,0 +1,25 @@
+#!/bin/sh
+
+     ###################################### 
+     ##### Model Transformation Tools #####
+     ######################################
+
+# Bourne shell script: rest
+# Gives remainder of space seperated string
+# Copyright (C) 2000 by Peter J. Gawthrop
+
+###############################################################
+## Version control history
+###############################################################
+## $Id: rest,v 1.1 2000/10/10 07:49:34 peterg Exp $
+## $Log: rest,v $
+## Revision 1.1  2000/10/10 07:49:34  peterg
+## Initial revision
+##
+## Revision 1.1  2000/10/10 07:44:20  peterg
+## Initial revision
+##
+###############################################################
+
+echo $1 | cut -d ' ' -f 2-
+

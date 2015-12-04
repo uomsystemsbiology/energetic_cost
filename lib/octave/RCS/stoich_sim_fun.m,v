@@ -1,0 +1,290 @@
+head	1.13;
+access;
+symbols;
+locks; strict;
+comment	@// @;
+
+
+1.13
+date	2015.10.01.01.05.40;	author peterg;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	2015.03.19.23.46.18;	author peterg;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2015.03.10.04.53.36;	author peterg;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2015.03.09.05.01.36;	author peterg;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2015.03.02.22.23.12;	author peterg;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2015.03.01.22.27.42;	author peterg;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2015.03.01.22.22.11;	author peterg;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2015.02.26.01.18.02;	author peterg;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2015.02.25.22.14.56;	author peterg;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2015.01.13.05.15.42;	author peterg;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2014.12.27.22.31.10;	author peterg;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2014.04.08.00.00.50;	author peterg;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2014.04.06.23.18.28;	author peterg;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.13
+log
+@Flowstat/j_fix/j_zero stuff.
+@
+text
+@function [dx V] = stoich_sim_fun (x,t)
+  
+  ## usage:  dx = stoich_sim_fun (x,t)
+  ##
+  ## Function for simulation of reduced-order stoichiometric equations
+  ## global  STOICH contains simulation information.
+  ## Simulate using stoich_sim
+  
+  global STOICH
+
+  if nargin<2
+    t = STOICH.t;
+  endif
+
+
+  name = STOICH.name;
+  N = STOICH.N;
+  L = STOICH.L;
+  G_X = STOICH.G_X;
+  L_xX = STOICH.L_xX;
+  X_0 = STOICH.X_0;
+  par = STOICH.par;
+  ##I_free = STOICH.I_free;
+  J_free = STOICH.J_free;
+
+  ## External inputs via fixed states
+  X0_fun = STOICH.X0_fun;
+  if (length(X0_fun)>0)
+     i_fix = STOICH.i_fix;
+     X_fix = eval(sprintf("%s(X_0,t)",X0_fun));
+     if (length(X_fix)==length(i_fix))
+       X_0(i_fix) = X_fix;
+     else
+	 error(sprintf("function X_fix = %s: X_fix must have %i elements", ...
+				X0_fun, length(i_fix)));
+     endif
+  endif
+
+
+  X = L*x + G_X*X_0;		# Convert x to X
+
+  ## Avoid numerical issues !!??
+  ## small = 1e-10;
+  ## i_neg = find(X<small);
+  ## X(i_neg) = small;
+
+##  u = eval(sprintf("%s_input(X,[],t,par);",name));
+  u = zeros(100,1);		# Dummy
+  V = eval(sprintf("%s_odeo(X,u,t,par);",name));
+  
+  V = J_free*V;			# Set some flows to zero.
+
+  ## External inputs via fixed flows
+  V0_fun = STOICH.V0_fun;
+  if (length(V0_fun)>0)
+    j_fix = STOICH.j_fix;
+    V(j_fix) = eval(sprintf("%s(X,t)",V0_fun));
+  endif
+
+  ## Enzyme modulation
+  enzyme_fun = STOICH.enzyme_fun;
+  if length(enzyme_fun)>0
+     U = eval(sprintf("%s(X,t)",enzyme_fun));
+     V = U.*V;
+  endif
+
+  ##dx = L_xX*I_free*N*V;
+  dx = L_xX*N*V;
+
+endfunction
+@
+
+
+1.12
+log
+@Don't use _input.m function.
+@
+text
+@d53 7
+@
+
+
+1.11
+log
+@Extra X0_fun argument.
+@
+text
+@d47 2
+a48 1
+  u = eval(sprintf("%s_input(X,[],t,par);",name));
+@
+
+
+1.10
+log
+@Zap I_free stuff.
+@
+text
+@d26 14
+@
+
+
+1.9
+log
+@New method of fixing states via stoichiometry.
+@
+text
+@d23 1
+a23 1
+  I_free = STOICH.I_free;
+@
+
+
+1.8
+log
+@If t had only one element t=t_0, use fsolve to give the steady state
+with time-dependent functions evaluated at t_0.
+@
+text
+@d45 2
+a46 1
+  dx = L_xX*I_free*N*V;
+@
+
+
+1.7
+log
+@One arg version
+@
+text
+@d12 1
+a12 1
+    t = 0;
+@
+
+
+1.6
+log
+@Zap the crazy attempt to avoid numerical issues - messes up volatages
+which can be negative!
+@
+text
+@d10 6
+a46 1
+  
+@
+
+
+1.5
+log
+@Enzyme modulation stuff.
+@
+text
+@d23 3
+a25 3
+  small = 1e-10;
+  i_neg = find(X<small);
+  X(i_neg) = small;
+@
+
+
+1.4
+log
+@Make sure X is positive - FIXME
+@
+text
+@d29 1
+d31 8
+d40 1
+@
+
+
+1.3
+log
+@Use i_fix parameter to fix some states.
+@
+text
+@d18 1
+d22 5
+d29 1
+a29 1
+
+@
+
+
+1.2
+log
+@Generate flows as well
+@
+text
+@d17 1
+d24 1
+a24 1
+  dx = L_xX*N*V;
+d26 1
+a26 1
+endfunction@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d1 1
+a1 1
+function dx = stoich_sim_fun (x,t)
+@

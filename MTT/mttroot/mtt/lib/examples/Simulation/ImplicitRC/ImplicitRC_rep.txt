@@ -1,0 +1,31 @@
+# Outline report file for system ImplicitRC (ImplicitRC_rep.txt)
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %% Version control history
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %% $Id: ImplicitRC_rep.txt,v 1.3 2003/08/19 13:02:13 gawthrop Exp $
+% %% $Log: ImplicitRC_rep.txt,v $
+% %% Revision 1.3  2003/08/19 13:02:13  gawthrop
+% %% Zap -c option from _rep.txt
+% %%
+% %% Revision 1.2  2003/08/17 17:03:02  gawthrop
+% %% Updated for new MTT
+% %%
+% %% Revision 1.1  2000/12/28 18:06:50  peterg
+% %% To RCS
+% %%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+mtt ImplicitRC abg tex
+mtt ImplicitRC struc tex
+mtt ImplicitRC ode tex
+mtt ImplicitRC sm tex
+mtt ImplicitRC sm m
+mtt ImplicitRC tf tex
+
+mtt ImplicitRC sro ps
+
+mtt ImplicitRC numpar tex
+
+mtt ImplicitRC simpar tex
+mtt ImplicitRC odeso ps

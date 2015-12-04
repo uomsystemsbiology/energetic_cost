@@ -1,0 +1,197 @@
+@numchapentry{Introduction}{1}{Introduction}{1}
+@numsecentry{What is a representation?}{1.1}{What is a Representation?}{1}
+@numsecentry{What is a transformation?}{1.2}{What is a Transformation?}{2}
+@numsecentry{What is a bond graph?}{1.3}{Bond graphs}{2}
+@numsecentry{Variables}{1.4}{Variables}{3}
+@numsecentry{Bonds}{1.5}{Bonds}{4}
+@numsecentry{Components}{1.6}{Components}{4}
+@numsubsecentry{Ports}{1.6.1}{Ports}{4}
+@numsubsecentry{Constitutive relationship}{1.6.2}{Constitutive relationship}{5}
+@numsubsecentry{Symbolic parameters}{1.6.3}{Symbolic parameters}{5}
+@numsubsecentry{Numeric parameters}{1.6.4}{Numeric parameters}{5}
+@numsecentry{Algebraic loops}{1.7}{Algebraic loops}{5}
+@numsecentry{Switched systems}{1.8}{Switched systems}{5}
+@numchapentry{User interface}{2}{User interface}{6}
+@numsecentry{Menu-driven interface}{2.1}{Menu-driven interface}{6}
+@numsecentry{Command line interface}{2.2}{Command line interface}{6}
+@numsecentry{Options}{2.3}{Options}{6}
+@numsubsecentry{Available options}{2.3.1}{Available options}{7}
+@numsubsubsecentry{Experimental options}{2.3.1.1}{Experimental options}{8}
+@numsubsubsecentry{Deprecated options}{2.3.1.2}{Deprecated options}{8}
+@numsubsecentry{Model specific options}{2.3.2}{Model-specific options}{8}
+@numsecentry{Utilities}{2.4}{Utilities}{9}
+@numsubsecentry{Help}{2.4.1}{Help}{9}
+@numsubsubsecentry{help representations}{2.4.1.1}{help representations}{10}
+@numsubsubsecentry{help components}{2.4.1.2}{help components}{10}
+@numsubsubsecentry{help examples}{2.4.1.3}{help examples}{10}
+@numsubsubsecentry{help crs}{2.4.1.4}{help crs}{11}
+@numsubsubsecentry{help <name>}{2.4.1.5}{help <name>}{11}
+@numsubsecentry{Copy}{2.4.2}{Copy}{11}
+@numsubsecentry{Clean}{2.4.3}{Clean}{11}
+@numsubsecentry{Version control}{2.4.4}{Version control}{12}
+@numchapentry{Creating Models}{3}{Creating Models}{13}
+@numsecentry{Quick start}{3.1}{Quick start}{13}
+@numsecentry{Creating simple models}{3.2}{Creating simple models}{14}
+@numsecentry{Creating complex models}{3.3}{Creating complex models}{16}
+@numsubsecentry{Top level}{3.3.1}{Top level}{16}
+@numchapentry{Simulation}{4}{Simulation}{17}
+@numsecentry{Steady-state solutions}{4.1}{Steady-state solutions}{18}
+@numsubsecentry{Steady-state solutions (odess)}{4.1.1}{Steady-state solutions - numerical(odess)}{18}
+@numsubsecentry{Steady-state solutions (ss)}{4.1.2}{Steady-state solutions - symbolic (ss)}{18}
+@numsecentry{Simulation parameters}{4.2}{Simulation parameters}{18}
+@numsubsecentry{Euler integration}{4.2.1}{Euler integration}{19}
+@numsubsecentry{Implicit integration}{4.2.2}{Implicit integration}{19}
+@numsubsecentry{Runge Kutta IV integration}{4.2.3}{Runge Kutta IV integration}{20}
+@numsubsecentry{Hybrd algebraic solver}{4.2.4}{Hybrd algebraic solver}{20}
+@numsecentry{Simulation input}{4.3}{Simulation input}{21}
+@numsecentry{Simulation logic}{4.4}{Simulation logic}{21}
+@numsecentry{Simulation initial state}{4.5}{Simulation initial state}{21}
+@numsecentry{Simulation code}{4.6}{Simulation code}{22}
+@numsubsecentry{Dynamically linked functions}{4.6.1}{Dynamically linked functions}{22}
+@numsecentry{Simulation output}{4.7}{Simulation output}{22}
+@numsubsecentry{Viewing results with gnuplot}{4.7.1}{Viewing results with gnuplot}{23}
+@numsubsecentry{Exporting results to SciGraphica}{4.7.2}{Exporting results to SciGraphica}{23}
+@numchapentry{Sensitivity models}{5}{Sensitivity models}{24}
+@numchapentry{Representations}{6}{Representations}{25}
+@numsecentry{Representation summary}{6.1}{Representation summary}{25}
+@numsecentry{Defining representations}{6.2}{Defining representations}{27}
+@numsecentry{Verbal description (desc)}{6.3}{Verbal description (desc)}{27}
+@numsecentry{Acausal bond graph (abg)}{6.4}{Acausal bond graph (abg)}{27}
+@numsecentry{Acausal bond graph - LaTeX ready (labg)}{6.5}{Acausal bond graph - LaTeX ready (labg)}{28}
+@numsubsecentry{Language fig (abg.fig)}{6.5.1}{Language fig (abg.fig)}{28}
+@numsubsubsecentry{Icon library}{6.5.1.1}{icon library}{28}
+@numsubsubsecentry{Bonds}{6.5.1.2}{bonds}{28}
+@numsubsubsecentry{Strokes}{6.5.1.3}{strokes}{29}
+@numsubsubsecentry{Components}{6.5.1.4}{components}{29}
+@numsubsubsecentry{Simple components}{6.5.1.5}{Simple components}{30}
+@numsubsubsecentry{SS components}{6.5.1.6}{SS components}{30}
+@numsubsubsecentry{Simple components - implementation}{6.5.1.7}{Simple components - implementation}{30}
+@numsubsubsecentry{Compound components}{6.5.1.8}{Compound components}{31}
+@numsubsubsecentry{Named SS components}{6.5.1.9}{Named SS components}{31}
+@numsubsubsecentry{Coerced bond direction}{6.5.1.10}{Coerced bond direction}{31}
+@numsubsubsecentry{Port labels}{6.5.1.11}{Port labels}{31}
+@numsubsubsecentry{Vector port labels}{6.5.1.12}{Vector port labels}{32}
+@numsubsubsecentry{Port label defaults}{6.5.1.13}{Port label defaults}{32}
+@numsubsubsecentry{Vector Components}{6.5.1.14}{Vector components}{32}
+@numsubsubsecentry{Artwork}{6.5.1.15}{artwork}{33}
+@numsubsubsecentry{Valid Names}{6.5.1.16}{Valid names}{33}
+@numsubsecentry{Language m (rbg.m)}{6.5.2}{Language m (rbg.m)}{34}
+@numsubsubsecentry{Transformation abg2rbg_fig2m}{6.5.2.1}{Transformation abg2rbg_fig2m}{35}
+@numsubsecentry{Language m (abg.m)}{6.5.3}{Language m (abg.m)}{35}
+@numsubsubsecentry{Arrow-orientated causality}{6.5.3.1}{Arrow-orientated causality}{36}
+@numsubsubsecentry{Component-orientated causality}{6.5.3.2}{Component-orientated causality}{36}
+@numsubsubsecentry{Transformation rbg2abg_m}{6.5.3.3}{Transformation rbg2abg_m}{36}
+@numsubsecentry{Language tex (abg.tex)}{6.5.4}{Language tex (abg.tex)}{36}
+@numsecentry{Stripped acausal bond graph (sabg)}{6.6}{Stripped acausal bond graph (sabg)}{36}
+@numsubsecentry{Language fig (sabg.fig)}{6.6.1}{Language fig (sabg.fig)}{37}
+@numsubsecentry{Stripped acausal bond graph (view)}{6.6.2}{Stripped acausal bond graph (view)}{37}
+@numsecentry{Labels (lbl)}{6.7}{Labels (lbl)}{37}
+@numsubsecentry{SS component labels}{6.7.1}{SS component labels}{38}
+@numsubsecentry{Other component labels}{6.7.2}{Other component labels}{39}
+@numsubsecentry{Component names}{6.7.3}{Component names}{39}
+@numsubsecentry{Component constitutive relationship}{6.7.4}{Component constitutive relationship}{39}
+@numsubsecentry{Component arguments}{6.7.5}{Component arguments}{39}
+@numsubsecentry{Parameter declarations}{6.7.6}{Parameter declarations}{40}
+@numsubsecentry{Units declarations}{6.7.7}{Units declarations}{40}
+@numsubsecentry{Interface Control Definition}{6.7.8}{Interface Control Definition}{41}
+@numsubsecentry{Aliases}{6.7.9}{Aliases}{42}
+@numsubsubsecentry{Port aliases}{6.7.9.1}{Port aliases}{42}
+@numsubsubsecentry{Parameter aliases}{6.7.9.2}{Parameter aliases}{43}
+@numsubsubsecentry{CR aliases}{6.7.9.3}{CR aliases}{43}
+@numsubsubsecentry{Component aliases}{6.7.9.4}{Component aliases}{43}
+@numsubsecentry{Parameter passing}{6.7.10}{Parameter passing}{44}
+@numsubsecentry{Old-style labels (lbl)}{6.7.11}{Old-style labels (lbl)}{45}
+@numsubsubsecentry{SS component labels (old-style)}{6.7.11.1}{SS component labels (old-style)}{45}
+@numsubsubsecentry{Other component labels (old-style)}{6.7.11.2}{Other component labels (old-style)}{46}
+@numsubsubsecentry{Parameter passing (old-style)}{6.7.11.3}{Parameter passing (old-style)}{46}
+@numsubsecentry{Language tex (desc.tex)}{6.7.12}{Language tex (desc.tex)}{47}
+@numsecentry{Structure (struc)}{6.8}{Structure (struc)}{47}
+@numsubsecentry{Language txt (struc.txt)}{6.8.1}{Language txt (struc.txt)}{47}
+@numsubsecentry{Language tex (struc.tex)}{6.8.2}{Language tex (struc.tex)}{47}
+@numsubsecentry{Language tex (view)}{6.8.3}{Structure (view)}{47}
+@numsecentry{Constitutive relationship (cr)}{6.9}{Constitutive Relationship (cr)}{48}
+@numsubsecentry{Predefined constitutive relationships}{6.9.1}{Predefined constitutive relationships}{48}
+@numsubsubsecentry{lin}{6.9.1.1}{lin}{48}
+@numsubsubsecentry{exotherm}{6.9.1.2}{exotherm}{48}
+@numsubsecentry{DIY constitutive relationships}{6.9.2}{DIY constitutive relationships}{48}
+@numsubsecentry{Unresolved constitutive relationships}{6.9.3}{Unresolved constitutive relationships}{49}
+@numsubsecentry{Unresolved constitutive relationships - Octave}{6.9.4}{Unresolved constitutive relationships - Octave}{49}
+@numsubsecentry{Unresolved constitutive relationships - c++}{6.9.5}{Unresolved constitutive relationships - c++}{49}
+@numsecentry{Parameters}{6.10}{Parameters}{50}
+@numsubsecentry{Symbolic parameters (subs.r)}{6.10.1}{Symbolic parameters (subs.r)}{50}
+@numsubsecentry{Symbolic parameters for simplification (simp.r)}{6.10.2}{Symbolic parameters for simplification (simp.r)}{50}
+@numsubsecentry{Numeric parameters (numpar)}{6.10.3}{Numeric parameters (numpar)}{50}
+@numsubsubsecentry{Text form (numpar.txt)}{6.10.3.1}{Text form (numpar.txt)}{51}
+@numsecentry{Causal bond graph (cbg)}{6.11}{Causal bond graph (cbg)}{56}
+@numsubsecentry{Language fig (cbg.fig)}{6.11.1}{Language fig (cbg.fig)}{56}
+@numsubsecentry{Language m (cbg.m)}{6.11.2}{Language m (cbg.m)}{57}
+@numsubsubsecentry{Transformation abg2cbg_m}{6.11.2.1}{Transformation abg2cbg_m}{57}
+@numsecentry{Elementary system equations (ese)}{6.12}{Elementary system equations}{57}
+@numsubsubsecentry{Transformation cbg2ese_m2r}{6.12.0.1}{Transformation cbg2ese_m2r}{58}
+@numsecentry{Differential-Algebraic Equations (dae)}{6.13}{Differential-Algebraic Equations}{58}
+@numsubsecentry{Language reduce (dae.r)}{6.13.1}{Differential-Algebraic Equations (reduce)}{59}
+@numsubsubsecentry{Transformation ese2dae_r}{6.13.1.1}{Transformation ese2dae_r}{59}
+@numsubsecentry{Language m (dae.m)}{6.13.2}{Differential-Algebraic Equations (m)}{60}
+@numsubsubsecentry{Transformation dae_r2m}{6.13.2.1}{Transformation dae_r2m}{60}
+@numsecentry{Constrained-state Equations (cse)}{6.14}{Constrained-state Equations}{60}
+@numsubsecentry{Language reduce (cse.r)}{6.14.1}{Constrained-state Equations (reduce)}{61}
+@numsubsubsecentry{Transformation dae2cse_r}{6.14.1.1}{Transformation dae2cse_r}{61}
+@numsubsecentry{Language m (view)}{6.14.2}{Constrained-state Equations (view)}{61}
+@numsecentry{Ordinary Differential Equations}{6.15}{Ordinary Differential Equations}{61}
+@numsubsecentry{Language reduce (ode.r)}{6.15.1}{Ordinary Differential Equations (reduce)}{62}
+@numsubsubsecentry{Transformation cse2ode_r}{6.15.1.1}{Transformation cse2ode_r}{62}
+@numsubsecentry{Language m (ode.m)}{6.15.2}{Ordinary Differential Equations (m)}{62}
+@numsubsubsecentry{Transformation ode_r2m}{6.15.2.1}{Transformation ode_r2m}{62}
+@numsubsecentry{Language m (view)}{6.15.3}{Ordinary Differential Equations (view)}{62}
+@numsecentry{Descriptor matrices (dm)}{6.16}{Descriptor matrices}{62}
+@numsubsecentry{Language reduce (dm.r)}{6.16.1}{Descriptor matrices (reduce)}{63}
+@numsubsecentry{Language m (dm.m)}{6.16.2}{Descriptor matrices (m)}{63}
+@numsecentry{Report (rep)}{6.17}{Report}{63}
+@numsubsecentry{Language text (rep.txt)}{6.17.1}{Report (text)}{63}
+@numsubsecentry{Language view}{6.17.2}{Report (view)}{64}
+@numchapentry{Extending MTT}{7}{Extending MTT}{65}
+@numsecentry{Makefiles}{7.1}{Makefiles}{65}
+@numsecentry{New (DIY) representations}{7.2}{New (DIY) representations}{65}
+@numsubsecentry{Makefile}{7.2.1}{Makefile (DIY representations)}{66}
+@numsubsecentry{Shell-script}{7.2.2}{Shell-script (DIY representations)}{69}
+@numsubsecentry{Documentation}{7.2.3}{Documentation (DIY representations)}{75}
+@numsecentry{Component library}{7.3}{Component library}{75}
+@numchapentry{Documentation}{8}{Documentation}{76}
+@numsecentry{Manual}{8.1}{Manual (Documentation)}{76}
+@numsecentry{On-line documentation}{8.2}{On-line documentation}{76}
+@numsubsecentry{Brief on-line documentation}{8.2.1}{Brief}{76}
+@numsubsecentry{Detailed on-line documentation}{8.2.2}{Detailed}{77}
+@numchapentry{Languages}{9}{Languages}{78}
+@numsecentry{Fig}{9.1}{Fig}{78}
+@numsecentry{m}{9.2}{m}{78}
+@numsecentry{Reduce}{9.3}{Reduce}{78}
+@numsecentry{c}{9.4}{c}{78}
+@numchapentry{Language tools}{10}{Language tools}{79}
+@numsecentry{Views}{10.1}{Views}{79}
+@numsecentry{Xfig}{10.2}{Xfig}{79}
+@numsecentry{Text editors}{10.3}{Text editors}{79}
+@numsecentry{Octave}{10.4}{Octave}{79}
+@numsubsecentry{Octave control system toolbox (OCST)}{10.4.1}{Octave control system toolbox (OCST)}{81}
+@numsubsecentry{Creating GNU Octave .oct files}{10.4.2}{Creating GNU Octave .oct files}{81}
+@numsubsecentry{Creating Matlab .mex files}{10.4.3}{Creating Matlab .mex files}{82}
+@numsubsecentry{Embedding MTT models in Simulink}{10.4.4}{Embedding MTT models in Simulink}{82}
+@numsecentry{LaTeX}{10.5}{LaTeX}{83}
+@numchapentry{Administration}{11}{Administration}{84}
+@numsecentry{Software components}{11.1}{Software components}{84}
+@numsecentry{REDUCE setup}{11.2}{REDUCE setup}{84}
+@numsecentry{Octave setup}{11.3}{Octave setup}{85}
+@numsubsecentry{.octaverc}{11.3.1}{.octaverc}{85}
+@numsubsecentry{.oct file dependencies}{11.3.2}{.oct file dependencies}{85}
+@numsecentry{Paths}{11.4}{Paths}{85}
+@numsubsecentry{$MTTPATH}{11.4.1}{$MTTPATH}{85}
+@numsubsecentry{$MTT_COMPONENTS}{11.4.2}{$MTT_COMPONENTS}{85}
+@numsubsecentry{$MTT_CRS}{11.4.3}{$MTT_CRS}{86}
+@numsubsecentry{$MTT_EXAMPLES}{11.4.4}{$MTT_EXAMPLES}{86}
+@numsubsecentry{$OCTAVE_PATH}{11.4.5}{$OCTAVE_PATH}{86}
+@numsecentry{File structure}{11.5}{File structure}{86}
+@appentry{Legal stuff}{A}{}{88}
+@appsecentry{GNU Free Documentation License}{A.1}{GNU Free Documentation License}{88}
+@appsubsecentry{ADDENDUM: How to use this License for your documents}{A.1.1}{}{94}
+@appsecentry{GNU GENERAL PUBLIC LICENSE}{A.2}{Copying}{95}
+@appsubsecentry{Preamble}{A.2.1}{}{96}
+@appsubsecentry{TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION}{A.2.2}{}{96}

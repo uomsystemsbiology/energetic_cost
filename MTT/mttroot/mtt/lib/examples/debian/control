@@ -1,0 +1,15 @@
+Source: mtt-examples
+Section: contrib/math
+Priority: optional
+Maintainer: Geraint Paul Bevan <geraint@users.sourceforge.net>
+Build-Depends: debhelper (>= 4.0.0)
+Standards-Version: 3.6.0
+
+Package: mtt-examples
+Architecture: all
+Depends: mtt
+Description: Library of examples for Model Transformation Tools
+ A library of examples containing models of systems which span a range of physical domains (including chemical, electrical, hydraulic, mechanical and thermal) and which demonstrate several uses of bond graph modelling with MTT, such as analysis, control and simulation.
+ .
+ The MTT homepage is located at http://mtt.sourceforge.net. An on-line manual is available at http://mtt.sourceforge.net/doc.
+ .

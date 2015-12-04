@@ -1,0 +1,44 @@
+head	1.1;
+access;
+symbols;
+locks
+	peterg:1.1; strict;
+comment	@// @;
+
+
+1.1
+date	2015.03.27.22.46.05;	author peterg;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@function const = ThermoConstants (T)
+
+  ## Computes some useful constants
+
+  if nargin<1
+    T = 300;			# K
+  end
+
+  R = 8.3144621;		# Gas constant J K^-1 mol^-1
+  F = 9.64853399*10^4;		# Faraday constant C mol^-1
+  RT = R*T;
+
+  V_N = (RT)/F;		
+
+  const.R = R;
+  const.RT = RT;
+  const.F = F;
+  const.V_N = V_N;
+
+endfunction
+@

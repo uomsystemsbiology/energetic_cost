@@ -1,0 +1,32 @@
+# Outline report file for system Isentropic (Isentropic_rep.txt)
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %% Version control history
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %% $Id: Isentropic_rep.txt,v 1.3 2003/08/06 18:54:15 gawthrop Exp $
+% %% $Log: Isentropic_rep.txt,v $
+% %% Revision 1.3  2003/08/06 18:54:15  gawthrop
+% %% Updated for latest MTT version.
+% %%
+% %% Revision 1.2  2000/12/28 18:16:47  peterg
+% %% To RCS
+% %%
+% %% Revision 1.1  1999/02/21 02:18:41  peterg
+% %% Initial revision
+% %%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+mtt -o -ss Isentropic abg tex
+mtt -o -ss Isentropic struc tex
+mtt -o -ss Isentropic ode tex
+mtt -o -ss Isentropic ss tex
+
+mtt -o -ss Isentropic numpar txt
+mtt -o -ss Isentropic input txt
+
+mtt -o -ss Isentropic odeso ps 'Isentropic__cycle__V'
+mtt -o -ss Isentropic odeso ps 'Isentropic__cycle__P'
+mtt -o -ss Isentropic odeso ps 'Isentropic__cycle__S'
+mtt -o -ss Isentropic odeso ps 'Isentropic__cycle__T'
+mtt -o -ss Isentropic odeso ps 'Isentropic__cycle__V:Isentropic__cycle__P'
+mtt -o -ss Isentropic odeso ps 'Isentropic__cycle__S:Isentropic__cycle__T'

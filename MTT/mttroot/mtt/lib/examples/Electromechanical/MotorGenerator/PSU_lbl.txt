@@ -1,0 +1,33 @@
+%% Label file for system PSU (PSU_lbl.txt)
+%SUMMARY PSU
+%DESCRIPTION 
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %% Version control history
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %% $Id: PSU_lbl.txt,v 1.1 2000/12/28 17:43:16 peterg Exp $
+% %% $Log: PSU_lbl.txt,v $
+% %% Revision 1.1  2000/12/28 17:43:16  peterg
+% %% To RCS
+% %%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%UNITS out electrical volt amp 
+% Port aliases
+
+% Argument aliases
+
+%% Each line should be of one of the following forms:
+%	     a comment (ie starting with %)
+%	     component-name	cr_name	arg1,arg2,..argn
+%	     blank
+
+% ---- Component labels ----
+
+% Component type SS
+	[out]	SS		external,external
+
+% Component type Se
+	v	SS		external
+

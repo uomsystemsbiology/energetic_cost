@@ -1,0 +1,14 @@
+#! /bin/bash
+## Convert all eps in dir to pdf
+
+figs=`ls *.eps | sed 's/.eps//g'`
+for fig in $figs; do
+    if [ "$fig.pdf"  -ot "$fig.eps" ]; then
+	echo Doing $fig
+	##epspdf $fig.eps
+	epstopdf $fig.eps
+	#pdfgrey $fig.pdf
+    else
+	echo $fig.pdf exists already
+    fi
+done

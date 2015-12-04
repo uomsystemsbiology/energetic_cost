@@ -1,0 +1,41 @@
+%% Label file for system CDx (CDx_lbl.txt)
+%SUMMARY CDx: C component with state output
+%DESCRIPTION Parameter 1: compliance
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %% Version control history
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %% $Id: CDx_lbl.txt,v 1.1 2001/04/19 11:04:57 gawthrop Exp $
+% %% $Log: CDx_lbl.txt,v $
+% %% Revision 1.1  2001/04/19 11:04:57  gawthrop
+% %% New C component with state detector
+% %%
+% %% Revision 1.1  2000/12/28 09:13:38  peterg
+% %% Initial revision
+% %%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% Port aliases
+%ALIAS	in	in
+%ALIAS	out	out
+
+% Argument aliases
+%ALIAS	$1	c
+
+%% Each line should be of one of the following forms:
+%	     a comment (ie starting with %)
+%	     component-name	cr_name	arg1,arg2,..argn
+%	     blank
+
+% ---- Component labels ----
+
+% Component type AE
+	a	lin		c
+
+% Component type C
+	c	lin		effort,c
+
+% Component type SS
+	[in]	SS		external,external
+	[out]	SS		external,external

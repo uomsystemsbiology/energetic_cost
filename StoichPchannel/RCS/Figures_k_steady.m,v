@@ -1,0 +1,410 @@
+head	1.13;
+access;
+symbols;
+locks; strict;
+comment	@// @;
+
+
+1.13
+date	2015.03.31.00.49.55;	author peterg;	state Exp;
+branches;
+next	1.12;
+
+1.12
+date	2015.03.30.02.41.05;	author peterg;	state Exp;
+branches;
+next	1.11;
+
+1.11
+date	2015.03.30.02.32.57;	author peterg;	state Exp;
+branches;
+next	1.10;
+
+1.10
+date	2015.03.20.01.57.20;	author peterg;	state Exp;
+branches;
+next	1.9;
+
+1.9
+date	2015.03.10.02.50.48;	author peterg;	state Exp;
+branches;
+next	1.8;
+
+1.8
+date	2015.03.09.06.13.06;	author peterg;	state Exp;
+branches;
+next	1.7;
+
+1.7
+date	2015.03.09.05.56.19;	author peterg;	state Exp;
+branches;
+next	1.6;
+
+1.6
+date	2015.03.09.05.41.05;	author peterg;	state Exp;
+branches;
+next	1.5;
+
+1.5
+date	2015.02.11.01.37.56;	author peterg;	state Exp;
+branches;
+next	1.4;
+
+1.4
+date	2015.02.11.01.28.08;	author peterg;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	2015.02.10.01.13.21;	author peterg;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	2015.02.09.23.18.04;	author peterg;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	2015.02.09.01.06.43;	author peterg;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.13
+log
+@labels
+@
+text
+@global U
+
+const = ThermoConstants;
+F = const.F;
+
+## Parameters etc.
+par = ChannelKC_numpar;
+sym = ChannelKC_sympar;
+K_k = par(sym.K_k)
+v_k = -77e-3;
+x_g = par(sym.x_g)			# Total gate state
+
+##V_k = [-50:1:150];		# Relative voltage
+##V = V_k + v_k;			# Actual voltage
+V = [-100:-56 -54:100]*1e-3;		# Miss -55 ????
+V_k = V-v_k;
+
+## Constant states
+x_i_k = 397/K_k;			# mM
+x_e_k = 20/K_k;	
+
+X_0 = [F*V(1)
+       x_g
+       0
+       x_i_k
+       x_e_k];
+
+i_fix = [1;4;5];
+ 
+n_ss = [];
+i_k = [];
+for i = 1:length(V)
+  X_0(1) = F*V(i);
+  [x X v] = stoich_sim ("ChannelKC","",0,X_0,i_fix);
+  i_k_i = F*(v(1) +v(2));
+  n_ss = [n_ss, X(3)/x_g];
+  i_k = [i_k, i_k_i];
+end
+
+
+## HH equivalent
+g_hh = 36e-3;
+i_hh = g_hh * V_k;
+i_hh_gated = (n_ss.^4).*i_hh;
+
+mV = 1000*V;			# mV
+mi_k = 1000*i_k;		# mA
+mi_hh_gated = 1000*i_hh_gated;	# mA
+
+mu = F*V;
+v_k  = i_k/F;
+v_hh  = i_hh_gated/F;
+
+kmu = mu*1e-3;			# kJ/mol
+nv_k = v_k*1e9;			# nmol/sec
+nv_hh = v_hh*1e9;		# nmol/sec
+
+
+figure(20);
+plot(kmu,n_ss);
+xlabel("\\mu (kJ/mol)");
+ylabel("n");
+grid
+fig("Mk","vx_ss",2)
+
+figure(21);
+plot(kmu,nv_k,";GHK;" , kmu,nv_hh,";HH;")
+xlabel("\\mu (kJ/mol)");
+ylabel("v_k, v_{hh} (nmol/sec)");
+grid
+fig("Mk","vi_ss",2)
+
+## figure(22);
+## plot(V_k,i_k./V_k)
+## xlabel("v_k")
+## ylabel("g");
+## grid
+## fig("Mk","g",2)
+## ## 
+@
+
+
+1.12
+log
+@Tidy.
+@
+text
+@d50 9
+d60 3
+a62 3
+plot(mV,n_ss);
+xlabel("V (mV)")
+ylabel("x");
+d67 3
+a69 3
+plot(mV,mi_k,";GHK;" , mV,mi_hh_gated,";HH;")
+xlabel("V (mV)")
+ylabel("i_k (mA)");
+@
+
+
+1.11
+log
+@Sort units.
+@
+text
+@d47 2
+a48 2
+mi_k = 1000*i_k;		# mV
+mi_hh_gated = 1000*i_hh_gated;	# mV
+@
+
+
+1.10
+log
+@Fixed x_g not equal 1 issues.
+@
+text
+@d3 2
+a4 1
+F = 96.4853399;			# Faraday constant m C mol^-1
+d10 1
+a10 1
+v_k = -77;
+d15 1
+a15 1
+V = [-100:-56 -54:100];		# Miss -55 ????
+d34 2
+a35 4
+  [x X v] = stoich_sim ("ChannelKC","",0,X_0,i_fix);#,[],"","ChannelKC_Xfix");
+  ## x_ss = fsolve("ChannelK_fun",1);
+  ## xx_ss = [1-x_ss x_ss x_i_k x_e_k]';
+  ## y_ss = ChannelK_odeo(xx_ss,U,0,par);
+d37 1
+a37 1
+  i_k = [i_k, F*(v(1) +v(2))];
+d42 1
+a42 1
+g_hh = 36;
+d46 4
+d51 2
+a52 2
+plot(V,n_ss);
+xlabel("V")
+d58 3
+a60 3
+plot(V,i_k,";GHK;" , V,i_hh_gated,";HH;")
+xlabel("V")
+ylabel("i_k");
+@
+
+
+1.9
+log
+@Memristor k now works.
+@
+text
+@d10 1
+d22 1
+a22 1
+       1
+d29 1
+a29 1
+X_ss = [];
+d37 1
+a37 1
+  X_ss = [X_ss, X(3)];
+d45 1
+a45 1
+i_hh_gated = (X_ss.^4).*i_hh;
+d48 1
+a48 1
+plot(V,X_ss);
+@
+
+
+1.8
+log
+@Put in missing F
+@
+text
+@d32 1
+a32 1
+  [x X v] = stoich_sim ("ChannelKC","",0,X_0,i_fix);
+@
+
+
+1.7
+log
+@Need to fix *100 factor.
+@
+text
+@d37 1
+a37 1
+  i_k = [i_k, v(2)];
+d54 1
+a54 1
+plot(V,i_k*100,";GHK;" , V,i_hh_gated,";HH;")
+@
+
+
+1.6
+log
+@New stoichiometric ver.
+@
+text
+@d3 1
+d8 1
+a8 1
+K_k = par(sym.K_k);
+d20 1
+a20 1
+X_0 = [V(1)
+d31 1
+a31 1
+  X_0(1) = V(i);
+d54 1
+a54 1
+plot(V,i_k,";GHK;");#, V,i_hh_gated,";HH;")
+@
+
+
+1.5
+log
+@Miss -55 don't know why.
+@
+text
+@d5 2
+a6 2
+par = ChannelK_numpar;
+sym = ChannelK_sympar;
+d18 8
+d28 1
+a28 1
+Y_ss = [];
+d30 7
+a36 6
+  U = V(i);
+  x_ss = fsolve("ChannelK_fun",1);
+  xx_ss = [1-x_ss x_ss x_i_k x_e_k]';
+  y_ss = ChannelK_odeo(xx_ss,U,0,par);
+  X_ss = [X_ss, x_ss];
+  Y_ss = [Y_ss, y_ss(1)];
+d38 1
+a38 1
+i_k = Y_ss(1,:);
+d53 1
+a53 1
+plot(V,i_k,";GHK;", V,i_hh_gated,";HH;")
+@
+
+
+1.4
+log
+@*** empty log message ***
+@
+text
+@d10 4
+a13 2
+V_k = [-50:-1  1:150];		# Relative voltage
+V = V_k + v_k;			# Actual voltage
+d22 1
+a22 1
+  U = V(i)
+@
+
+
+1.3
+log
+@No g plot.
+@
+text
+@d20 1
+a20 1
+  U = V(i);
+d22 1
+a22 1
+  xx_ss = [x_ss x_i_k x_e_k]';
+d33 1
+d35 2
+a36 2
+plot(V_k,X_ss);
+xlabel("v_k")
+d42 2
+a43 2
+plot(V_k,i_k,";GHK;", V_k,i_hh_gated,";HH;")
+xlabel("v_k")
+@
+
+
+1.2
+log
+@*** empty log message ***
+@
+text
+@d47 7
+a53 6
+figure(22);
+plot(V_k,i_k./V_k)
+xlabel("v_k")
+ylabel("g");
+grid
+fig("Mk","g",2)
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@a2 1
+UU = [-150:150];
+d4 22
+a25 3
+for i = 1:length(UU)
+  U = UU(i);
+  x_ss(i) = fsolve("Mk_fun",1);
+d27 1
+d29 4
+d34 1
+a34 1
+plot(UU,x_ss);
+d41 1
+a41 1
+plot(UU,g_k*UU.*x_ss.^4)
+d46 7
+@
