@@ -8,9 +8,13 @@ export PATH=$PATH:$PWD/lib/bash
 source MTT/mttroot/mtt/bin/mttrc $PWD/MTT/mttroot/mtt
 mtt --versions
 
+rm -rf Figs; mkdir Figs		# Create empty dirs for the figures
+
+
 ## Create the figures for the paper.
 cd StoichPchannel
- mtt Clean
+rm -rf Figs; mkdir Figs		# Create empty dirs for the figures
+mtt Clean
 ./Make
 cd ..
 
