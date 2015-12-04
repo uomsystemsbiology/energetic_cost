@@ -43,5 +43,5 @@ pdflatex Figures
 pdflatex Figures
 
 ## Display
-evince Figures.pdf&
+## evince Figures.pdf&
 
