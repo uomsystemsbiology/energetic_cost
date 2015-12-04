@@ -33,6 +33,7 @@ cp -v StoichPchannel/Figs/Memb_nmh.eps Figs
 cp -v StoichPchannel/Figs/Memb_I_g.eps Figs
 cp -v StoichPchannel/Figs/Memb_P_er.eps Figs
 cp -v StoichPchannel/Figs/Memb_ATP.eps Figs
+cp -v StoichPchannel/Figs/Memb_vary.eps Figs
 
 cp Epspdf Figs
 (cd Figs; ./Epspdf)
