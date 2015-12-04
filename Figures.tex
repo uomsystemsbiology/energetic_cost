@@ -1,7 +1,7 @@
 \documentclass[a4paper,12pt]{article}
 
 \usepackage{a4wide}
-\usepackage{siunitx}
+%%\usepackage{siunitx}
 
 % Figs
 \usepackage{graphicx,subfigure,fancybox,color}
@@ -21,9 +21,9 @@
 \begin{document}
 \begin{figure}[htbp]
  \centering
- \SubFig{K_i}{$\text{K}^+$: current (\si{mA})}{0.45}
- \SubFig{Na_i}{$\text{Na}^+$: current (\si{mA})}{0.45}
- \caption{Comparison of current(\si{mA})--voltage(\si{mV}) relationships for
+ \SubFig{K_i}{$\text{K}^+$: current (mA)}{0.45}
+ \SubFig{Na_i}{$\text{Na}^+$: current (mA)}{0.45}
+ \caption{Comparison of current(mA)--voltage(mV) relationships for
    $\text{Na}^+$ and $\text{K}^+$ currents  for $G_{pore}=G_{HH}$ and $G_{pore}=G_{GHK}$
    models.}
  \label{fig:comparison}
@@ -43,33 +43,32 @@
 
 \begin{figure}[htbp]
  \centering
- \SubFig{Memb_V}{Voltage: $V$~\si{mV}}{0.45}
- \SubFig{Memb_I}{$I_k$ \& $I_n$~\si{\mu A.cm^{-2}}}{0.45}
+ \SubFig{Memb_V}{Voltage: $V$~{mV}}{0.45}
+ \SubFig{Memb_I}{$I_k$ \& $I_n$}{0.45}
  \SubFig{Memb_nmh}{Gating functions}{0.45}
- \SubFig{Memb_I_g}{Gate current: $I_g$~\si{nA.cm^{-2}}}{0.45}
+ \SubFig{Memb_I_g}{Gate current: $I_g$}{0.45}
    \caption{Membrane response: electrical domain. 
      % 
-     (a) The membrane voltage (\si{mV}) is plotted against time
-     (\si{msec}) for a single action potential.
+     (a) The membrane voltage ({mV}) is plotted against time
+     ({msec}) for a single action potential.
      % 
-     (b) The corresponding channel currents $I_k$ \& $I_n$,$I_l$ (\si{\mu A.cm^{-2}}).
+     (b) The corresponding channel currents $I_k$ \& $I_n$,$I_l$.
      % 
      (c) The corresponding three gating functions $n$, $m$ and $h$.
      % 
-     (d) The gate currents for the three gates (\si{nA.cm^{-2}}).  }
+     (d) The gate currents for the three gates.  }
  \label{fig:membrane_resp}
 \end{figure}
 
 \begin{figure}[htbp]
  \centering
- \SubFig{Memb_P_er}{Net power \si{\mu W.cm^{-2}}}{0.45}
- \SubFig{Memb_ATP}{Energy \si{nJ.cm^{-2}}}{0.45}
-   \caption{ Power \& Energy plotted against time (\si{msec}).
+ \SubFig{Memb_P_er}{Net power}{0.45}
+ \SubFig{Memb_ATP}{Energy}{0.45}
+   \caption{ Power \& Energy plotted against time ({msec}).
      % 
-     (a)~The net external power and dissipated power (\si{\mu
-       W.cm^{-2}}).
+     (a)~The net external power and dissipated power.
      (b)~The external energy (time integral of
-     external power) and the ATP-proxy energy (\si{nJ.cm^{-2}}). 
+     external power) and the ATP-proxy energy). 
 }
 \label{fig:membrane_resp_energy}
 \end{figure}
